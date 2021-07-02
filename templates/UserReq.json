@@ -1,0 +1,151 @@
+
+{ 
+  "handler": {"name": "user_login"},
+  "intent": {
+            "name": "actions.intent.MAIN", 
+            "params": {}, 
+            "query": "我要跟聊天機器人說話"
+      
+    },
+  "scene": {
+            "name": "User_login", 
+            "slotFillingStatus": "UNSPECIFIED", 
+            "slots": {}
+    }, 
+  "session": {
+            "id": "BwppHFFAVhn2gQpQuUq7iP-rknODXDoTyL_Llcp3ct3qDVs9hrIR47CbDyVQ6b3Vx49FqW3t8k1K5XAqQ",
+            "params": {}, 
+            "typeOverrides": [], 
+            "languageCode": ""
+    
+    }, 
+  "user": {
+          "locale": "zh-TW", 
+          "params": {}, 
+          "accountLinkingStatus": "ACCOUNT_LINKING_STATUS_UNSPECIFIED",
+          "verificationStatus": "VERIFIED", 
+          "packageEntitlements": [], 
+          "gaiamint": "", 
+          "permissions": [], 
+          "lastSeenTime": "2021-03-03T09:36:18Z"
+    
+    }, 
+  "home": {"params": {}}, 
+  "device": {"capabilities": ["SPEECH", "RICH_RESPONSE", "LONG_FORM_AUDIO"]
+    
+  }
+  
+}
+S
+
+{
+  "handler": {"name": "start_chat"}, 
+  "intent": {
+            "name": "", 
+            "params": {"user_say": {"original": "確認送出", "resolved": "確認送出"}},
+            "query": "確認送出"}, 
+  "scene": {
+            "name": "Get_bookName", 
+            "slotFillingStatus": "UNSPECIFIED", 
+            "slots": {}
+    
+  }, 
+  "session": {
+            "id": "ABwppHFFAVhn2gQpQuUq7iP-rknODXDoTyL_Llcp3ct3qDVs9hrIR47CbDyVQ6b3Vx49FqW3t8k1K5XAqQ", 
+            "params": {
+                  "FirstCheck": True, 
+                  "UserSay_temp": [], 
+                  "User_class": "丁班", 
+                  "User_say": "18", 
+                  "NextScene": "Get_bookName"
+              
+            }, 
+            "typeOverrides": [],
+            "languageCode": ""
+    
+  }, 
+  "user": {
+          "locale": "zh-TW", 
+          "params": {}, 
+          "accountLinkingStatus": "ACCOUNT_LINKING_STATUS_UNSPECIFIED",
+          "verificationStatus": "VERIFIED", 
+          "packageEntitlements": [], 
+          "gaiamint": "", 
+          "permissions": [],
+          "lastSeenTime": "2021-03-11T03:29:05Z"
+    
+  }, 
+  "home": {"params": {}}, 
+  "device": {"capabilities": ["SPEECH", "RICH_RESPONSE", "LONG_FORM_AUDIO"]}
+  
+}
+
+
+{
+  "prompt": {
+          "firstSimple": {
+                    "speech": "哈囉！請先告訴我你的班級唷！",
+                    "text": "哈囉！請先告訴我你的班級唷！"
+          }, 
+          "suggestions": [
+            {"title": "丁班"},
+            {"title": "戊班"}
+          ]
+    
+  }
+  
+}
+
+
+{
+  "prompt": {
+          "firstSimple": {
+                      "speech": "你要跟我聊聊哪本故事書呢？", 
+                      "text": "你要跟我聊聊哪本故事書呢？"
+            
+          }
+    
+  }, 
+  "session": {
+        "params": {
+                    "User_id": "戊班12", 
+                    "NextScene": "Match_book"
+          
+        }
+    
+  }, 
+  "scene": {
+        "next": {
+                "name": "Check_input"
+          
+        }
+  }
+  
+}
+{
+  "prompt": {
+          "firstSimple": {
+                          "speech": "我有看過 1：Hansel and Gretel 你是在指哪一本呢? 告訴我書名對應的號碼吧", 
+                          "text": "我有看過 1：Hansel and Gretel 你是在指哪一本呢? 告訴我書名對應的號碼吧"
+            
+          }, 
+          "suggestions": [
+                {"title": "1"}, 
+                {"title": "都不是"}
+          ]
+    
+  },
+  "session": {
+        "params": {
+                      "User_first_match": False, 
+                      "User_temp_bookList": {"1": "Hansel and Gretel"}
+        }
+  }
+}
+
+{'prompt': {'firstSimple': {'speech': '', 'text': ''}}, 'session': {'params': {'User_noMatch': 1, 'User_doubleCheck': True, 'User_stage': '', 'NextScene': 'Evaluate', 'User_state': False}}, 'scene': {'next': {'name': 'Check_input'}}}
+
+{'prompt': {'firstSimple': {'speech': '\nwow！你對這個故事很了解呢！ 你喜歡這類型的書嗎？', 'text': '\nwow！你對這個故事很了解呢！ 你喜歡這類型的書嗎？'}}, 'session': {'params': {'User_expand': True, 'NextScene': 'Expand'}}, 'scene': {'next': {'name': 'Check_input'}}}
+
+
+{'prompt': {'firstSimple': {'speech': ',那推薦你Heidi以及Little Red Hen， 都是描述類似主題的故事唷！說不定你會喜歡呢！ \n謝謝你的分享！期待你下次的故事！Bye Bye！', 'text': ',那推薦你Heidi以及Little Red Hen， 都是描述類似主題的故事唷！說不定你會喜歡呢！ \n謝謝你的分享！期待你下次的故事！Bye Bye！'}}, 'scene': {'next': {'name': 'actions.scene.END_CONVERSATION'}}}

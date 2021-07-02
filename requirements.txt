@@ -1,0 +1,12 @@
+https://download.pytorch.org/whl/cu102/torch-1.5.1-cp38-cp38-linux_x86_64.whl
+https://download.pytorch.org/whl/cpu/torchvision-0.6.1%2Bcpu-cp38-cp38-linux_x86_64.whl
+Flask
+nltk
+paddlepaddle
+paddlehub
+matplotlib
+googletrans==4.0.0-rc1
+strsimpy
+pymongo
+allennlp==1.0.0
+allennlp-models==1.0.0

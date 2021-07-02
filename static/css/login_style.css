@@ -1,0 +1,52 @@
+@media screen and (min-width: 320px) and (max-width: 1156px){ 
+
+	
+}
+
+/*
+Inspired by http://dribbble.com/shots/917819-iPad-Calendar-Login?list=shots&sort=views&timeframe=ever&offset=461
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+body {
+  
+  background: url(https://images2.alphacoders.com/156/thumb-1920-156720.jpg)no-repeat fixed;
+  /*-webkit-font-smoothing: antialiased;*/
+  font: normal 14px Roboto,arial,sans-serif;
+  background-size: cover;
+
+}
+
+.container {
+    padding: 100px;
+
+}
+
+.form-login {
+    background-color: #EDEDED;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 15px;
+    border-color:#d2d2d2;
+    border-width: 5px;
+    box-shadow:0 1px 0 #cfcfcf;
+}
+
+h4 { 
+ border:0 solid #fff; 
+ border-bottom-width:1px;
+ padding-bottom:10px;
+ text-align: center;
+ font-size: 25px
+}
+
+.form-control {
+    border-radius: 10px;
+    font-size: 20px
+}
+
+.wrapper {
+    text-align: center;
+}
