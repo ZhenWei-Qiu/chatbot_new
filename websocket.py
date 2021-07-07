@@ -26,5 +26,36 @@ def chat_send(json):
 
     socketio.emit('chat_recv_{roomID}'.format(roomID=roomID), json)
 
+users = {}
+@socketio.on('join')
+def on_join(json):
+    global users
+    print('join', str(json))
+    roomID = None
+    if json.get('roomID', None):
+        roomID = json['roomID']
+
+    if roomID in users:
+        users[roomID] += 1
+    else:
+        users[roomID] = 1
+
+    print("online user：", users[roomID])
+    socketio.emit('user_count_{roomID}'.format(roomID=roomID), {"count": users[roomID]})
+
+
+@socketio.on('leave')
+def on_leave(json):
+    global users
+    print('leave', str(json))
+    roomID = None
+    if json.get('roomID', None):
+        roomID = json['roomID']
+
+    users[roomID] -= 1
+
+    print("online user：", users[roomID])
+    socketio.emit('user_count_{roomID}'.format(roomID=roomID), {"count": users[roomID]})
+
 if __name__ == '__main__':
     socketio.run(app, port=8080, debug=True)
