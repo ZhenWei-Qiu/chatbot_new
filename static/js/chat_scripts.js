@@ -15,10 +15,29 @@ var random_pitch;
 // 監聽connect
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 // var socket = io.connect('http://15944cb0a956.ngrok.io')
-// socket.on('connect', function () { 
-//       //send_userJson()
-// });
+// user connect
+socket.on('connect', function () { 
 
+  socket.emit('join', {
+      roomID : roomID,
+      username : userID,
+  });
+      
+});
+
+// user disconnect
+window.onbeforeunload = function () {
+
+  socket.emit('leave', {
+      roomID : roomID,
+      username : userID,
+  });
+}
+
+// online people
+socket.on('user_count_'+ roomID, function (data) { 
+      console.log("online people", data.count)
+});
 
 // socket監聽response事件，接收data
 socket.on('chat_recv_'+ roomID, function (data) {
@@ -200,6 +219,6 @@ window.onload = function(){
 
   random_pitch = (Math.random()*(1.3 - 0.8) + 0.8).toFixed(2) // 產生隨機小數
 
-
+  
   
 }
