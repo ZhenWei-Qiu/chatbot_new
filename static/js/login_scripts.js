@@ -50,10 +50,14 @@ function user_inputPress() {
 //使用者登入
 function user_sendLogin(){
 
+  var link = 'http://' + document.domain + ':' + location.port + '/game/' + RoomID.value;
+  // var link = 'http://15944cb0a956.ngrok.io'+ '/chats/' + RoomID.value;
   // 設定前往的房間
-  document.getElementById("loginBtn").href = 'http://' + document.domain + ':' + location.port + '/chats/' + RoomID.value;
+  //document.getElementById("loginBtn").href = 'http://' + document.domain + ':' + location.port + '/game/' + RoomID.value;
   // document.getElementById("loginBtn").href = 'http://15944cb0a956.ngrok.io'+ '/chats/' + RoomID.value;
-  console.log(document.getElementById("loginBtn").href)
+  //console.log(document.getElementById("loginBtn").href) ;  
+  // 設定前往的房間
+  document.getElementById("box").action=link
   var userData = {
     userID: UserID.value,
     roomID: RoomID.value,
