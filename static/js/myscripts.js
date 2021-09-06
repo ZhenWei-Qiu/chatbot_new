@@ -334,7 +334,7 @@ var handler = { "name" : "input_userId" };
 var intent = { "params" : {}, "query" : "" }; 
 var scene = { "name" : "input_userId" };  
 var session = { "id": GenerateRandom(), "params" : {} }; 
-var user = { "lastSeenTime" : "", "character" : "fish_teacher" }; 
+var user = { "lastSeenTime" : "", "character" : "fish_teacher", "player" : 1 }; 
 // var user = { "lastSeenTime" : "", "character" : "fish_classmate" }; 
 var chatbotWords = [];
 var chatbotWords_speech = [];
@@ -468,8 +468,8 @@ function analyze_responseData(){
 
  	// 判斷不等待使用者輸入直接觸發request傳送
  	console.log("scene name", scene["name"])
-	if(scene["name"] == "Prompt_character" || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" || scene["name"] == "suggestion"){
-		
+	if(scene["name"] == "Prompt_character" || scene["name"] == "Prompt_character_sentiment" || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" || scene["name"] == "suggestion"){
+		 
 		if(exist_chatbotTyping()){
 			clear_chatbotTyping()
 		}

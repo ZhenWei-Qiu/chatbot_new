@@ -1,20 +1,48 @@
 // cookie 接收跨頁 Data
 var userData = $.cookie("userData"); 
-userData = JSON.parse(userData);   
-var roomID = userData['roomID']
-var userID = userData['userID']
+var roomID 
+var classID 
+var userID 
+
+var getUrlString = location.href;
+const url = new URL(getUrlString);
+
+if(userData){
+  console.log("Login")
+  userData = JSON.parse(userData);   
+  roomID = userData['roomID']
+  classID = userData['classID']
+  userID = userData['userID']
+}
+else{
+  console.log("URL", url)
+  roomID = url.pathname.replace("/chats/", "");
+  classID = url.searchParams.get('classID'); 
+  userID = url.searchParams.get('userID'); 
+  console.log(roomID, classID, userID)
+}
+
+var room_users_data; //房間線上人物資料
+var user_identifier;
 
 // 初始值宣告
 var Words;
 var TalkWords;
 var res_data;
 var random_pitch;
-
+var Suggestions;
+var TaskHints;
+var typingGif_ImageUrl = "/static/image/typing.gif";
+var fishJpg_ImageUrl = "/static/image/fish.jpg";
+var fishGif_ImageUrl = "/static/image/fish.gif";
+var starPng_ImageUrl = "/static/image/star.png";
+var manPng_ImageUrl = "/static/image/man.png";
+var dialog_count = 4 // 與後端的dialog_count限制有關
 
 
 // 監聽connect
-var socket = io.connect('http://' + document.domain + ':' + location.port);
-// var socket = io.connect('http://15944cb0a956.ngrok.io')
+// var socket = io.connect('http://' + document.domain + ':' + location.port);
+var socket = io.connect('http://b3a1-140-115-53-209.ngrok.io')
 // user connect
 socket.on('connect', function () { 
 
@@ -37,16 +65,31 @@ window.onbeforeunload = function () {
 // online people
 socket.on('user_count_'+ roomID, function (data) { 
       console.log("online people", data.count)
+      if(user_identifier == undefined){
+        user_identifier = data.count
+      }
+      console.log(user_identifier)
+      room_users_data = data.users
+      console.log("room_users_data", room_users_data)
 });
 
 // socket監聽response事件，接收data
 socket.on('chat_recv_'+ roomID, function (data) {
 
+ 
   // 其他人傳送的data
   if(data.username != userID){
   
-      add_othersTalk(data.message)
+    add_othersTalk(data.username, data.message)
   }
+
+    console.log(data)
+    res_data = data.response
+    analyze_responseData(data.username);
+    console.log(res_data)
+  
+  
+  
 
 });
 
@@ -70,7 +113,7 @@ function user_sendMsg(Object) {
   window.speechSynthesis.cancel();
 
   // 啟動語音功能
-  speech_othersTalk(" ");
+  speech_Talk(" ");
 
   // 判斷使用者發送方式
   if(Object.value == undefined){
@@ -84,6 +127,17 @@ function user_sendMsg(Object) {
   }
 
   send_userJson();
+
+  if(sync_waitInput_flag == 1){
+  
+    show_chatbotTyping()
+    //同步等待
+    setTimeout(function(){
+      chatbotWords = []
+        send_userJson()
+        clear_chatbotTyping()
+    },3000);
+  }
   
   // 清空輸入值
   TalkWords.value = "";
@@ -109,22 +163,116 @@ function add_userTalk(talk_str){
 
 }
 
-function add_othersTalk(talk_str){
+function add_othersTalk(othersName, talk_str){
 
   var othersStr = "";
 
   if(talk_str != ""){
-    othersStr = '<div class="user remote"><div class="text">' + talk_str +'</div></div>';
+    othersStr = '<div class="user other"><div class="avatar"><div class="pic"><img src='+ manPng_ImageUrl +'></img></div><div class="name">' + othersName + '</div></div><div class="text">' + talk_str + '</div></div>';
     Words.innerHTML = Words.innerHTML + othersStr;
     Words.scrollTop = Words.scrollHeight;
-    speech_othersTalk(talk_str)
+    speech_Talk(talk_str)
 
   }
 
 }
 
+// 加入機器人對話訊息
+async function add_chatbotTalk(){
+
+  var chatbotStr = "";
+
+  if(chatbotWords[0] != ""){
+
+    for(var i = 0; i < chatbotWords.length; i++){
+      
+      // 與上次顯示紀錄重複字串清除跳出
+  
+      // if(chatbotWords_last == chatbotWords[chatbotWords.length-1]){
+      //  chatbotWords = []
+      //  break;
+      // }
+      if(chatbotWords_last == chatbotWords[i]){
+        chatbotWords = []
+        break;
+      }
+
+      // 內容發音
+      speech_Talk(chatbotWords_speech[i]);
+
+      // 檢查目前機器人是否存在typing
+      if(exist_chatbotTyping()){
+
+        clear_chatbotTyping()
+
+        // 將機器人文字顯示於畫面
+        chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishJpg_ImageUrl + '></img></div><div class="name">鹹魚姊姊</div></div> <div class="text">' + chatbotWords[i] +'</div></div>';
+        Words.innerHTML = Words.innerHTML + chatbotStr;
+        Words.scrollTop = Words.scrollHeight;
+
+        show_chatbotTyping()
+      }
+      else{
+        // 將機器人文字顯示於畫面
+        chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishJpg_ImageUrl + '></img></div><div class="name">鹹魚姊姊</div></div> <div class="text">' + chatbotWords[i] +'</div></div>';
+        Words.innerHTML = Words.innerHTML + chatbotStr;
+        Words.scrollTop = Words.scrollHeight;
+      }
+          
+      
+
+      // 紀錄本次顯示於畫面文字
+      chatbotWords_last = chatbotWords[i]
+
+      // 添加機器人輸入中(超過一行字串與不是最後一行)
+      if(chatbotWords.length > 1 &&  i != (chatbotWords.length-1)){
+        show_chatbotTyping()
+      }
+
+      // 非同步延遲(sec)
+      await delay(5);
+
+      // 清除機器人輸入中
+      clear_chatbotTyping()
+      
+    } 
+  }
+  
+
+  if(rec_imageUrl != ""){
+
+    if(exist_chatbotTyping()){
+      clear_chatbotTyping()
+    }
+    show_chatbotTyping()
+    
+    
+    await delay(3);
+    
+    // 將機器人圖片顯示於畫面
+    if(rec_imageUrl != ""){
+      chatbotStr = '<div class="user remote"><div class="text"><img src ='+ rec_imageUrl +' width="130" height="150"></div></div>'
+      Words.innerHTML = Words.innerHTML + chatbotStr;
+      Words.scrollTop = Words.scrollHeight; 
+      rec_imageUrl = ""
+    }
+
+    
+    clear_chatbotTyping()
+  }
+  
+}
+
+// 非同步延遲 delay(min)
+function delay(n){
+
+    return new Promise(function(resolve){
+        setTimeout(resolve, n * 1000);
+    });
+}
+
 // 內容發出聲音
-function speech_othersTalk(othersSpeechStr){
+function speech_Talk(othersSpeechStr){
   
   var voices = [];
   var toSpeak = new SpeechSynthesisUtterance(othersSpeechStr);
@@ -141,26 +289,348 @@ function speech_othersTalk(othersSpeechStr){
 }
 
 
+// 顯示機器人輸入中
+function show_chatbotTyping(){
+  
+  var chatbotStr = "";
 
-var handler = { "name" : "input_userId" }; 
+  chatbotStr += '<div class="user remote"><div class="text"><img class="typing" src ='+ typingGif_ImageUrl +' width="50" height="13"></div></div>'
+
+  Words.innerHTML = Words.innerHTML + chatbotStr;
+  Words.scrollTop = Words.scrollHeight; 
+  
+}
+
+// 刪除機器人輸入中
+function clear_chatbotTyping(){
+  
+  var node_len = document.getElementsByClassName('user remote').length;
+
+  for(var i = 0 ; i < node_len; i++){
+
+    var get_currentNode = document.getElementsByClassName('user remote')[i];
+
+    // 檢查目前是否存在機器人typing
+    if(get_currentNode.getElementsByClassName("typing").length){
+      get_currentNode.remove()
+      break;
+    }
+  }
+  
+}
+
+// 檢查機器人輸入中
+function exist_chatbotTyping(){
+  
+  var node_len = document.getElementsByClassName('user remote').length;
+
+  for(var i = 0 ; i < node_len; i++){
+
+    var get_currentNode = document.getElementsByClassName('user remote')[i];
+
+    // 檢查目前是否存在機器人typing
+    if(get_currentNode.getElementsByClassName("typing").length){
+      return true
+    }
+  }
+  return false
+  
+}
+
+
+// 顯示建議文字紐
+function show_suggestList(){
+  
+  var suggestionStr = "";
+
+  for(var i = 0; i < suggest_arr.length; i++){
+    suggestionStr += '<button class="suggest_Btn" onclick="user_sendMsg(this)"  value=' + suggest_arr[i] + '>' + suggest_arr[i] + '</button>'
+  }
+
+  Suggestions.innerHTML = Suggestions.innerHTML + suggestionStr
+
+  //版行調整
+  if($("#talk_input_id").hasClass("talk_input")){
+    document.getElementById("talk_input_id").style.marginTop = "0px";
+  }
+  else{
+    document.getElementById("talk_input_id").style.marginTop = "-22px";
+  }
+  
+}
+
+// 清除建議文字紐
+function clear_suggestList() {
+
+
+  Suggestions.innerHTML = "";
+  suggest_arr = [];
+
+  //版行調整
+  if($("#talk_input_id").hasClass("talk_input")){
+    document.getElementById("talk_input_id").style.marginTop = "64px";
+  }
+  else{
+    document.getElementById("talk_input_id").style.marginTop = "42px";
+  }     
+}
+
+
+// 顯示任務提示
+function show_taskHint(task){
+  
+  if(task == 'Time'){
+    task = '時間'
+  }
+  else if(task == 'Location'){
+    task = '地點'
+  }
+  else if(task == 'Affection'){
+    task = '心情'
+  }
+  else if(task == 'Life'){
+    task = '生活經驗'
+  }
+
+  var taskHintStr = "";
+
+  
+  taskHintStr += '<div class = "taskHint">任務提示：輸入內容須包含<font color="#FF0000">' + task + '</font></div>'
+  
+
+  TaskHints.innerHTML = TaskHints.innerHTML + taskHintStr
+
+  //版行調整
+  if($("#talk_input_id").hasClass("talk_input")){
+    document.getElementById("talk_input_id").style.marginTop = "65px";
+  }
+  else{
+    document.getElementById("talk_input_id").style.marginTop = "43px";
+  }
+  
+}
+
+// 清除任務提示
+function clear_taskHint() {
+
+  TaskHints.innerHTML = "";
+
+  if(suggest_exist == 0){
+    //版行調整
+    // if($("#talk_input_id").hasClass("talk_input")){
+    //   document.getElementById("talk_input_id").style.marginTop = "124px";
+    // }
+    // else{
+    //   document.getElementById("talk_input_id").style.marginTop = "102px";
+    // }   
+  } 
+}
+// var handler = { "name" : "check_input"}; 
+// var intent = { "params" : {}, "query" : "" }; 
+// var scene = { "name" : "check_input" };  
+// var session = { "id": GenerateRandom(), "params" : { "User_class": classID, "User_id": userID, "NextScene": "match_book", "User_say": classID + userID, "next_level": false} }; 
+// var user = { "lastSeenTime" : "", "character" : "fish_teacher" , "player" : 2 }; 
+var handler = { "name" : "check_input"}; 
 var intent = { "params" : {}, "query" : "" }; 
-var scene = { "name" : "input_userId" };  
-var session = { "id": GenerateRandom(), "params" : {} }; 
-var user = { "lastSeenTime" : "", "character" : "fish_teacher" }; 
+var scene = { "name" : "check_input" };  
+var session = { "id": GenerateRandom(), "params" : { "User_class": classID, "User_id": classID + userID, "NextScene": "Get_bookName", "User_say": userID, "next_level": false} }; 
+var user = { "lastSeenTime" : "", "character" : "fish_teacher" , "player" : 2, "partner": getPartner()}; 
+var chatbotWords = [];
+var chatbotWords_speech = [];
+var chatbotWords_delay = [];
+var chatbotWords_last = "";
+var sync_waitInput_flag = 1;
+var rec_imageUrl = "";
+var post_count = 0;
+var suggest_arr = ["丁班", "戊班"];
+var score = 0;
+var suggest_exist = 0;
+
 
 
 // 使用者傳送json
 function send_userJson() {
 
+
+  console.log(post_count)
+  post_count++;
+  intent["query"] = TalkWords.value;
+  user["lastSeenTime"] = getNowFormatDate();
+  user["partner"] = getPartner();
+  var postData = { 
+          "handler": handler, 
+          "intent": intent, 
+          "scene": scene, 
+          "session": session, 
+          "user": user 
+  } 
+  console.log(postData)
   // 發送Data到socket
   socket.emit('chat_send', {
       roomID : roomID,
       username : userID,
-      message : TalkWords.value
+      message : TalkWords.value,
+      postData : postData
   });
       
 
 }
+
+function analyze_responseData(name){
+  
+  /* Step1： Respone JSON 處理 */
+
+  // JSON 存在 prompt
+  if(res_data.hasOwnProperty("prompt")){
+
+    //機器人回應文字
+    for(var item_text in res_data["prompt"]["firstSimple"]["text"]){    
+      chatbotWords[item_text] = res_data["prompt"]["firstSimple"]["text"][item_text]
+      chatbotWords_speech[item_text] = res_data["prompt"]["firstSimple"]["speech"][item_text]
+      chatbotWords_delay[item_text] = res_data["prompt"]["firstSimple"]["delay"][item_text]
+      console.log(chatbotWords[item_text])
+
+      // 處理機器人文字
+      // if(chatbotWords[item_text].includes("XX")){
+      //   for(var key in room_users_data){
+      //     if(name != key){
+      //         chatbotWords[item_text] = chatbotWords[item_text].replace("XX", key+"號");
+      //         chatbotWords_speech[item_text] = chatbotWords_speech[item_text].replace("XX", key+"號");
+      //     }
+      //   }
+      // }
+
+    }
+
+    //存在推薦圖片  
+    if(res_data["prompt"].hasOwnProperty("content")){
+      rec_imageUrl = res_data["prompt"]["content"]["image"]["url"];
+    }
+    else{
+      rec_imageUrl = "";
+    }
+
+    //存在分數  
+    if(res_data["prompt"].hasOwnProperty("score")){
+      score += res_data["prompt"]["score"];
+      console.log(res_data["prompt"]["score"])
+      // show_score();
+    }
+    else{
+      score = score;
+    }
+          
+  }
+  else{
+    chatbotWords = [];
+    chatbotWords_speech = []; 
+  }
+
+  // JSON 存在 scene 用作場景切換功能
+  if(res_data.hasOwnProperty("scene")){
+    handler["name"] = res_data["scene"]["next"]["name"];
+    scene["name"] = res_data["scene"]["next"]["name"];
+  }
+  
+  // JSON 存在 session 用作對話存取
+  if(res_data.hasOwnProperty("session")){
+    session["params"] = Object.assign(session["params"], res_data["session"]["params"]);
+  }
+
+  // JSON 存在 suggestions 用作建議輸入文字
+  if(res_data["prompt"].hasOwnProperty("suggestions")){
+    for(var item_suggest in res_data["prompt"]["suggestions"]){     
+      suggest_arr[item_suggest] = res_data["prompt"]["suggestions"][item_suggest]["title"]
+      console.log(res_data["prompt"]["suggestions"])
+    }
+    suggest_exist = 1;
+    show_suggestList();
+  }
+  else{
+    suggest_arr = [];
+    suggest_count = 0;
+    suggest_exist = 0;
+    clear_suggestList();
+  }
+
+  // JSON 存在 task 用作任務提示指定輸入
+  if(res_data.hasOwnProperty("session")){
+    if(res_data["session"]["params"].hasOwnProperty("task")){
+      show_taskHint(res_data["session"]["params"]["task"]);
+    }
+    else{
+      clear_taskHint();
+    }
+   }
+
+  /* Step2：顯示機器人回應 */
+  add_chatbotTalk();
+
+  /* Step3：考慮場景 */
+
+  // 判斷同步等待使用者輸入再觸發一次request傳送
+  if (scene["name"] == "check_input" ){
+    sync_waitInput_flag = 1;
+  }
+  else{
+    sync_waitInput_flag = 0;
+  }
+
+  // 判斷不等待使用者輸入直接觸發request傳送
+  console.log("scene name", scene["name"])
+  if(scene["name"] == "Prompt_character" || scene["name"] == "Nonsense"  || scene["name"] == "Prompt_beginning"  || scene["name"] == "Prompt_character_sentiment"  || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" || scene["name"] == "suggestion"){
+    
+    if(exist_chatbotTyping()){
+      clear_chatbotTyping()
+    }
+    show_chatbotTyping()
+
+
+    setTimeout(function(){  
+        if(name == userID){
+          send_userJson()
+        }
+        clear_chatbotTyping()
+    },1500);
+  }
+
+
+  // 判斷不等待使用者輸入直接觸發request傳送(對話達到指定次數)
+  if(res_data.hasOwnProperty("session")){
+    if(res_data["session"]["params"].hasOwnProperty("dialog_count")){
+      if(res_data["session"]["params"]["dialog_count"] > dialog_count){
+
+        if(exist_chatbotTyping()){
+          clear_chatbotTyping()
+        }
+        show_chatbotTyping()
+
+        setTimeout(function(){  
+            if(name == userID){
+              send_userJson()
+            }
+            clear_chatbotTyping()
+        },1500);
+      }
+    }
+  }
+  
+
+  // 判斷不等待使用者輸入直接觸發request傳送(書名階段比對失敗)
+  if(res_data.hasOwnProperty("session")){
+    if(res_data["session"]["params"].hasOwnProperty("User_first_match")){
+      if(res_data["session"]["params"]["User_first_match"] == true || res_data["session"]["params"]["User_second_check"]== true){
+        if(name == userID){
+          send_userJson()
+        }
+      }
+    }   
+  }
+}
+
+
+
+
 
 // 產生隨機亂數30位元
 function GenerateRandom() {
@@ -179,8 +649,29 @@ function GenerateRandom() {
   return seed;
 }
 
+// 取得目前時間
+function getNowFormatDate() {
 
+    var date = new Date();
+    var dateStr = date.getFullYear()
+    + '-' + ('0' + (date.getMonth() + 1)).slice(-2)
+    + '-' + ('0' + date.getDate()).slice(-2)
+    + ' ' + ('0' + date.getHours()).slice(-2)
+    + ':' + ('0' + date.getMinutes()).slice(-2)
+    + ':' + ('0' + date.getSeconds()).slice(-2)
 
+    return dateStr;
+}
+
+// 取得夥伴名字
+function getPartner(){
+
+  for(var key in room_users_data){
+    if(userID != key){
+        return key
+    }
+  }
+}
 
 // 裝置RWD使用
 var sUserAgent = navigator.userAgent.toLowerCase();
@@ -217,8 +708,18 @@ window.onload = function(){
     document.getElementById('talkwords').className = 'talk_word'; 
   }
 
+  // show_suggestList()
   random_pitch = (Math.random()*(1.3 - 0.8) + 0.8).toFixed(2) // 產生隨機小數
-
+ 
+  setTimeout(function(){          
+     console.log(user_identifier)
+     if(user_identifier == 2){
+        send_userJson()
+        setTimeout(function(){          
+         send_userJson()
+        },1500);
+      }
+    },1500);
   
   
 }

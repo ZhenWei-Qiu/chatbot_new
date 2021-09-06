@@ -25,7 +25,8 @@
 	}
 	.talk_input_mob{
 		width:580px;
-		margin:10px auto 0;
+    margin-top: 150px;
+		/*margin:10px auto 0;*/
 		font-family: 微軟正黑體;
   
  
@@ -160,6 +161,7 @@ ul li{
 /*使用者輸入*/
 .talk_input{
 	width:580px;
+  margin-top:150px;
 	font-family: 微軟正黑體;
 
 }

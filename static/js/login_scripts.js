@@ -1,3 +1,4 @@
+var ClassID;
 var UserID;
 var RoomID;
 
@@ -15,6 +16,7 @@ var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
 
 window.onload = function(){  
 
+  ClassID = document.getElementById("classID"); 
   UserID = document.getElementById("userID"); 
   RoomID = document.getElementById("roomID");
 
@@ -50,19 +52,21 @@ function user_inputPress() {
 //使用者登入
 function user_sendLogin(){
 
-  var link = 'http://' + document.domain + ':' + location.port + '/game/' + RoomID.value;
-  // var link = 'http://15944cb0a956.ngrok.io'+ '/chats/' + RoomID.value;
+  // var link = 'http://' + document.domain + ':' + location.port + '/chats/' + RoomID.value;
+  var link = 'http://b87e15d1c055.ngrok.io'+ '/chats/' + RoomID.value;
   // 設定前往的房間
   //document.getElementById("loginBtn").href = 'http://' + document.domain + ':' + location.port + '/game/' + RoomID.value;
   // document.getElementById("loginBtn").href = 'http://15944cb0a956.ngrok.io'+ '/chats/' + RoomID.value;
   //console.log(document.getElementById("loginBtn").href) ;  
   // 設定前往的房間
+
   document.getElementById("box").action=link
   var userData = {
+    classID: ClassID.value,
     userID: UserID.value,
     roomID: RoomID.value,
   }
-
+  console.log(userData)
   // 利用cookie跨頁傳值
   $.cookie('userData', JSON.stringify(userData));
   console.log("Login")

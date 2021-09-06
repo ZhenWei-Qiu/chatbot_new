@@ -1,95 +1,110 @@
-@media screen and (min-width: 320px) and (max-width: 1156px){/*	320 1156*/
-	.talk_content_mob{
-		width:580px;
-	height:400px;
-	border:1px solid #666;
-	margin:0px auto 0;
-	background:#f9f9f9;
-	border-radius: 20px;
+@media screen and (min-width: 320px) and (max-width: 1156px){ 
+/*  320 1156*/
+  .talk_content_mob{
+    width:600px;
+    height:750px;
+    border:1px solid #666;
+    margin:50px auto 0;
+    background:#f9f9f9;
+    border-radius: 20px;
 
-	}
-	.talk_show_mob{
-		
-	    width: 540px;
-		height:320px;
-		word-break: break-all;
-		margin: 10px auto 0;
-		padding: 0px;
-		border-radius: 5px;
-		overflow:auto;
+  }
+  .talk_show_mob{
+    width:540px;
+    height:640px;
+  /*  border:1px solid #666;
+    margin:10px auto 0;
+    overflow:auto;
+    background:#e6f8ff;
+*/
+    word-break: break-all;
+    margin: 10px auto 0;
+    padding: 0px;
+    border-radius: 5px;
+    overflow:auto;
+  }
+  .talk_input_mob{
+    width:580px;
+    margin-top: 42px;
+    /*margin:10px auto 0;*/
+    font-family: 微軟正黑體;
+  
+ 
+  }
+  .talk_word_mob{
+    /*width:420px;
+    height:26px;
+    padding:0px;
+    float:left;
+    margin-left:10px;
+    outline:none;
+    text-indent:10px;
+*/
 
-	}
-	.talk_input_mob{
-		width:580px;
-		margin:10px auto 0;
-		font-family: 微軟正黑體; 
-	}
-	.talk_word_mob{
-	    width:420px;
-	    height:40px;
-	    padding:0px;
-	    margin-top: 5px;
-	    margin-left: 40px;
-	    outline:none;
-	    text-indent:10px; 
-	    font-family: 微軟正黑體;
-	    border-radius: 10px;
-	    font-size: 20px;
-	}  
-
+    width:420px;
+    height:40px;
+    padding:0px;
+    margin-top: 5px;
+    margin-left: 40px;
+    outline:none;
+    text-indent:10px; 
+    font-family: 微軟正黑體;
+    border-radius: 10px;
+    font-size: 20px;
+  }  
 }
 /*對話顯示*/
 
 .talk_content {
-	width:600px;
-	height:400px;
-	border:1px solid #666;
-	margin:0px auto 0;
-	background:#f9f9f9;
-	border-radius: 20px;
+  width:600px;
+  height:850px;
+  border:1px solid #666;
+  margin:50px auto 0;
+  background:#f9f9f9;
+  border-radius: 20px;
 
 }
 .talk_show::-webkit-scrollbar { display: none; }
 .talk_show {
-	width: 580px;
-	height:330px;
-	word-break: break-all;
-	margin: 10px auto 0;
-	padding: 0px;
-	border-radius: 5px;
-	overflow:auto;
+  width: 580px;
+  height:720px;
+  word-break: break-all;
+  margin: 10px auto 0;
+  padding: 0px;
+  border-radius: 5px;
+  overflow:auto;
 }
 
 .talk{
-	width:auto;
-	max-width: 300px;
-	height: auto;
-	word-break: break-all;
-	margin: 10px;
-	border-radius: 10px;
-	font-family: 微軟正黑體;
+  width:auto;
+  max-width: 300px;
+  height: auto;
+  word-break: break-all;
+  margin: 10px;
+  border-radius: 10px;
+  font-family: 微軟正黑體;
 }
 .left{
   float: left;
   display:inline-block;
   text-align: left;
   background:#d7dee0;
-	color:#64696b;
-	font-family: 微軟正黑體;
-	padding:5px 10px;
+  color:#64696b;
+  font-family: 微軟正黑體;
+  padding:5px 10px;
 }
 .right{
   float: right;
   display:inline-block;
   text-align: right;
-	background:#4ba6d6;
-	color:#fff;
-	font-family: 微軟正黑體;
-	padding:5px 10px;
+  background:#4ba6d6;
+  color:#fff;
+  font-family: 微軟正黑體;
+  padding:5px 10px;
 }
 
 ul li{
-	list-style-type:none;
+  list-style-type:none;
 }
 /*使用者輸入建議*/
 .talk_suggest::-webkit-scrollbar { display: none; }
@@ -145,11 +160,13 @@ ul li{
 
 /*使用者輸入*/
 .talk_input{
-	width:580px;
-	font-family: 微軟正黑體;
+  width:580px;
+  margin-top:64px;
+  font-family: 微軟正黑體;
 
 }
 .talk_word{
+
   width:420px;
   height:40px;
   padding:0px;
@@ -163,17 +180,17 @@ ul li{
 }         
 .talk_sendBtn{
 
-	margin-left: 10px;
-	display: inline-block;
-	padding: 10px 15px;
-	cursor: pointer;
-	text-align: center;	
-	text-decoration: none;
-	outline: none;
-	color: #fff;
-	background-color: #4179f1;
-	border: none;
-	border-radius: 10px;
+  margin-left: 10px;
+  display: inline-block;
+  padding: 10px 15px;
+  cursor: pointer;
+  text-align: center; 
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4179f1;
+  border: none;
+  border-radius: 10px;
   font-size: 20px;
 
 
@@ -236,6 +253,20 @@ ul li{
   left: -10px;
 }
 
+.other .text {
+  margin-left: 20px;
+  margin-right: 80px;
+  color: #eee;
+  background-color: #9955FF;
+  font-family: Helvetica;
+  font-size: 20px;
+
+}
+.other .text::before {
+  border-right: 10px solid #9955FF;
+  left: -10px;
+}
+
 .local {
   justify-content: flex-end;
 }
@@ -253,7 +284,7 @@ ul li{
 
 }
 
-.remote .text::before,
+.remote .text::before, .other .text::before,
 .local .text::before {
   content: "";
   position: absolute;
@@ -261,7 +292,7 @@ ul li{
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
 }
-.remote .text,
+.remote .text, .other .text,
 .local .text {
   font-weight: 300;
   box-shadow: 0 0 10px #888;
