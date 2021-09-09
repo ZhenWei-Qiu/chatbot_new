@@ -4,6 +4,7 @@ var roomID
 var classID 
 var userID 
 
+
 var getUrlString = location.href;
 const url = new URL(getUrlString);
 
@@ -19,7 +20,7 @@ else{
   roomID = url.pathname.replace("/chats/", "");
   classID = url.searchParams.get('classID'); 
   userID = url.searchParams.get('userID'); 
-  console.log(roomID, classID, userID)
+  
 }
 
 var room_users_data; //房間線上人物資料
@@ -42,7 +43,7 @@ var dialog_count = 4 // 與後端的dialog_count限制有關
 
 // 監聽connect
 // var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('http://b3a1-140-115-53-209.ngrok.io')
+var socket = io.connect('http://9c2e-140-115-53-209.ngrok.io')
 // user connect
 socket.on('connect', function () { 
 
@@ -133,7 +134,8 @@ function user_sendMsg(Object) {
     show_chatbotTyping()
     //同步等待
     setTimeout(function(){
-      chatbotWords = []
+        chatbotWords = [];
+        chatbotWords_speech = []; 
         send_userJson()
         clear_chatbotTyping()
     },3000);
@@ -193,7 +195,8 @@ async function add_chatbotTalk(){
       //  break;
       // }
       if(chatbotWords_last == chatbotWords[i]){
-        chatbotWords = []
+        chatbotWords = [];
+        chatbotWords_speech = []; 
         break;
       }
 
@@ -251,7 +254,7 @@ async function add_chatbotTalk(){
     
     // 將機器人圖片顯示於畫面
     if(rec_imageUrl != ""){
-      chatbotStr = '<div class="user remote"><div class="text"><img src ='+ rec_imageUrl +' width="130" height="150"></div></div>'
+      chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishJpg_ImageUrl + '></img></div><div class="name">鹹魚姊姊</div></div><div class="text"><img src ='+ rec_imageUrl +' width="130" height="150"></div></div>'
       Words.innerHTML = Words.innerHTML + chatbotStr;
       Words.scrollTop = Words.scrollHeight; 
       rec_imageUrl = ""
@@ -433,7 +436,7 @@ function clear_taskHint() {
 var handler = { "name" : "check_input"}; 
 var intent = { "params" : {}, "query" : "" }; 
 var scene = { "name" : "check_input" };  
-var session = { "id": GenerateRandom(), "params" : { "User_class": classID, "User_id": classID + userID, "NextScene": "Get_bookName", "User_say": userID, "next_level": false} }; 
+var session = { "id": GenerateRandom(), "params" : { "User_class": classID, "User_say": userID, "User_id": userID, "NextScene": "Get_bookName", "next_level": false} }; 
 var user = { "lastSeenTime" : "", "character" : "fish_teacher" , "player" : 2, "partner": getPartner()}; 
 var chatbotWords = [];
 var chatbotWords_speech = [];
@@ -450,7 +453,6 @@ var suggest_exist = 0;
 
 // 使用者傳送json
 function send_userJson() {
-
 
   console.log(post_count)
   post_count++;
@@ -482,7 +484,8 @@ function analyze_responseData(name){
 
   // JSON 存在 prompt
   if(res_data.hasOwnProperty("prompt")){
-
+    chatbotWords = [];
+    chatbotWords_speech = []; 
     //機器人回應文字
     for(var item_text in res_data["prompt"]["firstSimple"]["text"]){    
       chatbotWords[item_text] = res_data["prompt"]["firstSimple"]["text"][item_text]
@@ -539,6 +542,8 @@ function analyze_responseData(name){
 
   // JSON 存在 suggestions 用作建議輸入文字
   if(res_data["prompt"].hasOwnProperty("suggestions")){
+    suggest_arr = [];
+    clear_suggestList();
     for(var item_suggest in res_data["prompt"]["suggestions"]){     
       suggest_arr[item_suggest] = res_data["prompt"]["suggestions"][item_suggest]["title"]
       console.log(res_data["prompt"]["suggestions"])
@@ -578,7 +583,7 @@ function analyze_responseData(name){
 
   // 判斷不等待使用者輸入直接觸發request傳送
   console.log("scene name", scene["name"])
-  if(scene["name"] == "Prompt_character" || scene["name"] == "Nonsense"  || scene["name"] == "Prompt_beginning"  || scene["name"] == "Prompt_character_sentiment"  || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" || scene["name"] == "suggestion"){
+  if(scene["name"] == "Prompt_character" || scene["name"] == "Real" || scene["name"] == "Nonsense"  || scene["name"] == "Prompt_beginning"  || scene["name"] == "Prompt_character_sentiment"  || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" || scene["name"] == "suggestion"){
     
     if(exist_chatbotTyping()){
       clear_chatbotTyping()
@@ -589,6 +594,10 @@ function analyze_responseData(name){
     setTimeout(function(){  
         if(name == userID){
           send_userJson()
+        }
+        else{
+          chatbotWords = [];
+          chatbotWords_speech = []; 
         }
         clear_chatbotTyping()
     },1500);
@@ -609,6 +618,10 @@ function analyze_responseData(name){
             if(name == userID){
               send_userJson()
             }
+            else{
+              chatbotWords = [];
+              chatbotWords_speech = []; 
+            }
             clear_chatbotTyping()
         },1500);
       }
@@ -622,6 +635,10 @@ function analyze_responseData(name){
       if(res_data["session"]["params"]["User_first_match"] == true || res_data["session"]["params"]["User_second_check"]== true){
         if(name == userID){
           send_userJson()
+        }
+        else{
+          chatbotWords = [];
+          chatbotWords_speech = []; 
         }
       }
     }   
@@ -711,15 +728,16 @@ window.onload = function(){
   // show_suggestList()
   random_pitch = (Math.random()*(1.3 - 0.8) + 0.8).toFixed(2) // 產生隨機小數
  
-  setTimeout(function(){          
-     console.log(user_identifier)
+  setTimeout(function(){
+    
      if(user_identifier == 2){
+        TalkWords.value = userID
         send_userJson()
         setTimeout(function(){          
          send_userJson()
         },1500);
       }
-    },1500);
+    },2000);
   
   
 }

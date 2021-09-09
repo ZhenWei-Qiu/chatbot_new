@@ -53,7 +53,7 @@ function user_inputPress() {
 function user_sendLogin(){
 
   // var link = 'http://' + document.domain + ':' + location.port + '/chats/' + RoomID.value;
-  var link = 'http://b87e15d1c055.ngrok.io'+ '/chats/' + RoomID.value;
+  var link = 'http://d9a1-140-115-53-209.ngrok.io'+ '/chats/' + RoomID.value;
   // 設定前往的房間
   //document.getElementById("loginBtn").href = 'http://' + document.domain + ':' + location.port + '/game/' + RoomID.value;
   // document.getElementById("loginBtn").href = 'http://15944cb0a956.ngrok.io'+ '/chats/' + RoomID.value;
@@ -66,7 +66,7 @@ function user_sendLogin(){
     userID: UserID.value,
     roomID: RoomID.value,
   }
-  console.log(userData)
+  // console.log(userData)
   // 利用cookie跨頁傳值
   $.cookie('userData', JSON.stringify(userData));
   console.log("Login")

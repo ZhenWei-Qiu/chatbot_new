@@ -132,7 +132,7 @@ def analyze_Data(req):
 		elif req['handler']['name'] == 'Prompt_response':
 			response_dict = getattr(chatbot_func_2, req['handler']['name'])(req, predictor, senta)
 			print(response_dict)
-		elif req['handler']['name'] == 'expand':
+		elif req['handler']['name'] == 'expand' or req['handler']['name'] == 'expand_2players':
 			response_dict = getattr(chatbot_func_2, req['handler']['name'])(req)
 			print(response_dict)
 		else:
