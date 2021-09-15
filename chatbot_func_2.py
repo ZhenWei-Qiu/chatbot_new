@@ -326,7 +326,8 @@ def user_login():
             "firstSimple": {
                 "speech": [response],
                 "text": [response],
-                "delay": [2]
+                "delay": [2],
+                "expression": "happy"
             },
             'suggestions': [{'title': '丁班'},
                             {'title': '戊班'}]
@@ -364,7 +365,8 @@ def input_userId(req):
                 "firstSimple": {
                     "speech": [response],
                     "text": [response],
-                    "delay": [2]
+                    "delay": [2],
+                    "expression": "happy"
                 },
                 'suggestions': [{'title': '丁班'},
                                 {'title': '戊班'}]
@@ -385,7 +387,8 @@ def input_userId(req):
                 "firstSimple": {
                     "speech": [response],
                     "text": [response],
-                    "delay": [2]
+                    "delay": [2],
+                    "expression": "happy"
                 }
             },
             "scene": {
@@ -433,6 +436,7 @@ def Get_bookName(req):
         book_record = ''
         find_condition = {'type': 'common_start'}
         find_result = myCommonList.find_one(find_condition)
+        print(myCommonList)
         response = choice(find_result['content'])
         response_speech = response
         response_list = [response]
@@ -479,7 +483,8 @@ def Get_bookName(req):
             "firstSimple": {
                 "speech": response_speech_list,
                 "text": response_list,
-                "delay": response_len
+                "delay": response_len,
+                "expression": "happy"
             }
         },
         "scene": {
@@ -559,7 +564,9 @@ def match_book(req):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "frightened"
+
                     }
                 },
                 "session": {
@@ -596,7 +603,8 @@ def match_book(req):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "happy"
                     },
                     "suggestions": button_item
                 },
@@ -653,7 +661,8 @@ def match_book(req):
                         "firstSimple": {
                             "speech": [response],
                             "text": [response],
-                            "delay": [2]
+                            "delay": [2],
+                            "expression": "happy"
                         }
                     },
                     "session": {
@@ -700,7 +709,8 @@ def match_book(req):
                         "firstSimple": {
                             "speech": [response],
                             "text": [response],
-                            "delay": [2]
+                            "delay": [2],
+                            "expression": "happy"
                         }
                     },
                     "session": {
@@ -735,7 +745,8 @@ def match_book(req):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "happy"
                     }
                 },
                 "session": {
@@ -811,7 +822,9 @@ def Prompt_character(req):
             "firstSimple": {
                 "speech": response_list,
                 "text": response_list,
-                "delay": response_len
+                "delay": response_len,
+                "expression": "happy"
+
             }
         },
         "session": {
@@ -899,7 +912,8 @@ def Prompt_action(req):
             "firstSimple": {
                 "speech": response_list,
                 "text": response_list,
-                "delay": response_len
+                "delay": response_len,
+                "expression": "happy"
             }
         },
         "session": {
@@ -974,7 +988,8 @@ def Prompt_dialog(req):
             "firstSimple": {
                 "speech": response_list,
                 "text": response_list,
-                "delay": response_len
+                "delay": response_len,
+                "expression": "happy"
             }
         },
         "session": {
@@ -1094,7 +1109,8 @@ def Prompt_event(req):
             "firstSimple": {
                 "speech": response_list,
                 "text": response_list,
-                "delay": response_len
+                "delay": response_len,
+                "expression": "happy"
 
             }
         },
@@ -1280,7 +1296,8 @@ def Prompt_beginning(req):
             "firstSimple": {
                 "speech": [response],
                 "text": [response],
-                "delay": [2]
+                "delay": [2],
+                "expression": "happy"
             }
         },
         "session": {
@@ -1362,7 +1379,8 @@ def Prompt_character_sentiment(req):
             "firstSimple": {
                 "speech": response_list,
                 "text": response_list,
-                "delay": response_len
+                "delay": response_len,
+                "expression": "happy"
             }
         },
         "session": {
@@ -1448,7 +1466,8 @@ def Prompt_action_sentiment(req):
             "firstSimple": {
                 "speech": response_list,
                 "text": response_list,
-                "delay": response_len
+                "delay": response_len,
+                "expression": "happy"
             }
         },
         "session": {
@@ -1887,7 +1906,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": response_speech_list,
                         "text": response_list,
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "frightened"
                     }
                 },
                 "session": {
@@ -1918,7 +1938,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": [response_speech],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "frightened"
                     }
                 },
                 "session": {
@@ -2054,7 +2075,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "happy"
                     }
                 },
                 "session": {
@@ -2082,7 +2104,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": [response_speech],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "happy"
                     }
                 },
                 "session": {
@@ -2113,7 +2136,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": [response_speech],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "frightened"
                     }
                 },
                 "session": {
@@ -2172,7 +2196,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [len(response) / 2]
+                        "delay": [len(response) / 2],
+                        "expression": "happy"
                     }
                 },
                 "session": {
@@ -2200,7 +2225,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": [response_speech],
                         "text": [response],
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "happy"
                     }
                 },
                 "session": {
@@ -2250,7 +2276,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": ["你講得很好呢！送你1顆星星。"],
                         "text": ["你講得很好呢！送你1顆星星⭐。"],
-                        "delay": [6]
+                        "delay": [6],
+                        "expression": "excited"
                     },
                     "score": 1
                 },
@@ -2278,7 +2305,8 @@ def Prompt_response(req, predictor, senta):
                     "firstSimple": {
                         "speech": response,
                         "text": response,
-                        "delay": [2]
+                        "delay": [2],
+                        "expression": "happy"
                     }
                 },
                 "session": {
@@ -2375,7 +2403,8 @@ def Question(req):
             "firstSimple": {
                 "speech": response_list,
                 "text": response_list,
-                "delay": [2]
+                "delay": [2],
+                "expression": "happy"
             }
         },
         "params": {
@@ -2726,7 +2755,8 @@ def expand(req):
                 "firstSimple": {
                     "speech": [response_speech],
                     "text": [response],
-                    "delay": [2]
+                    "delay": [2],
+                    "expression": "excited"
                 },
                 "suggestions": [{"title": "喜歡"},
                                 {"title": "還好"},
@@ -2743,6 +2773,7 @@ def expand(req):
         #     print("response_dict['prompt']['firstSimple']['speech']",response_dict['prompt']['firstSimple']['speech'])
     else:
         response = ''
+        expression = ""
         suggest_like = False
         dialog_index = myDialogList.find().count()
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
@@ -2753,6 +2784,7 @@ def expand(req):
         if userSay == '還好' or userSay == '普通':
             response = '這樣啊！那是為甚麼呢？'
             suggest_like = False
+            expression = "frightened"
         elif userSay == '喜歡':
             # 接續詢問使用者喜歡故事的原因
             find_common = {'type': 'common_like_response'}
@@ -2761,13 +2793,16 @@ def expand(req):
             find_result2 = myCommonList.find_one(find_common2)
             response = choice(find_result['content']) + ' ' + choice(find_result2['content'])
             suggest_like = True
+            expression = "excited"
         elif userSay == '不喜歡':
             find_common = {'type': 'common_like_F_expand'}
             find_result = myCommonList.find_one(find_common)
             response = choice(find_result['content'])
             suggest_like = False
+            expression = "sad"
         else:
             scene = 'expand'
+            expression = "happy"
         expand_user = False
         dialog_index = myDialogList.find().count()
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
@@ -2793,7 +2828,8 @@ def expand(req):
                 "firstSimple": {
                     "speech": [response],
                     "text": [response],
-                    "delay": [2]
+                    "delay": [2],
+                    "expression": expression
                 }
             },
             "session": {
@@ -3064,7 +3100,8 @@ def feedback(req):
             "firstSimple": {
                 "speech": [response, response_tmp],
                 "text": [response, response_tmp],
-                "delay": [len(response) / 2, 1]
+                "delay": [len(response) / 2, 1],
+                "expression": "happy"
             },
             "suggestions": [{'title': '好'}, {'title': '不用了'}]
         },
@@ -3278,7 +3315,8 @@ def Check_suggestion(req):
             "firstSimple": {
                 "speech": [response],
                 "text": [response],
-                "delay": [0]
+                "delay": [0],
+                "expression": "happy"
             }
         },
         "session": {
@@ -3352,7 +3390,7 @@ def suggestion(req):
     response_suggestion_tmp = choice(find_suggestion['content'])
     response = choice(find_result['content']).replace('XX', sort_suggest_book[0][0]) + '\n'
     url = 'http://story.csie.ncu.edu.tw/storytelling/images/chatbot_books/' + sort_suggest_book[0][0].replace(' ',
-                                                                                                              '%20') + '.jpg'
+                                                                                                              '%20').replace('\'','’') + '.jpg'
     print('URL:' + url)
     # response_dict = {"prompt": {
     #     "firstSimple": {
@@ -3379,7 +3417,8 @@ def suggestion(req):
             "firstSimple": {
                 "speech": [response, response_suggestion_tmp],
                 "text": [response, response_suggestion_tmp],
-                "delay": [len(response) / 2, 1]
+                "delay": [len(response) / 2, 1],
+                "expression": "happy"
             },
             'suggestions': [{'title': '有興趣'}, {'title': '沒興趣'}],
             'content': {
@@ -3446,6 +3485,7 @@ def Interest(req):
     elif userSay == '沒興趣':
         print()
 
+    expression = ""
     # 20210512 魚老師給評語
     if character == 'fish_teacher':
         if question_count > 0:
@@ -3460,10 +3500,13 @@ def Interest(req):
             User_say_average = sum(User_say_len) / len(User_say_len)
             if User_say_average > 4 and len(User_say_len) > 3:
                 response_tmp = '這次我們聊書聊得很多，謝謝你的分享！Bye Bye！'
+                expression = "excited"
             elif User_say_average < 4 and noIdea_count == 0:
                 response_tmp = '這次聊書聊得有點少喔，下次可以再跟我分享多一點！Bye Bye！'
+                expression = "frightened"
             else:
                 response_tmp = '我知道這次你看這本書內容不是很熟喔！下次加油！Bye Bye！'
+                expression = "sad"
             response_list.append(response_tmp)
             response_speech_list.append(response_tmp)
             # User_say_average < 5 and noIdea_count > 0
@@ -3484,7 +3527,8 @@ def Interest(req):
             "firstSimple": {
                 "speech": response_speech_list,
                 "text": response_list,
-                "delay": delay_list
+                "delay": delay_list,
+                "expression": expression
             }
         },
         "scene": {
