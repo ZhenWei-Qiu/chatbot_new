@@ -1,0 +1,335 @@
+@media screen and (min-width: 320px) and (max-width: 1156px){ 
+/*	320 1156*/
+	.talk_content_mob{
+		width:600px;
+		height:750px;
+		border:1px solid #666;
+		margin:50px auto 0;
+		background:#f9f9f9;
+    border-radius: 20px;
+
+	}
+	.talk_show_mob{
+		width:540px;
+		height:420px;
+	/*	border:1px solid #666;
+		margin:10px auto 0;
+		overflow:auto;
+		background:#e6f8ff;
+*/
+    word-break: break-all;
+    margin: 10px auto 0;
+    padding: 0px;
+    border-radius: 5px;
+    overflow:auto;
+	}
+	.talk_input_mob{
+		width:580px;
+    margin-top: 150px;
+		/*margin:10px auto 0;*/
+		font-family: 微軟正黑體;
+  
+ 
+	}
+	.talk_word_mob{
+		/*width:420px;
+		height:26px;
+		padding:0px;
+		float:left;
+		margin-left:10px;
+		outline:none;
+		text-indent:10px;
+*/
+
+    width:420px;
+    height:40px;
+    padding:0px;
+    margin-top: 5px;
+    margin-left: 40px;
+    outline:none;
+    text-indent:10px; 
+    font-family: 微軟正黑體;
+    border-radius: 10px;
+    font-size: 20px;
+	}  
+}
+/*對話顯示*/
+
+.talk_content {
+	width:600px;
+	height:850px;
+	border:1px solid #666;
+	margin:50px auto 0;
+	background:#f9f9f9;
+	border-radius: 20px;
+
+}
+.talk_show::-webkit-scrollbar { display: none; }
+.talk_show {
+	width: 580px;
+  height:500px;
+  word-break: break-all;
+  margin: 10px auto 0;
+  padding: 0px;
+  border-radius: 5px;
+  overflow:auto;
+}
+
+.talk{
+  width:auto;
+  max-width: 300px;
+  height: auto;
+  word-break: break-all;
+  margin: 10px;
+  border-radius: 10px;
+  font-family: 微軟正黑體;
+}
+.left{
+  float: left;
+  display:inline-block;
+  text-align: left;
+  background:#d7dee0;
+	color:#64696b;
+	font-family: 微軟正黑體;
+	padding:5px 10px;
+}
+.right{
+  float: right;
+  display:inline-block;
+  text-align: right;
+	background:#4ba6d6;
+	color:#fff;
+	font-family: 微軟正黑體;
+	padding:5px 10px;
+}
+
+ul li{
+	list-style-type:none;
+}
+/*使用者輸入建議*/
+.talk_suggest::-webkit-scrollbar { display: none; }
+.talk_suggest{
+  width:580px;
+  margin-left: 8px;
+  font-family: 微軟正黑體;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap; 
+  text-align:right;　
+  padding: 10px 10px;
+}
+
+.suggest_Btn {
+  margin: 5px 3px;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-align: center;   
+  text-decoration: none;
+  outline: none;
+  color: #000;
+  background-color: #ebebeb;
+  border: none;
+  border-radius: 10px;
+  border:#949494 1px solid;
+  font-size: 20px;
+
+}
+.suggest_Btn:active {
+  background-color: #d9d9d9;
+}
+
+/*使用者任務提示*/
+.talk_taskHint::-webkit-scrollbar { display: none; }
+.talk_taskHint{
+  width:580px;
+  margin-left: 8px;
+  font-family: 微軟正黑體;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap; 
+  text-align:right;　
+  padding: 10px 10px;
+}
+.taskHint{
+  margin: 5px 3px;
+  padding: 10px 20px;
+  color: #6c6c6c;
+  font-size: 20px;
+}
+
+/*使用者輸入*/
+.talk_input{
+	width:580px;
+  margin-top:150px;
+	font-family: 微軟正黑體;
+
+}
+.talk_word{
+
+  width:420px;
+  height:40px;
+  padding:0px;
+  margin-top: 5px;
+  margin-left: 40px;
+  outline:none;
+  text-indent:10px; 
+  font-family: 微軟正黑體;
+  border-radius: 10px;
+  font-size: 20px;
+}         
+.talk_sendBtn{
+
+	margin-left: 10px;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+	text-align: center;	
+	text-decoration: none;
+	outline: none;
+	color: #fff;
+	background-color: #4179f1;
+	border: none;
+	border-radius: 10px;
+  font-size: 20px;
+
+
+}
+.talk_sendBtn:active {
+  background-color: #2e58b3;
+  box-shadow: 0 1px #666;
+  transform: translateY(1px);
+}
+/*使用者輸入*/
+.dialogue {
+  width: 560px;
+  height: 810px;
+  padding: 20px;
+  box-shadow: 0 0 10px #000;
+  background-color: #f4f5f7;
+  border-radius: 20px;
+}
+
+.user {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.user .avatar {
+  width: 60px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.user .pic {
+  border-radius: 50%;
+  overflow: hidden;
+}
+.user .pic img {
+  width: 100%;
+  vertical-align: middle;
+}
+.user .name {
+  color: #333;
+}
+.user .text {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  position: relative;
+  font-size: 20px;
+}
+
+.remote .text {
+  margin-left: 20px;
+  margin-right: 80px;
+  color: #eee;
+  background-color: #4179f1;
+  font-family: Helvetica;
+  font-size: 20px;
+
+}
+.remote .text::before {
+  border-right: 10px solid #4179f1;
+  left: -10px;
+}
+
+.local {
+  justify-content: flex-end;
+}
+.local .text {
+  margin-right: 20px;
+  margin-left: 80px;
+  order: -1;
+  background-color: #fff;
+  color: #000;
+  font-family: Helvetica;
+}
+.local .text::before {
+  border-left: 10px solid #fff;
+  right: -10px;
+
+}
+
+.remote .text::before,
+.local .text::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+.remote .text,
+.local .text {
+  font-weight: 300;
+  box-shadow: 0 0 10px #888;
+}
+/*20210408*/
+#fish {
+  height: 150px; 
+  width: 150px; 
+}
+#star {
+  height: 40px; 
+  width: 40px; 
+  margin: 20px 5px;
+  float: right;
+}
+#score {
+  font-size: 30px;
+  margin: 20px 5px;
+  float: right;
+}
+
+.info_content{
+  width:580px;
+  margin:10px auto 0;
+  font-family: 微軟正黑體;
+}
+
+#fish, #star, #score{
+  display: inline-block;
+}
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Noto Sans TC", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(25, 44, 124, 0.8)), url("https://lh3.googleusercontent.com/proxy/CWOJoLUSNHrjjLNrJp5BKjovOrhcb_wL8k86B7lvhwemto5XVx-LVBWlp08T1Yj9Ggj6BLTZYKF4e8vcjT1GNzc-qHnEv6UK-V0UIVMsJGPczSgw6hDdQuKEujI2KtKQ_suwJYjBGxhLEU2sk_olATk8wF5jL8p8sqnOPVuQLqM0aWBsFd14");
+  /* https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1353&q=80*/
+  background-size: cover;
+}
+
+/*去除iOS系统默認appearance的樣式*/
+input[type=button], input[type=submit], input[type=file], button { cursor: pointer; -webkit-appearance: none; } 
+</style>
