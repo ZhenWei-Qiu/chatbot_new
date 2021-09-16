@@ -19,6 +19,10 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 def index():
 	return render_template('chatbot.html')
 
+@app.route('/expression',methods=['POST','GET'])
+def expression():
+	return render_template('chatbot_expression.html')
+
 @app.route('/talk',methods=['POST'])
 def getJson():
 

@@ -42,8 +42,8 @@ var dialog_count = 4 // 與後端的dialog_count限制有關
 
 
 // 監聽connect
-// var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('http://9c2e-140-115-53-209.ngrok.io')
+var socket = io.connect('http://' + document.domain + ':' + location.port);
+// var socket = io.connect('http://9c2e-140-115-53-209.ngrok.io')
 // user connect
 socket.on('connect', function () { 
 
@@ -437,7 +437,7 @@ var handler = { "name" : "check_input"};
 var intent = { "params" : {}, "query" : "" }; 
 var scene = { "name" : "check_input" };  
 var session = { "id": GenerateRandom(), "params" : { "User_class": classID, "User_say": userID, "User_id": userID, "NextScene": "Get_bookName", "next_level": false} }; 
-var user = { "lastSeenTime" : "", "character" : "fish_teacher" , "player" : 2, "partner": getPartner()}; 
+var user = { "lastSeenTime" : "", "character" : "fish_teacher" , "player" : 2,  "User_id": classID + userID, "partner": getPartner()}; 
 var chatbotWords = [];
 var chatbotWords_speech = [];
 var chatbotWords_delay = [];
@@ -459,6 +459,7 @@ function send_userJson() {
   intent["query"] = TalkWords.value;
   user["lastSeenTime"] = getNowFormatDate();
   user["partner"] = getPartner();
+
   var postData = { 
           "handler": handler, 
           "intent": intent, 

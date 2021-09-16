@@ -26,7 +26,11 @@ def check_input(req):
     if '就這樣' in userSay or userSay in ending:
         bookName = req['session']['params']['User_book']
         time = req['user']['lastSeenTime']
-        user_id = req['session']['params']['User_id']
+        player = req['user']['player']
+        if player != 2:
+            user_id = req['session']['params']['User_id']
+        else:
+            user_id = req['user']['User_id']
         session_id = req['session']['id']
         dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
         nowBook = myClient[dbBookName]
@@ -416,7 +420,6 @@ def Get_bookName(req):
     response_speech_list = []
     response_len = []
 
-    print("user_say",req['session']['params']['User_say'])
     if 'User_second_check' in req['session']['params'].keys():
         second_check = req['session']['params']['User_second_check']
     else:
@@ -436,7 +439,6 @@ def Get_bookName(req):
         book_record = ''
         find_condition = {'type': 'common_start'}
         find_result = myCommonList.find_one(find_condition)
-        print(myCommonList)
         response = choice(find_result['content'])
         response_speech = response
         response_list = [response]
@@ -1496,12 +1498,17 @@ def Prompt_response(req, predictor, senta):
     user_nonsense = 0
     task = ""
     userSay = req['session']['params']['User_say']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
+    print("Prompt_response",user_id)
     userClass = req['session']['params']['User_class']
     session_id = req['session']['id']
     time = req['user']['lastSeenTime']
     character = req['user']['character']
-    player = req['user']['player']
+
     bookName = req['session']['params']['User_book']
     nowScene = req['session']['params']['NowScene']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
@@ -2364,7 +2371,11 @@ def Question(req):
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
 
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id']
@@ -2437,7 +2448,11 @@ def Feeling(req):
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
 
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id']
@@ -2500,7 +2515,11 @@ def Assent(req):
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
 
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id']
@@ -2560,7 +2579,11 @@ def Nonsense(req):
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
 
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id']
@@ -2632,7 +2655,11 @@ def Real(req):
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
 
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id']
@@ -2854,7 +2881,8 @@ def expand(req):
 # 學生心得回饋
 def expand_2players(req):
     print("Expand_2players")
-    user_id = req['session']['params']['User_id']
+
+    user_id = req['user']['User_id']
     bookName = req['session']['params']['User_book']
     time = req['user']['lastSeenTime']
     session_id = req['session']['id']
@@ -3136,7 +3164,11 @@ def feedback_2players(req):
     print('Feedback_2players')
     state = True
     userSay = req['intent']['query']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     time = req['user']['lastSeenTime']
@@ -3277,6 +3309,7 @@ def Check_suggestion(req):
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     time = req['user']['lastSeenTime']
+    player = req['user']['player']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
@@ -3284,7 +3317,11 @@ def Check_suggestion(req):
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
     userSay = req['intent']['query']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
@@ -3292,7 +3329,10 @@ def Check_suggestion(req):
 
     if userSay == '不用了':
         scene = 'exit_system'
-        response = '好唷！謝謝你的分享！期待你下次的故事！Bye Bye！'
+        if player != 2:
+            response = '好唷！謝謝你的分享！期待你下次的故事！Bye Bye！'
+        else:
+            response = '好唷！謝謝你們的分享！期待下次的故事！Bye Bye！'
     else:
         scene = 'suggestion'
         response = '好唷！沒問題！'
@@ -3349,6 +3389,7 @@ def suggestion(req):
     suggest_like = req['session']['params']['User_sentiment']
     bookName = req['session']['params']['User_book']
     time = req['user']['lastSeenTime']
+    player = req['user']['player']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
@@ -3411,6 +3452,11 @@ def suggestion(req):
     #     }
     # }
 
+
+    if player == 2:
+        response = response.replace("你", "你們")
+        response_suggestion_tmp = response.replace("你", "你們")
+
     # 20210318 修改JSON格式
     response_dict = {
         "prompt": {
@@ -3469,7 +3515,11 @@ def Interest(req):
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
-    user_id = req['session']['params']['User_id']
+    player = req['user']['player']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
@@ -3489,8 +3539,8 @@ def Interest(req):
     # 20210512 魚老師給評語
     if character == 'fish_teacher':
         if question_count > 0:
-            response = '哇！你這次有問單字很棒耶！👍 '
-            response_speech = '哇！你這次有問單字很棒耶！'
+            response = '哇！這次有問單字很棒耶！👍 '
+            response_speech = '哇！這次有問單字很棒耶！'
             response_list.append(response)
             response_speech_list.append(response_speech)
             delay_list = [len(response)/2, 2]
@@ -3519,7 +3569,9 @@ def Interest(req):
         response_list.append(response_tmp)
         response_speech_list.append(response_tmp)
 
-
+    if player != 2:
+        response_speech_list[1] = response_speech_list[1].replace('你', '你們')
+        response_list[1] = response_list[1].replace('你', '你們')
 
     # 20210318 修改JSON格式
     response_dict = {
@@ -3550,5 +3602,17 @@ def Interest(req):
 def exit_system(req):
     print("Exit")
     if 'User_id' in req['session']['params'].keys() and 'User_book' in req['session']['params'].keys():
-        connectDB.updateUser(myUserList, req['session']['params']['User_id'], req['session']['params']['User_book'],
-                             req['session']['params']['User_state'])
+        player = req['user']['player']
+        if player != 2:
+            user_id = req['session']['params']['User_id']
+            connectDB.updateUser(myUserList, user_id, req['session']['params']['User_book'],
+                                 req['session']['params']['User_state'])
+        else:
+            user_id = req['user']['User_id']
+            partner = req['user']['partner']
+            connectDB.updateUser(myUserList, user_id, req['session']['params']['User_book'],
+                                 req['session']['params']['User_state'])
+            connectDB.updateUser(myUserList, partner, req['session']['params']['User_book'],
+                                 req['session']['params']['User_state'])
+
+
