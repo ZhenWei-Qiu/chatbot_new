@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="表情聊天機器人">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="雙人聊天對話存入DB">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +66,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Python38\python.exe" />
+      <option name="SDK_HOME" value="C:\Users\wei\AppData\Local\Programs\Python\Python38\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -176,7 +174,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631682315473</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="雙人聊天對話存入DB">
+      <created>1631773179651</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1631773179651</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -199,7 +204,8 @@
     <MESSAGE value="雙人聊天機器人" />
     <MESSAGE value="json添加表情傳值" />
     <MESSAGE value="表情聊天機器人" />
-    <option name="LAST_COMMIT_MESSAGE" value="表情聊天機器人" />
+    <MESSAGE value="雙人聊天對話存入DB" />
+    <option name="LAST_COMMIT_MESSAGE" value="雙人聊天對話存入DB" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -211,7 +217,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test.py</url>
-          <line>359</line>
+          <line>376</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

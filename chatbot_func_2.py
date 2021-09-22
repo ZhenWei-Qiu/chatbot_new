@@ -1874,6 +1874,7 @@ def Prompt_response(req, predictor, senta):
 
     dialog_count += 1
     print("dialog_count", dialog_count)
+
     # 20210506 對話計數 紀錄比對到的句子
     if not noMatch:
         sentence_id.append(match_sentence_id)
@@ -2668,10 +2669,28 @@ def Real(req):
     find_result = list(myDialogList.find({"$and": [{"Speaker_id": {'$ne': 'chatbot'}},
                                                    {"Speaker_id": {'$ne': 'Chatbot'}},
                                                    {"Content": {"$regex": "^.{5,}$"}}]}))
+
     if not len(find_result):
         response = ""
     else:
-        response = random.choice(find_result)['Content']
+        # 取學生對話最相似句子
+        similarity_sentence = {}
+        for dialog in find_result:
+            cosine = Cosine(2)
+            p1 = cosine.get_profile(userSay)
+            p2 = cosine.get_profile(dialog['Content'])
+            if p1 == {}:
+                # 字串太短
+                break
+            else:
+                value = cosine.similarity_profiles(p1, p2)
+                similarity_sentence[dialog['Content']] = value
+
+        similarity_sentence = sorted(similarity_sentence.items(), key=lambda x: x[1], reverse=True)
+        print('similarity_sentence：' + str(similarity_sentence))
+
+        response = str(similarity_sentence[0][0])
+        # response = random.choice(find_result)['Content']
 
     # 記錄對話過程
     dialog_id += 1
