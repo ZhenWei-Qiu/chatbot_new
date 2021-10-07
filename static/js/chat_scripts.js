@@ -43,7 +43,7 @@ var dialog_count = 4 // 與後端的dialog_count限制有關
 
 // 監聽connect
 var socket = io.connect('http://' + document.domain + ':' + location.port);
-// var socket = io.connect('http://9c2e-140-115-53-209.ngrok.io')
+// var socket = io.connect('http://badf-140-115-53-209.ngrok.io')
 // user connect
 socket.on('connect', function () { 
 
@@ -547,7 +547,7 @@ function analyze_responseData(name){
     clear_suggestList();
     for(var item_suggest in res_data["prompt"]["suggestions"]){     
       suggest_arr[item_suggest] = res_data["prompt"]["suggestions"][item_suggest]["title"]
-      console.log(res_data["prompt"]["suggestions"])
+      // console.log(res_data["prompt"]["suggestions"])
     }
     suggest_exist = 1;
     show_suggestList();
@@ -584,7 +584,7 @@ function analyze_responseData(name){
 
   // 判斷不等待使用者輸入直接觸發request傳送
   console.log("scene name", scene["name"])
-  if(scene["name"] == "Prompt_character" || scene["name"] == "Real" || scene["name"] == "Nonsense"  || scene["name"] == "Prompt_beginning"  || scene["name"] == "Prompt_character_sentiment"  || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" || scene["name"] == "suggestion"){
+  if(scene["name"] == "Prompt_character" || scene["name"] == "Prompt_vocabulary" ||scene["name"] == "Prompt_action_reason" || scene["name"] == "Prompt_action_experience" || scene["name"] == "Prompt_character_experience" || scene["name"] == "Moderator_connect" || scene["name"] == "Moderator" || scene["name"] == "Real" || scene["name"] == "Nonsense"  || scene["name"] == "Prompt_beginning"  || scene["name"] == "Prompt_character_sentiment"  || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" || scene["name"] == "suggestion"){
     
     if(exist_chatbotTyping()){
       clear_chatbotTyping()
