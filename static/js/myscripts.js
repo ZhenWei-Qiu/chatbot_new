@@ -76,7 +76,7 @@ function add_userTalk(talk_str){
 	Words.innerHTML = Words.innerHTML + usertalkStr;
 	Words.scrollTop = Words.scrollHeight;
 
-	change_chatbotMood()
+	// change_chatbotMood()
 	clear_suggestList();
 }
 
@@ -198,36 +198,36 @@ function speech_chatbotTalk(chatbotspeechStr){
 function show_suggestList(){
 	
 	var suggestionStr = "";
-
 	for(var i = 0; i < suggest_arr.length; i++){
 		suggestionStr += '<button class="suggest_Btn" onclick="user_sendMsg(this)"  value=' + suggest_arr[i] + '>' + suggest_arr[i] + '</button>'
 	}
-
-	Suggestions.innerHTML = Suggestions.innerHTML + suggestionStr
-
+	//20210915
+	Suggestions.innerHTML = suggestionStr
+	document.getElementById("talk_suggest_id").style.visibility = "visible";
 	//版行調整
-	if($("#talk_input_id").hasClass("talk_input")){
-		document.getElementById("talk_input_id").style.marginTop = "65px";
-	}
-	else{
-		document.getElementById("talk_input_id").style.marginTop = "43px";
-	}
+	// if($("#talk_input_id").hasClass("talk_input")){
+	// 	document.getElementById("talk_input_id").style.marginTop = "0";
+	// }
+	// else{
+	// 	document.getElementById("talk_input_id").style.marginTop = "0";
+	// }
 	
 }
 
 // 清除建議文字紐
 function clear_suggestList() {
 
-	Suggestions.innerHTML = "";
-	suggest_arr = [];
+	// Suggestions.innerHTML = "";
 
+	document.getElementById("talk_suggest_id").style.visibility = "hidden";
+	suggest_arr = [];
 	//版行調整
-	if($("#talk_input_id").hasClass("talk_input")){
-		document.getElementById("talk_input_id").style.marginTop = "124px";
-	}
-	else{
-		document.getElementById("talk_input_id").style.marginTop = "102px";
-	}			
+	// if($("#talk_input_id").hasClass("talk_input")){
+	// 	document.getElementById("talk_input_id").style.marginTop = "0";
+	// }
+	// else{
+	// 	document.getElementById("talk_input_id").style.marginTop = "0";
+	// }			
 }
 
 // 顯示任務提示
@@ -252,15 +252,16 @@ function show_taskHint(task){
 	taskHintStr += '<div class = "taskHint">任務提示：輸入內容須包含<font color="#FF0000">' + task + '</font></div>'
 	
 
-	TaskHints.innerHTML = TaskHints.innerHTML + taskHintStr
+	TaskHints.innerHTML = taskHintStr
+	document.getElementById("talk_taskHint_id").style.visibility = "visible";
 
 	//版行調整
-	if($("#talk_input_id").hasClass("talk_input")){
-		document.getElementById("talk_input_id").style.marginTop = "65px";
-	}
-	else{
-		document.getElementById("talk_input_id").style.marginTop = "43px";
-	}
+	// if($("#talk_input_id").hasClass("talk_input")){
+	// 	document.getElementById("talk_input_id").style.marginTop = "0";
+	// }
+	// else{
+	// 	document.getElementById("talk_input_id").style.marginTop = "0";
+	// }
 	
 }
 
@@ -269,15 +270,16 @@ function clear_taskHint() {
 
 	TaskHints.innerHTML = "";
 
-	if(suggest_exist == 0){
-		//版行調整
-		if($("#talk_input_id").hasClass("talk_input")){
-			document.getElementById("talk_input_id").style.marginTop = "124px";
-		}
-		else{
-			document.getElementById("talk_input_id").style.marginTop = "102px";
-		}		
-	}	
+	document.getElementById("talk_taskHint_id").style.visibility = "hidden";
+	// if(suggest_exist == 0){
+	// 	//版行調整
+	// 	if($("#talk_input_id").hasClass("talk_input")){
+	// 		document.getElementById("talk_input_id").style.marginTop = "0";
+	// 	}
+	// 	else{
+	// 		document.getElementById("talk_input_id").style.marginTop = "0";
+	// 	}		
+	// }	
 }
 
 // 顯示機器人輸入中
@@ -431,7 +433,7 @@ function analyze_responseData(){
 	if(res_data["prompt"].hasOwnProperty("suggestions")){
 		for(var item_suggest in res_data["prompt"]["suggestions"]){ 		
  		 	suggest_arr[item_suggest] = res_data["prompt"]["suggestions"][item_suggest]["title"]
- 		 	console.log(res_data["prompt"]["suggestions"])
+ 		 	// console.log(res_data["prompt"]["suggestions"])
  		}
  		suggest_exist = 1;
  		show_suggestList();
