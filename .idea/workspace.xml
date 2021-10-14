@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="建議列表修改">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="雙人聊天心得策略修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/login_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login_scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storyDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/storyDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/websocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/websocket.py" afterDir="false" />
     </list>
@@ -229,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634029249744</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="雙人聊天心得策略修改">
+      <created>1634188937690</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1634188937691</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -256,7 +261,8 @@
     <MESSAGE value="cosine抓取學生相似句子回應" />
     <MESSAGE value="改變雙人引導對話策略與促進對話連結" />
     <MESSAGE value="建議列表修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="建議列表修改" />
+    <MESSAGE value="雙人聊天心得策略修改" />
+    <option name="LAST_COMMIT_MESSAGE" value="雙人聊天心得策略修改" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

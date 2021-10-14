@@ -758,7 +758,7 @@ def match_book(req):
                                 "noIdea_count": 0,
                                 "question_count": 0,
                                 "User_say_len": [],
-                                "dialog_count_limit": 5
+                                "dialog_count_limit": 3
                             }
                         },
                         "scene": {
@@ -911,7 +911,8 @@ def Prompt_character(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -2341,7 +2342,7 @@ def Prompt_response(req, predictor, senta):
         sentence_id.append(match_sentence_id)
 
 
-    if dialog_count < 3 and player == 1:
+    if dialog_count < dialog_count_limit and player == 1:
 
         # 20210505 沒比對到 且 場景在 Prompt_event
         if noMatch and nowScene == 'Prompt_event':
@@ -2599,7 +2600,7 @@ def Prompt_response(req, predictor, senta):
                 }
             }
 
-    elif dialog_count < 5 and player == 2:
+    elif dialog_count < dialog_count_limit and player == 2:
 
         if user_dialog_count[user_id] == 3:
             user_dialog_count[user_id] = 0
@@ -3971,7 +3972,7 @@ def feedback_2players(req):
     # else:
     #     ask_reason = False
     
-    if dialog_count < 1:
+    if dialog_count < dialog_count_limit:
         dialog_count += 1
         response_dict = {
             "prompt": {
@@ -4071,7 +4072,7 @@ def summarize_2players(req):
     connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
 
     response = '輪到' + partner + '號最後講講看你對這本書的想法吧！'
-    if dialog_count < 3:
+    if dialog_count < dialog_count_limit:
         if dialog_count == 1:
             res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
             user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
