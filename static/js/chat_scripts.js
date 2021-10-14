@@ -608,7 +608,10 @@ function analyze_responseData(name){
   // 判斷不等待使用者輸入直接觸發request傳送(對話達到指定次數)
   if(res_data.hasOwnProperty("session")){
     if(res_data["session"]["params"].hasOwnProperty("dialog_count")){
-      if(res_data["session"]["params"]["dialog_count"] > dialog_count){
+      console.log("dialog_count")
+      console.log(res_data["session"]["params"]["dialog_count"])
+      console.log(res_data["session"]["params"]["dialog_count_limit"]-1)
+      if(res_data["session"]["params"]["dialog_count"] > res_data["session"]["params"]["dialog_count_limit"] - 1){
 
         if(exist_chatbotTyping()){
           clear_chatbotTyping()
@@ -691,6 +694,25 @@ function getPartner(){
   }
 }
 
+// 初始化
+function init(){
+
+  // 機器人音頻隨機生成
+  random_pitch = (Math.random()*(1.3 - 0.8) + 0.8).toFixed(2) // 產生隨機小數
+ 
+  setTimeout(function(){
+    
+     if(user_identifier == 2){
+        TalkWords.value = userID
+        send_userJson()
+        setTimeout(function(){          
+         send_userJson()
+        },1500);
+      }
+    },2000);
+  
+}
+
 // 裝置RWD使用
 var sUserAgent = navigator.userAgent.toLowerCase();
 var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
@@ -726,19 +748,5 @@ window.onload = function(){
     document.getElementById('talkwords').className = 'talk_word'; 
   }
 
-  // show_suggestList()
-  random_pitch = (Math.random()*(1.3 - 0.8) + 0.8).toFixed(2) // 產生隨機小數
- 
-  setTimeout(function(){
-    
-     if(user_identifier == 2){
-        TalkWords.value = userID
-        send_userJson()
-        setTimeout(function(){          
-         send_userJson()
-        },1500);
-      }
-    },2000);
-  
-  
+  init()
 }

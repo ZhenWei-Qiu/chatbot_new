@@ -242,7 +242,7 @@ def check_input(req):
             noIdea_count = req['session']['params']['noIdea_count']
             question_count = req['session']['params']['question_count']
             User_say_len = req['session']['params']['User_say_len']
-
+            dialog_count_limit = req['session']['params']['dialog_count_limit']
 
             if player == 2:
                 user_dialog_count = req['session']['params']['user_dialog_count']
@@ -277,7 +277,8 @@ def check_input(req):
                             "sentence_id": sentence_id,
                             "noIdea_count": noIdea_count,
                             "question_count": question_count,
-                            "User_say_len": User_say_len
+                            "User_say_len": User_say_len,
+                            "dialog_count_limit": dialog_count_limit
                         }
                     }
                 }
@@ -303,7 +304,8 @@ def check_input(req):
                             "noIdea_count": noIdea_count,
                             "question_count": question_count,
                             "User_say_len": User_say_len,
-                            "user_dialog_count": user_dialog_count
+                            "user_dialog_count": user_dialog_count,
+                            "dialog_count_limit": dialog_count_limit
                         }
                     }
                 }
@@ -727,14 +729,14 @@ def match_book(req):
                         Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_dialog', 'Prompt_event']
                     else:
                         # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
-                        Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-
+                        # Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                        Prompt_list = ['Prompt_character']
                 else:
                     if player == 1:
                         Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
                     else:
-                        Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                        # Prompt_list = ['Prompt_beginning']
+                        # Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                        Prompt_list = ['Prompt_character']
                 if player == 1:
                     random.shuffle(Prompt_list)
 
@@ -755,7 +757,8 @@ def match_book(req):
                                 "sentence_id": [],
                                 "noIdea_count": 0,
                                 "question_count": 0,
-                                "User_say_len": []
+                                "User_say_len": [],
+                                "dialog_count_limit": 5
                             }
                         },
                         "scene": {
@@ -783,6 +786,7 @@ def match_book(req):
                                 "question_count": 0,
                                 "User_say_len": [],
                                 "user_dialog_count": {},
+                                "dialog_count_limit": 5
                             }
                         },
                         "scene": {
@@ -843,6 +847,7 @@ def Prompt_character(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     player = req['user']['player']
     if player == 2:
@@ -934,6 +939,7 @@ def Prompt_action(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
@@ -995,7 +1001,8 @@ def Prompt_action(req):
                 "sentence_id": sentence_id,
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
-                "User_say_len": User_say_len
+                "User_say_len": User_say_len,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1018,6 +1025,7 @@ def Prompt_dialog(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
@@ -1071,7 +1079,8 @@ def Prompt_dialog(req):
                 "sentence_id": sentence_id,
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
-                "User_say_len": User_say_len
+                "User_say_len": User_say_len,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1099,6 +1108,7 @@ def Prompt_event(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
 
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
@@ -1195,7 +1205,8 @@ def Prompt_event(req):
                 "sentence_id": sentence_id,
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
-                "User_say_len": User_say_len
+                "User_say_len": User_say_len,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1290,7 +1301,8 @@ def Prompt_event(req):
 #                 "sentence_id": sentence_id,
 #                 "noIdea_count": noIdea_count,
 #                 "question_count": question_count,
-#                 "User_say_len": User_say_len
+#                 "User_say_len": User_say_len,
+#                 "dialog_count_limit": dialog_count_limit
 #             }
 #         },
 #         "scene": {
@@ -1327,6 +1339,7 @@ def Prompt_beginning(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     player = req['user']['player']
     if player == 2:
@@ -1386,7 +1399,8 @@ def Prompt_beginning(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1414,6 +1428,7 @@ def Prompt_character_sentiment(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     player = req['user']['player']
     if player == 2:
@@ -1509,7 +1524,8 @@ def Prompt_character_sentiment(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1538,6 +1554,7 @@ def Prompt_action_sentiment(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -1600,7 +1617,8 @@ def Prompt_action_sentiment(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1626,6 +1644,7 @@ def Prompt_vocabulary(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -1673,7 +1692,8 @@ def Prompt_vocabulary(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1700,6 +1720,7 @@ def Prompt_action_reason(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -1761,7 +1782,8 @@ def Prompt_action_reason(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1789,6 +1811,7 @@ def Prompt_character_experience(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     player = req['user']['player']
     if player == 2:
@@ -1832,7 +1855,8 @@ def Prompt_character_experience(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1860,6 +1884,7 @@ def Prompt_action_experience(req):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     player = req['user']['player']
     if player == 2:
@@ -1902,7 +1927,8 @@ def Prompt_action_experience(req):
                 "noIdea_count": noIdea_count,
                 "question_count": question_count,
                 "User_say_len": User_say_len,
-                "user_dialog_count": user_dialog_count
+                "user_dialog_count": user_dialog_count,
+                "dialog_count_limit": dialog_count_limit
             }
         },
         "scene": {
@@ -1954,6 +1980,7 @@ def Prompt_response(req, predictor, senta):
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
 
@@ -2297,7 +2324,7 @@ def Prompt_response(req, predictor, senta):
     task = ""
 
     dialog_count += 1
-    print("dialog_count", dialog_count)
+
 
     # 計算各個使用者"連續"對話數
     if player == 2:
@@ -2307,7 +2334,7 @@ def Prompt_response(req, predictor, senta):
         else:
             user_dialog_count[user_id] = 1
         user_dialog_count[partner_tmp] = 0
-        print("user_dialog_count", user_dialog_count)
+
 
     # 20210506 對話計數 紀錄比對到的句子
     if not noMatch:
@@ -2359,7 +2386,8 @@ def Prompt_response(req, predictor, senta):
                         "sentence_id": sentence_id,
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
-                        "User_say_len": User_say_len
+                        "User_say_len": User_say_len,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2391,7 +2419,8 @@ def Prompt_response(req, predictor, senta):
                         "sentence_id": sentence_id,
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
-                        "User_say_len": User_say_len
+                        "User_say_len": User_say_len,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2490,7 +2519,8 @@ def Prompt_response(req, predictor, senta):
                         "sentence_id": sentence_id,
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
-                        "User_say_len": User_say_len
+                        "User_say_len": User_say_len,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2528,7 +2558,8 @@ def Prompt_response(req, predictor, senta):
                         "sentence_id": sentence_id,
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
-                        "User_say_len": User_say_len
+                        "User_say_len": User_say_len,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2557,7 +2588,8 @@ def Prompt_response(req, predictor, senta):
                         "sentence_id": sentence_id,
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
-                        "User_say_len": User_say_len
+                        "User_say_len": User_say_len,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2591,7 +2623,8 @@ def Prompt_response(req, predictor, senta):
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
                         "User_say_len": User_say_len,
-                        "user_dialog_count": user_dialog_count
+                        "user_dialog_count": user_dialog_count,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2621,7 +2654,8 @@ def Prompt_response(req, predictor, senta):
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
                         "User_say_len": User_say_len,
-                        "user_dialog_count": user_dialog_count
+                        "user_dialog_count": user_dialog_count,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2651,7 +2685,8 @@ def Prompt_response(req, predictor, senta):
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
                         "User_say_len": User_say_len,
-                        "user_dialog_count": user_dialog_count
+                        "user_dialog_count": user_dialog_count,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2682,7 +2717,8 @@ def Prompt_response(req, predictor, senta):
         #                 "noIdea_count": noIdea_count,
         #                 "question_count": question_count,
         #                 "User_say_len": User_say_len,
-        #                 "user_dialog_count": user_dialog_count
+        #                 "user_dialog_count": user_dialog_count,
+        #                 "dialog_count_limit": dialog_count_limit
         #             }
         #         },
         #         "scene": {
@@ -2714,6 +2750,7 @@ def Prompt_response(req, predictor, senta):
         #                 "question_count": question_count,
         #                 "User_say_len": User_say_len,
         #                 "user_dialog_count": user_dialog_count
+        #                 "dialog_count_limit": dialog_count_limit
         #             }
         #         },
         #         "scene": {
@@ -2743,7 +2780,8 @@ def Prompt_response(req, predictor, senta):
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
                         "User_say_len": User_say_len,
-                        "user_dialog_count": user_dialog_count
+                        "user_dialog_count": user_dialog_count,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2795,7 +2833,8 @@ def Prompt_response(req, predictor, senta):
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
                         "User_say_len": User_say_len,
-                        "next_level": False
+                        "next_level": False,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2825,7 +2864,8 @@ def Prompt_response(req, predictor, senta):
                         "sentence_id": sentence_id,
                         "noIdea_count": noIdea_count,
                         "question_count": question_count,
-                        "User_say_len": User_say_len
+                        "User_say_len": User_say_len,
+                        "dialog_count_limit": dialog_count_limit
                     }
                 },
                 "scene": {
@@ -2879,6 +2919,7 @@ def Question(req):
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
     player = req['user']['player']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     if player != 2:
         user_id = req['session']['params']['User_id']
     else:
@@ -2950,6 +2991,7 @@ def Feeling(req):
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     time = req['user']['lastSeenTime']
     partner = req['user']['partner']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
@@ -3018,6 +3060,7 @@ def Assent(req):
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     time = req['user']['lastSeenTime']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
@@ -3078,6 +3121,7 @@ def Nonsense(req):
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     sentence_id = req['session']['params']['sentence_id']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
@@ -3133,7 +3177,8 @@ def Nonsense(req):
             "noIdea_count": noIdea_count,
             "question_count": question_count,
             "User_say_len": User_say_len,
-            "user_dialog_count": user_dialog_count
+            "user_dialog_count": user_dialog_count,
+            "dialog_count_limit": dialog_count_limit
 
         },
         "scene": {
@@ -3158,6 +3203,7 @@ def Real(req):
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     sentence_id = req['session']['params']['sentence_id']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
@@ -3234,7 +3280,8 @@ def Real(req):
             "noIdea_count": noIdea_count,
             "question_count": question_count,
             "User_say_len": User_say_len,
-            "user_dialog_count": user_dialog_count
+            "user_dialog_count": user_dialog_count,
+            "dialog_count_limit": dialog_count_limit
 
         },
         "scene": {
@@ -3259,6 +3306,7 @@ def Moderator(req):
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     sentence_id = req['session']['params']['sentence_id']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
@@ -3308,7 +3356,8 @@ def Moderator(req):
             "noIdea_count": noIdea_count,
             "question_count": question_count,
             "User_say_len": User_say_len,
-            "user_dialog_count": user_dialog_count
+            "user_dialog_count": user_dialog_count,
+            "dialog_count_limit": dialog_count_limit
 
         },
         "scene": {
@@ -3333,6 +3382,7 @@ def Moderator_connect(req):
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
     sentence_id = req['session']['params']['sentence_id']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
@@ -3391,7 +3441,8 @@ def Moderator_connect(req):
             "noIdea_count": noIdea_count,
             "question_count": question_count,
             "User_say_len": User_say_len,
-            "user_dialog_count": user_dialog_count
+            "user_dialog_count": user_dialog_count,
+            "dialog_count_limit": dialog_count_limit
 
         },
         "scene": {
@@ -3574,6 +3625,102 @@ def expand(req):
     return response_dict
 
 
+
+
+# 從資料庫中取資料做為機器人給予學生之回饋
+def feedback(req):
+    print('Feedback')
+    state = True
+    userSay = req['intent']['query']
+    user_id = req['session']['params']['User_id']
+    bookName = req['session']['params']['User_book']
+    session_id = req['session']['id']
+    time = req['user']['lastSeenTime']
+    noIdea_count = req['session']['params']['noIdea_count']
+    question_count = req['session']['params']['question_count']
+    User_say_len = req['session']['params']['User_say_len']
+
+    dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
+    nowBook = myClient[dbBookName]
+    myFeedback = nowBook['Feedback']
+    myDialogList = nowBook['S_R_Dialog']
+    dialog_index = myDialogList.find().count()
+    dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
+    # 記錄對話過程
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    find_common = {'type': 'common_feedback'}
+    find_result = myCommonList.find_one(find_common)
+    find_feedback_student = {'type': 'common_feedback_student'}
+    result_feedback_student = myCommonList.find_one(find_feedback_student)
+    suggest_like = req['session']['params']['User_sentiment']
+    find_like = {'Sentiment': suggest_like}
+    result_like = myFeedback.find(find_like)
+    if result_like.count() == 0:
+        response = '哦！原來是這樣啊！我了解了，'
+    else:
+        if result_like.count() > 2:
+            choose_number = random.sample(range(0, result_like.count() - 1), 2)
+            response = choice(find_result['content']) + " " + result_like[choose_number[0]]['Content'] + "，" + choice(
+                result_feedback_student['content']) + " " + result_like[choose_number[1]]['Content']
+        elif result_like.count() == 2:
+            response = choice(find_result['content']) + " " + result_like[0]['Content'] + "，" + choice(
+                result_feedback_student['content']) + " " + result_like[1]['Content']
+        else:
+            choose_number = 0
+            response = choice(find_result['content']) + " " + result_like[choose_number]['Content']
+
+    response_tmp = '我可以推薦你一些書，你想看看嗎？'
+    # response_dict = {"prompt": {
+    #     "firstSimple": {
+    #         "speech": response,
+    #         "text": response
+    #     },
+    #     'suggestions': [{'title': '好'}, {'title': '不用了'}]},
+    #     "scene": {
+    #         "next": {
+    #             'name': 'Check_suggestion'
+    #         }
+    #     }
+    # }
+
+    # 20210318 修改JSON格式
+    response_dict = {
+        "prompt": {
+            "firstSimple": {
+                "speech": [response, response_tmp],
+                "text": [response, response_tmp],
+                "delay": [len(response) / 2, 1],
+                "expression": "happy"
+            },
+            "suggestions": [{'title': '好'}, {'title': '不用了'}]
+        },
+        "session": {
+            "params": {
+                "User_state": state,
+                "noIdea_count": noIdea_count,
+                "question_count": question_count,
+                "User_say_len": User_say_len
+
+            }
+        },
+        "scene": {
+            "next": {
+                "name": "Check_suggestion"
+            }
+        }
+    }
+
+    response += response_tmp
+    connectDB.updateUser(myUserList, user_id, bookName, state)
+    connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
+    # 記錄對話過程
+    dialog_index = myDialogList.find().count()
+    dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    print(response)
+    return response_dict
+
+
 # 學生心得回饋
 def expand_2players(req):
     print("Expand_2players")
@@ -3748,7 +3895,8 @@ def expand_2players(req):
                                    noIdea_count=noIdea_count,
                                    question_count=question_count,
                                    User_say_len=User_say_len,
-                                   dialog_count=0)
+                                   dialog_count=0,
+                                   dialog_count_limit=2)
                 },
                 "scene": {
                     "next": {
@@ -3761,106 +3909,13 @@ def expand_2players(req):
     print(response)
     return response_dict
 
-
-# 從資料庫中取資料做為機器人給予學生之回饋
-def feedback(req):
-    print('Feedback')
-    state = True
-    userSay = req['intent']['query']
-    user_id = req['session']['params']['User_id']
-    bookName = req['session']['params']['User_book']
-    session_id = req['session']['id']
-    time = req['user']['lastSeenTime']
-    noIdea_count = req['session']['params']['noIdea_count']
-    question_count = req['session']['params']['question_count']
-    User_say_len = req['session']['params']['User_say_len']
-
-    dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
-    nowBook = myClient[dbBookName]
-    myFeedback = nowBook['Feedback']
-    myDialogList = nowBook['S_R_Dialog']
-    dialog_index = myDialogList.find().count()
-    dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    # 記錄對話過程
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
-    find_common = {'type': 'common_feedback'}
-    find_result = myCommonList.find_one(find_common)
-    find_feedback_student = {'type': 'common_feedback_student'}
-    result_feedback_student = myCommonList.find_one(find_feedback_student)
-    suggest_like = req['session']['params']['User_sentiment']
-    find_like = {'Sentiment': suggest_like}
-    result_like = myFeedback.find(find_like)
-    if result_like.count() == 0:
-        response = '哦！原來是這樣啊！我了解了，'
-    else:
-        if result_like.count() > 2:
-            choose_number = random.sample(range(0, result_like.count() - 1), 2)
-            response = choice(find_result['content']) + " " + result_like[choose_number[0]]['Content'] + "，" + choice(
-                result_feedback_student['content']) + " " + result_like[choose_number[1]]['Content']
-        elif result_like.count() == 2:
-            response = choice(find_result['content']) + " " + result_like[0]['Content'] + "，" + choice(
-                result_feedback_student['content']) + " " + result_like[1]['Content']
-        else:
-            choose_number = 0
-            response = choice(find_result['content']) + " " + result_like[choose_number]['Content']
-
-    response_tmp = '我可以推薦你一些書，你想看看嗎？'
-    # response_dict = {"prompt": {
-    #     "firstSimple": {
-    #         "speech": response,
-    #         "text": response
-    #     },
-    #     'suggestions': [{'title': '好'}, {'title': '不用了'}]},
-    #     "scene": {
-    #         "next": {
-    #             'name': 'Check_suggestion'
-    #         }
-    #     }
-    # }
-
-    # 20210318 修改JSON格式
-    response_dict = {
-        "prompt": {
-            "firstSimple": {
-                "speech": [response, response_tmp],
-                "text": [response, response_tmp],
-                "delay": [len(response) / 2, 1],
-                "expression": "happy"
-            },
-            "suggestions": [{'title': '好'}, {'title': '不用了'}]
-        },
-        "session": {
-            "params": {
-                "User_state": state,
-                "noIdea_count": noIdea_count,
-                "question_count": question_count,
-                "User_say_len": User_say_len
-
-            }
-        },
-        "scene": {
-            "next": {
-                "name": "Check_suggestion"
-            }
-        }
-    }
-
-    response += response_tmp
-    connectDB.updateUser(myUserList, user_id, bookName, state)
-    connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
-    # 記錄對話過程
-    dialog_index = myDialogList.find().count()
-    dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
-    print(response)
-    return response_dict
-
 # 從資料庫中取資料做為機器人給予學生之回饋
 def feedback_2players(req):
     print('Feedback_2players')
     state = True
     userSay = req['intent']['query']
     player = req['user']['player']
+    partner = req['user']['partner']
     if player != 2:
         user_id = req['session']['params']['User_id']
     else:
@@ -3872,6 +3927,7 @@ def feedback_2players(req):
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
     dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
 
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
@@ -3894,17 +3950,18 @@ def feedback_2players(req):
         if result_like.count() > 2:
             choose_number = random.sample(range(0, result_like.count() - 1), 2)
             response = choice(find_result['content']) + " " + result_like[choose_number[0]]['Content']
-            response_tmp = choice(result_feedback_student['content']) + " " + result_like[choose_number[1]]['Content']
+            # response_tmp = choice(result_feedback_student['content']) + " " + result_like[choose_number[1]]['Content']
         elif result_like.count() == 2:
             response = choice(find_result['content']) + " " + result_like[0]['Content']
-            response_tmp = choice(result_feedback_student['content']) + " " + result_like[1]['Content']
+            # response_tmp = choice(result_feedback_student['content']) + " " + result_like[1]['Content']
         else:
             choose_number = 0
             response = choice(find_result['content']) + " " + result_like[choose_number]['Content']
 
-    response_tmp2 = '那你們再來分享一下對這本書的想法吧'
-    response_list = [response, response_tmp, response_tmp2]
-    response_len = [len(response) / 2, len(response_tmp) / 2, 1]
+    response_tmp2 = '那輪到' + partner + '號分享一下你對這本書的想法吧'
+    # response_list = [response, response_tmp, response_tmp2]
+    response_list = [response,  response_tmp2]
+    response_len = [len(response) / 2,  1]
     # if 'ask_suggestion' in req['session']['params'].keys():
     #     ask_suggestion = req['session']['params']['ask_suggestion']
     # else:
@@ -3913,27 +3970,8 @@ def feedback_2players(req):
     #     ask_reason = req['session']['params']['player_check']
     # else:
     #     ask_reason = False
-    # 20210318 修改JSON格式
-    if dialog_count < 5:
-        if dialog_count == 2:
-            response = "你們會推薦這本書給同學看嗎？"
-            response_tmp = ""
-            response_tmp2 = ""
-            response_list = [response]
-            response_len = [2]
-        elif dialog_count == 3:
-            response = "為什麼阿？"
-            response_tmp = ""
-            response_tmp2 = ""
-            response_list = [response]
-            response_len = [2]
-        elif dialog_count != 0:
-            response = ""
-            response_tmp = ""
-            response_tmp2 = ""
-            response_list = [response]
-            response_len = [2]
-
+    
+    if dialog_count < 1:
         dialog_count += 1
         response_dict = {
             "prompt": {
@@ -3948,7 +3986,8 @@ def feedback_2players(req):
                     "noIdea_count": noIdea_count,
                     "question_count": question_count,
                     "User_say_len": User_say_len,
-                    "dialog_count": dialog_count
+                    "dialog_count": dialog_count,
+                    "dialog_count_limit": dialog_count_limit
 
                 }
             },
@@ -3960,15 +3999,125 @@ def feedback_2players(req):
         }
 
     else:
-        response = '我可以推薦你們一些書，你們想看看嗎？'
-        response_tmp = ''
-        response_tmp2 = ''
+        response = '你們都分享的很棒呢！'
+        response_tmp2 = "最後關於這本書，還有什麼想分享的呢？"
+        response_list = [response, response_tmp2]
+        response_dict = {
+            "prompt": {
+                "firstSimple": {
+                    "speech": response_list,
+                    "text": response_list,
+                    "delay": [len(response) / 2, 2]
+                },
+
+            },
+            "session": {
+                "params": {
+                    "User_state": state,
+                    "noIdea_count": noIdea_count,
+                    "question_count": question_count,
+                    "User_say_len": User_say_len,
+                    "dialog_count": 0,
+                    "dialog_count_limit": 3
+
+                }
+            },
+            "scene": {
+                "next": {
+                    "name": "summarize_2players"
+                }
+            }
+        }
+        
+
+    response += response_tmp2
+    connectDB.updateUser(myUserList, user_id, bookName, state)
+    # connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
+    # 記錄對話過程
+    dialog_index = myDialogList.find().count()
+    dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    print(response)
+    return response_dict
+
+
+# 學生總結
+def summarize_2players(req):
+    print('書本總結')
+    state = True
+    userSay = req['intent']['query']
+    player = req['user']['player']
+    partner = req['user']['partner']
+    if player != 2:
+        user_id = req['session']['params']['User_id']
+    else:
+        user_id = req['user']['User_id']
+    bookName = req['session']['params']['User_book']
+    session_id = req['session']['id']
+    time = req['user']['lastSeenTime']
+    noIdea_count = req['session']['params']['noIdea_count']
+    question_count = req['session']['params']['question_count']
+    User_say_len = req['session']['params']['User_say_len']
+    dialog_count = req['session']['params']['dialog_count']
+    dialog_count_limit = req['session']['params']['dialog_count_limit']
+
+    dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
+    nowBook = myClient[dbBookName]
+
+    myDialogList = nowBook['S_R_Dialog']
+    dialog_index = myDialogList.find().count()
+    dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
+    # 記錄對話過程
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+
+    response = '輪到' + partner + '號最後講講看你對這本書的想法吧！'
+    if dialog_count < 3:
+        if dialog_count == 1:
+            res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
+            user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
+            response = res_moderator.replace("XX", user_id_tmp + "號").replace("OO", partner + "號")
+            
+
+        elif dialog_count != 0:
+            response = ""
+
+
+        dialog_count += 1
         response_dict = {
             "prompt": {
                 "firstSimple": {
                     "speech": [response],
                     "text": [response],
                     "delay": [2]
+                }
+            },
+            "session": {
+                "params": {
+                    "noIdea_count": noIdea_count,
+                    "question_count": question_count,
+                    "User_say_len": User_say_len,
+                    "dialog_count": dialog_count,
+                    "dialog_count_limit": dialog_count_limit
+
+                }
+            },
+            "scene": {
+                "next": {
+                    "name": "summarize_2players"
+                }
+            }
+        }
+
+    else:
+        response = '哇！你們都說的真好！'
+        response_tmp = '我可以推薦你們一些書，你們想看看嗎？'
+        response_list = [response, response_tmp]
+        response_dict = {
+            "prompt": {
+                "firstSimple": {
+                    "speech": response_list,
+                    "text": response_list,
+                    "delay": [len(response) / 2]
                 },
                 "suggestions": [{'title': '好'}, {'title': '不用了'}]
             },
@@ -3987,8 +4136,8 @@ def feedback_2players(req):
                 }
             }
         }
+        response += response_tmp
 
-    response += response_tmp + response_tmp2
     connectDB.updateUser(myUserList, user_id, bookName, state)
     # connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
     # 記錄對話過程
