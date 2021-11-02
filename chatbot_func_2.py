@@ -6,6 +6,7 @@ from nltk.corpus import wordnet
 import pymongo
 import connectDB
 import random
+import pandas as pd
 
 myClient: object
 myBotData: object
@@ -13,8 +14,10 @@ myBookList: object
 myCommonList: object
 myUserList: object
 Prompt_list: object
+studentName_dic: object
 # Prompt_task_list = ['Time', 'Location', 'Affection', 'Life']
 Prompt_task_list = ['Time']
+
 def check_input(req):
     print('確認說話內容')
     response = ''
@@ -449,6 +452,8 @@ def input_userId(req):
 # 詢問書名
 def Get_bookName(req):
     print("START_ask")
+    global studentName_dic
+
     response_speech = ""
     response_list = []
     response_speech_list = []
@@ -467,7 +472,16 @@ def Get_bookName(req):
             userClass = '丁班'
         if userClass == 'Banban':
             userClass = '戊班'
-        user_id = userClass + req['session']['params']['User_say'].replace('號', '')
+
+        # 獲取全班姓名
+        df = pd.read_excel('student.xlsx', sheet_name=userClass)
+        studentName_dic = df.set_index('座號')['姓名'].to_dict()
+
+        player = req['user']['player']
+        if player != 2:
+            user_id = userClass + req['session']['params']['User_say'].replace('號', '')
+        else:
+            user_id = req['user']['User_id']
         print('使用者：' + str(user_id))
         connect()
         book_record = ''
@@ -532,7 +546,8 @@ def Get_bookName(req):
             "params": {
                 "User_id": user_id,
                 "NextScene": "match_book",
-                "next_level": False
+                "next_level": False,
+                "studentName": studentName_dic
             }
         }
     }
@@ -3333,7 +3348,16 @@ def Moderator(req):
 
     res_moderator = random.choice(["XX講得很好喔！OO有什麼想法嗎？", "OO也說說看你覺得如何？", 'OO換你說說看吧！', "OO你在想什麼呢？"])
     user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
-    response = res_moderator.replace("XX", user_id_tmp + "號").replace("OO", partner + "號")
+    # 判斷座號有無學生姓名
+    if int(user_id_tmp) in studentName_dic:
+        name = studentName_dic[int(user_id_tmp)]
+    else:
+        name = user_id_tmp + "號"
+    if int(partner) in studentName_dic:
+        partner_name = studentName_dic[int(partner)]
+    else:
+        partner_name = partner + "號"
+    response = res_moderator.replace("XX", name).replace("OO", partner_name)
 
     # 記錄對話過程
     dialog_id += 1
@@ -3408,7 +3432,7 @@ def Moderator_connect(req):
 
     res_moderator = ""
     if nowScene == "Prompt_character":
-        res_moderator = random.choice(["OO你有看到和XX相同的地方嗎？", "XX說到的地方，XX你覺得如何？"])
+        res_moderator = random.choice(["OO你有看到和XX相同的地方嗎？", "XX說到的地方，OO你覺得如何？"])
     elif nowScene == "Prompt_action_reason" or nowScene == "Prompt_character_sentiment":
         res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
     elif nowScene == "Prompt_action_experience" or nowScene == "Prompt_character_experience":
@@ -3418,7 +3442,17 @@ def Moderator_connect(req):
 
 
     user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
-    response = res_moderator.replace("XX", user_id_tmp + "號").replace("OO", partner + "號")
+
+    # 判斷座號有無學生姓名
+    if int(user_id_tmp) in studentName_dic:
+        name = studentName_dic[int(user_id_tmp)]
+    else:
+        name = user_id_tmp + "號"
+    if int(partner) in studentName_dic:
+        partner_name = studentName_dic[int(partner)]
+    else:
+        partner_name = partner + "號"
+    response = res_moderator.replace("XX", name).replace("OO", partner_name)
 
     # 記錄對話過程
     dialog_id += 1
@@ -3815,7 +3849,12 @@ def expand_2players(req):
         if not player_check:
             find_common = {'type': 'common_like'}
             find_result = myCommonList.find_one(find_common)
-            response = choice(find_result['content']).replace('你', partner + '號同學')
+            # 判斷座號有無學生姓名
+            if int(partner) in studentName_dic:
+                partner_name = studentName_dic[int(partner)]
+            else:
+                partner_name = partner + "號"
+            response = choice(find_result['content']).replace('你', partner_name)
             response_speech = response
             response_dict = {
                 "prompt": {
@@ -3959,7 +3998,12 @@ def feedback_2players(req):
             choose_number = 0
             response = choice(find_result['content']) + " " + result_like[choose_number]['Content']
 
-    response_tmp2 = '那輪到' + partner + '號分享一下你對這本書的想法吧'
+    # 判斷座號有無學生姓名
+    if int(partner) in studentName_dic:
+        partner_name = studentName_dic[int(partner)]
+    else:
+        partner_name = partner + "號"
+    response_tmp2 = '那輪到' + partner_name + '分享一下你對這本書的想法吧！'
     # response_list = [response, response_tmp, response_tmp2]
     response_list = [response,  response_tmp2]
     response_len = [len(response) / 2,  1]
@@ -4071,12 +4115,22 @@ def summarize_2players(req):
     # 記錄對話過程
     connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
 
-    response = '輪到' + partner + '號最後講講看你對這本書的想法吧！'
+    # 判斷座號有無學生姓名
+    if int(partner) in studentName_dic:
+        partner_name = studentName_dic[int(partner)]
+    else:
+        partner_name = partner + "號"
+    response = '輪到' + partner_name + '最後講講看你對這本書的想法吧！'
     if dialog_count < dialog_count_limit:
         if dialog_count == 1:
             res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
             user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
-            response = res_moderator.replace("XX", user_id_tmp + "號").replace("OO", partner + "號")
+            # 判斷座號有無學生姓名
+            if int(user_id_tmp) in studentName_dic:
+                name = studentName_dic[int(user_id_tmp)]
+            else:
+                name = user_id_tmp + "號"
+            response = res_moderator.replace("XX", name).replace("OO", partner_name)
             
 
         elif dialog_count != 0:
@@ -4415,9 +4469,11 @@ def Interest(req):
         response_list.append(response_tmp)
         response_speech_list.append(response_tmp)
 
-    if player != 2:
-        response_speech_list[1] = response_speech_list[1].replace('你', '你們')
-        response_list[1] = response_list[1].replace('你', '你們')
+    if player == 2:
+        for i in range(len(response_list)):
+            response_speech_list[i] = response_speech_list[i].replace('你', '你們')
+            response_list[i] = response_list[i].replace('你', '你們')
+
 
     # 20210318 修改JSON格式
     response_dict = {
