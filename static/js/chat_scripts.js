@@ -28,22 +28,25 @@ var user_identifier;
 
 // 初始值宣告
 var Words;
+var Usersay;
+var Chatbotsay;
+var Othersay;
 var TalkWords;
 var res_data;
 var random_pitch;
 var Suggestions;
 var TaskHints;
 var typingGif_ImageUrl = "/static/image/typing.gif";
-var fishJpg_ImageUrl = "/static/image/fish.jpg";
+var fishPng_ImageUrl = "/static/image/fishgirl.png";
 var fishGif_ImageUrl = "/static/image/fish.gif";
 var starPng_ImageUrl = "/static/image/star.png";
 var manPng_ImageUrl = "/static/image/man.png";
-var dialog_count = 4 // 與後端的dialog_count限制有關
+var voice = []
 
 
 // 監聽connect
-var socket = io.connect('http://' + document.domain + ':' + location.port);
-// var socket = io.connect('http://badf-140-115-53-209.ngrok.io')
+// var socket = io.connect('http://' + document.domain + ':' + location.port);
+var socket = io.connect('http://dc35-140-115-53-209.ngrok.io')
 // user connect
 socket.on('connect', function () { 
 
@@ -88,9 +91,6 @@ socket.on('chat_recv_'+ roomID, function (data) {
     res_data = data.response
     analyze_responseData(data.username);
     console.log(res_data)
-  
-  
-  
 
 });
 
@@ -114,7 +114,8 @@ function user_sendMsg(Object) {
   window.speechSynthesis.cancel();
 
   // 啟動語音功能
-  speech_Talk(" ");
+  speech_Talk("chatbot", " ");
+  speech_Talk("other", " ");
 
   // 判斷使用者發送方式
   if(Object.value == undefined){
@@ -131,7 +132,7 @@ function user_sendMsg(Object) {
 
   if(sync_waitInput_flag == 1){
   
-    show_chatbotTyping()
+    // show_chatbotTyping()
     //同步等待
     setTimeout(function(){
         chatbotWords = [];
@@ -157,8 +158,9 @@ function add_userTalk(talk_str){
     return;
   }
   
+  Usersay.innerHTML = '<div class="user local"><div class="text2">' + talk_str +'</div></div>' ; 
   usertalkStr = '<div class="user local"><div class="text">' + talk_str +'</div></div>' ; 
-  
+   
   // 使用者內容拼接於對話視窗
   Words.innerHTML = Words.innerHTML + usertalkStr;
   Words.scrollTop = Words.scrollHeight;
@@ -169,11 +171,20 @@ function add_othersTalk(othersName, talk_str){
 
   var othersStr = "";
 
+  if(studentName_dic.hasOwnProperty(parseInt(othersName))){
+    othersName = studentName_dic[parseInt(othersName)]
+  }
+
   if(talk_str != ""){
+
+    //將其他人文字顯示於對話
+    Othersay.innerHTML = '<div class="user other"><div class="text2">' + talk_str +'</div></div>';;
+
+    //將其他人文字顯示於對話紀錄
     othersStr = '<div class="user other"><div class="avatar"><div class="pic"><img src='+ manPng_ImageUrl +'></img></div><div class="name">' + othersName + '</div></div><div class="text">' + talk_str + '</div></div>';
     Words.innerHTML = Words.innerHTML + othersStr;
     Words.scrollTop = Words.scrollHeight;
-    speech_Talk(talk_str)
+    speech_Talk("other", talk_str)
 
   }
 
@@ -185,8 +196,8 @@ async function add_chatbotTalk(){
   var chatbotStr = "";
 
   if(chatbotWords[0] != ""){
-
-    for(var i = 0; i < chatbotWords.length; i++){
+    // console.log("chatbotWords.length" + chatbotWords.length)
+    for(let i = 0; i < chatbotWords.length; i++){
       
       // 與上次顯示紀錄重複字串清除跳出
   
@@ -194,74 +205,123 @@ async function add_chatbotTalk(){
       //  chatbotWords = []
       //  break;
       // }
-      if(chatbotWords_last == chatbotWords[i]){
-        chatbotWords = [];
-        chatbotWords_speech = []; 
-        break;
-      }
+      if(i == 0){
+            // 將機器人文字顯示於對話
+            speech_Talk("chatbot", chatbotWords_speech[i]);
+            Chatbotsay.innerHTML = '<div class="user remote"><div class="text2">' + chatbotWords[i] +'</div></div>';;
 
-      // 內容發音
-      speech_Talk(chatbotWords_speech[i]);
-
-      // 檢查目前機器人是否存在typing
-      if(exist_chatbotTyping()){
-
-        clear_chatbotTyping()
-
-        // 將機器人文字顯示於畫面
-        chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishJpg_ImageUrl + '></img></div><div class="name">鹹魚姊姊</div></div> <div class="text">' + chatbotWords[i] +'</div></div>';
-        Words.innerHTML = Words.innerHTML + chatbotStr;
-        Words.scrollTop = Words.scrollHeight;
-
-        show_chatbotTyping()
+            // 將機器人文字顯示於對話紀錄
+            chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishPng_ImageUrl + '></img></div><div class="name">魚姊姊</div></div> <div class="text">' + chatbotWords[i] +'</div></div>';
+            Words.innerHTML = Words.innerHTML + chatbotStr;
+            Words.scrollTop = Words.scrollHeight;
       }
       else{
-        // 將機器人文字顯示於畫面
-        chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishJpg_ImageUrl + '></img></div><div class="name">鹹魚姊姊</div></div> <div class="text">' + chatbotWords[i] +'</div></div>';
-        Words.innerHTML = Words.innerHTML + chatbotStr;
-        Words.scrollTop = Words.scrollHeight;
-      }
+      setTimeout(function() {
+
+         // console.log(i)
+         // console.log(5*(i)+"秒過去")
+
+         show_chatbotTyping()
+         setTimeout(function() {
+          clear_chatbotTyping()
+          if(chatbotWords_last == chatbotWords[i]){
+            chatbotWords[i] = "";
+            chatbotWords_speech[i] = ""; 
+            // break;
+          }
+
+          if(chatbotWords[i] != ""){
+            // 內容發音
+            speech_Talk("chatbot", chatbotWords_speech[i]);
+
+            // 檢查目前機器人是否存在typing
+            if(exist_chatbotTyping()){
+
+              clear_chatbotTyping()
+
+              // 將機器人文字顯示於對話
+              Chatbotsay.innerHTML = '<div class="user remote"><div class="text2">' + chatbotWords[i] +'</div></div>';;
+
+              // 將機器人文字顯示於對話紀錄
+              chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishPng_ImageUrl + '></img></div><div class="name">魚姊姊</div></div> <div class="text">' + chatbotWords[i] +'</div></div>';
+              Words.innerHTML = Words.innerHTML + chatbotStr;
+              Words.scrollTop = Words.scrollHeight;
+
+              // show_chatbotTyping()
+            }
+            else{
+              // 將機器人文字顯示於對話
+              Chatbotsay.innerHTML = '<div class="user remote"><div class="text2">' + chatbotWords[i] +'</div></div>';;
+
+              // 將機器人文字顯示於對話紀錄
+              chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishPng_ImageUrl + '></img></div><div class="name">魚姊姊</div></div> <div class="text">' + chatbotWords[i] +'</div></div>';
+              Words.innerHTML = Words.innerHTML + chatbotStr;
+              Words.scrollTop = Words.scrollHeight;
+            }
+                
+            
+            
+            // 紀錄本次顯示於畫面文字
+            chatbotWords_last = chatbotWords[i]
+
+            // 添加機器人輸入中(超過一行字串與不是最後一行)
+            if(chatbotWords.length > 1 &&  i != (chatbotWords.length-1)){
+              // show_chatbotTyping()
+            }
+            // console.log("time" +chatbotWords[i])
+            
+            // 非同步延遲(sec)
+            // await delay(5);
+            // console.log("stop")
+
+            // 清除機器人輸入中
           
-      
-
-      // 紀錄本次顯示於畫面文字
-      chatbotWords_last = chatbotWords[i]
-
-      // 添加機器人輸入中(超過一行字串與不是最後一行)
-      if(chatbotWords.length > 1 &&  i != (chatbotWords.length-1)){
-        show_chatbotTyping()
-      }
-
-      // 非同步延遲(sec)
-      await delay(5);
-
-      // 清除機器人輸入中
-      clear_chatbotTyping()
+          }
+        }, 2000)
+      }, 5000 * (i))
+  
+     }
       
     } 
   }
-  
+  // if(chatbotWords_last == chatbotWords[i]){
+  //           chatbotWords = [];
+  //           chatbotWords_speech = []; 
+  //           // break;
+  //         }
+
 
   if(rec_imageUrl != ""){
 
-    if(exist_chatbotTyping()){
-      clear_chatbotTyping()
-    }
-    show_chatbotTyping()
-    
-    
-    await delay(3);
-    
-    // 將機器人圖片顯示於畫面
-    if(rec_imageUrl != ""){
-      chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishJpg_ImageUrl + '></img></div><div class="name">鹹魚姊姊</div></div><div class="text"><img src ='+ rec_imageUrl +' width="130" height="150"></div></div>'
-      Words.innerHTML = Words.innerHTML + chatbotStr;
-      Words.scrollTop = Words.scrollHeight; 
-      rec_imageUrl = ""
-    }
+    setTimeout(function() {
 
+         show_chatbotTyping()
+         setTimeout(function() {
+          clear_chatbotTyping()
+        
+
+         
+            if(rec_imageUrl != ""){
+              // 將機器人文字顯示於對話
+              Chatbotsay.innerHTML = '<div class="user remote"><div class="text2"><img src ='+ rec_imageUrl +' width="100" height="120"></div></div>';
+
+              // 將機器人文字顯示於對話紀錄
+              chatbotStr = '<div class="user remote"><div class="avatar"><div class="pic"><img src=' + fishPng_ImageUrl + '></img></div><div class="name">魚姊姊</div></div><div class="text"><img src ='+ rec_imageUrl +' width="130" height="150"></div></div>'
+              Words.innerHTML = Words.innerHTML + chatbotStr;
+              Words.scrollTop = Words.scrollHeight; 
+              rec_imageUrl = ""
+            }
+
+          
+          
+        }, 2000)
+      }, 5000 * chatbotWords.length)
     
-    clear_chatbotTyping()
+    
+    
+    
+    
+    // clear_chatbotTyping()
   }
   
 }
@@ -271,24 +331,52 @@ function delay(n){
 
     return new Promise(function(resolve){
         setTimeout(resolve, n * 1000);
+
     });
 }
 
+
+var synth = window.speechSynthesis;
+
+// 聲音初始設置
+function setVoices() {
+  return new Promise((resolve, reject) => {
+  let timer;
+  timer = setInterval(() => {
+    if(synth.getVoices().length !== 0) {
+      resolve(synth.getVoices());
+      clearInterval(timer);
+    }
+  }, 10);
+ }) 
+}
+setVoices().then(data => voices = data);
+
+
+
 // 內容發出聲音
-function speech_Talk(othersSpeechStr){
+function speech_Talk(identity, SpeechStr){
+
+  var toSpeak = new SpeechSynthesisUtterance(SpeechStr);
+  //語速音調
+  toSpeak.rate = 1; 
+  // toSpeak.pitch = 1;   
+  // toSpeak.pitch = random_pitch;    
+
+  //判斷機器人或其他人聲音
+  if(identity == "chatbot"){
+    // toSpeak.rate = 1; 
+    toSpeak.pitch = 1.2;
+    toSpeak.voice = voices[-2];
+  }
+  else{
+    // toSpeak.rate = 1; 
+    toSpeak.pitch = 0.5;
+    toSpeak.voice = voices[-4];
+  }
   
-  var voices = [];
-  var toSpeak = new SpeechSynthesisUtterance(othersSpeechStr);
-    //語速
-    toSpeak.rate = 1;
-    toSpeak.pitch = random_pitch;
-    var selectedVoiceName = 'Mei-jia (zh-TW)';          
-        voices.forEach((voice)=>{
-            if(voice.name === selectedVoiceName){
-                toSpeak.voice = voice;
-            }
-        });
-    window.speechSynthesis.speak(toSpeak);
+  
+  window.speechSynthesis.speak(toSpeak); 
 }
 
 
@@ -297,10 +385,13 @@ function show_chatbotTyping(){
   
   var chatbotStr = "";
 
-  chatbotStr += '<div class="user remote"><div class="text"><img class="typing" src ='+ typingGif_ImageUrl +' width="50" height="13"></div></div>'
-
-  Words.innerHTML = Words.innerHTML + chatbotStr;
-  Words.scrollTop = Words.scrollHeight; 
+  //機器人對話
+  Chatbotsay.innerHTML = '<div class="user remote"><div class="text2"><img class="typing" src ='+ typingGif_ImageUrl +' width="50" height="13"></div></div>'
+  
+  //機器人對話紀錄
+  // chatbotStr += '<div class="user remote"><div class="text"><img class="typing" src ='+ typingGif_ImageUrl +' width="50" height="13"></div></div>'
+  // Words.innerHTML = Words.innerHTML + chatbotStr;
+  // Words.scrollTop = Words.scrollHeight; 
   
 }
 
@@ -428,6 +519,15 @@ function clear_taskHint() {
     // }   
   } 
 }
+
+//顯示書本封面
+function show_bookImg(bookName){
+
+  var url = 'http://story.csie.ncu.edu.tw/storytelling/images/chatbot_books/' + bookName.replace(' ', '%20') + '.jpg'
+  var bookImg = document.getElementById("book");
+  bookImg.src = url;
+  bookImg.style.visibility = "visible";
+}
 // var handler = { "name" : "check_input"}; 
 // var intent = { "params" : {}, "query" : "" }; 
 // var scene = { "name" : "check_input" };  
@@ -448,13 +548,14 @@ var post_count = 0;
 var suggest_arr = ["丁班", "戊班"];
 var score = 0;
 var suggest_exist = 0;
+var studentName_dic = {};
 
 
 
 // 使用者傳送json
 function send_userJson() {
 
-  console.log(post_count)
+  // console.log(post_count)
   post_count++;
   intent["query"] = TalkWords.value;
   user["lastSeenTime"] = getNowFormatDate();
@@ -467,7 +568,7 @@ function send_userJson() {
           "session": session, 
           "user": user 
   } 
-  console.log(postData)
+  // console.log(postData)
   // 發送Data到socket
   socket.emit('chat_send', {
       roomID : roomID,
@@ -492,17 +593,7 @@ function analyze_responseData(name){
       chatbotWords[item_text] = res_data["prompt"]["firstSimple"]["text"][item_text]
       chatbotWords_speech[item_text] = res_data["prompt"]["firstSimple"]["speech"][item_text]
       chatbotWords_delay[item_text] = res_data["prompt"]["firstSimple"]["delay"][item_text]
-      console.log(chatbotWords[item_text])
-
-      // 處理機器人文字
-      // if(chatbotWords[item_text].includes("XX")){
-      //   for(var key in room_users_data){
-      //     if(name != key){
-      //         chatbotWords[item_text] = chatbotWords[item_text].replace("XX", key+"號");
-      //         chatbotWords_speech[item_text] = chatbotWords_speech[item_text].replace("XX", key+"號");
-      //     }
-      //   }
-      // }
+      // console.log(chatbotWords[item_text])
 
     }
 
@@ -517,7 +608,7 @@ function analyze_responseData(name){
     //存在分數  
     if(res_data["prompt"].hasOwnProperty("score")){
       score += res_data["prompt"]["score"];
-      console.log(res_data["prompt"]["score"])
+      // console.log(res_data["prompt"]["score"])
       // show_score();
     }
     else{
@@ -568,6 +659,18 @@ function analyze_responseData(name){
       clear_taskHint();
     }
    }
+   // JSON 存在 User_book 用作書本名稱存取
+  if(res_data.hasOwnProperty("session")){
+    if(res_data["session"]["params"].hasOwnProperty("User_book")){
+      show_bookImg(res_data["session"]["params"]["User_book"]);
+    }
+   }
+   // JSON 存在 session 用作書本名稱存取
+  if(res_data.hasOwnProperty("session")){
+    if(res_data["session"]["params"].hasOwnProperty("studentName")){
+      studentName_dic = res_data["session"]["params"]["studentName"];
+    }
+   }
 
   /* Step2：顯示機器人回應 */
   add_chatbotTalk();
@@ -589,9 +692,9 @@ function analyze_responseData(name){
     if(exist_chatbotTyping()){
       clear_chatbotTyping()
     }
-    show_chatbotTyping()
+    // show_chatbotTyping()
 
-
+    //判斷為訊息發送者才可發送req
     setTimeout(function(){  
         if(name == userID){
           send_userJson()
@@ -608,16 +711,17 @@ function analyze_responseData(name){
   // 判斷不等待使用者輸入直接觸發request傳送(對話達到指定次數)
   if(res_data.hasOwnProperty("session")){
     if(res_data["session"]["params"].hasOwnProperty("dialog_count")){
-      console.log("dialog_count")
-      console.log(res_data["session"]["params"]["dialog_count"])
-      console.log(res_data["session"]["params"]["dialog_count_limit"]-1)
+      // console.log("dialog_count")
+      // console.log(res_data["session"]["params"]["dialog_count"])
+      // console.log(res_data["session"]["params"]["dialog_count_limit"]-1)
       if(res_data["session"]["params"]["dialog_count"] > res_data["session"]["params"]["dialog_count_limit"] - 1){
 
         if(exist_chatbotTyping()){
           clear_chatbotTyping()
         }
-        show_chatbotTyping()
+        // show_chatbotTyping()
 
+        //判斷為訊息發送者才可發送req
         setTimeout(function(){  
             if(name == userID){
               send_userJson()
@@ -697,13 +801,15 @@ function getPartner(){
 // 初始化
 function init(){
 
+  // 隱藏書本圖片
+  document.getElementById("book").style.visibility = "hidden";
   // 機器人音頻隨機生成
   random_pitch = (Math.random()*(1.3 - 0.8) + 0.8).toFixed(2) // 產生隨機小數
  
   setTimeout(function(){
     
      if(user_identifier == 2){
-        TalkWords.value = userID
+        // TalkWords.value = userID
         send_userJson()
         setTimeout(function(){          
          send_userJson()
@@ -728,6 +834,9 @@ var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
 window.onload = function(){  
 
   Words = document.getElementById("words"); 
+  Usersay = document.getElementById("usersay"); 
+  Chatbotsay = document.getElementById("chatbotsay"); 
+  Othersay = document.getElementById("othersay"); 
   TalkWords = document.getElementById("talkwords");
   TalkSend = document.getElementById("talksend"); 
   Suggestions = document.getElementById("talk_suggest_id"); 
@@ -740,6 +849,7 @@ window.onload = function(){
     document.getElementById('words').className = 'talk_show_mob'; 
     document.getElementById('talk_input_id').className = 'talk_input_mob';  
     document.getElementById('talkwords').className = 'talk_word_mob'; 
+    document.getElementById('dialogue_screen_id').className = 'dialogue_screen_mob'; 
   } else {
     console.log("電腦"); 
     document.getElementById('talk_content_id').className = 'talk_content';
