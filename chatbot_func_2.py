@@ -732,7 +732,18 @@ def match_book(req):
                 # 比對到且沒有讀完 開始聊書
                 state = False
                 # 建立使用者資料
-                connectDB.updateUser(myUserList, user_id, bookName, state)
+                player = req['user']['player']
+                if player != 2:
+                    user_id = req['session']['params']['User_id']
+                    connectDB.updateUser(myUserList, user_id, bookName, state, "None")
+                else:
+                    user_id = req['user']['User_id']
+                    partner = req['user']['partner']
+                    userClass = req['session']['params']['User_class']
+                    partner = userClass + partner
+                    connectDB.updateUser(myUserList, user_id, bookName, state, partner)
+                    connectDB.updateUser(myUserList, partner, bookName, state, user_id)
+
 
                 dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
                 nowBook = myClient[dbBookName]
@@ -3032,8 +3043,13 @@ def Feeling(req):
     else:
         response += '我覺得還好，'
 
+
+    if int(partner) in studentName_dic:
+        partner_name = studentName_dic[int(partner)]
+    else:
+        partner_name = partner + "號"
     response += '那XX你覺得呢？'
-    response = response.replace("XX", partner)
+    response = response.replace("XX", partner_name)
 
     # 記錄對話過程
     dialog_id += 1
@@ -3746,7 +3762,7 @@ def feedback(req):
     }
 
     response += response_tmp
-    connectDB.updateUser(myUserList, user_id, bookName, state)
+    connectDB.updateUser(myUserList, user_id, bookName, state, "None")
     connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
@@ -3777,10 +3793,10 @@ def expand_2players(req):
         expand_user = req['session']['params']['User_expand']
     else:
         expand_user = False
-    if 'player_check' in req['session']['params'].keys():
-        player_check = req['session']['params']['player_check']
+    if 'Partner_expand' in req['session']['params'].keys():
+        Partner_expand = req['session']['params']['Partner_expand']
     else:
-        player_check = False
+        Partner_expand = False
     if not expand_user:
         find_common_expand = {'type': 'common_expand'}
         common_result_expand = myCommonList.find_one(find_common_expand)
@@ -3846,7 +3862,7 @@ def expand_2players(req):
         #     print("response_dict['prompt']['firstSimple']['speech']",response_dict['prompt']['firstSimple']['speech'])
 
     else:
-        if not player_check:
+        if not Partner_expand:
             find_common = {'type': 'common_like'}
             find_result = myCommonList.find_one(find_common)
             # 判斷座號有無學生姓名
@@ -3870,7 +3886,8 @@ def expand_2players(req):
                 "session": {
                     "params": {
                         "User_expand": expand_user,
-                        "player_check": True
+                        "Partner_expand": True,
+                        "Partner_expand": partner
                     }
                 }
             }
@@ -3884,7 +3901,7 @@ def expand_2players(req):
                                 req['scene']['name'])
             scene = 'feedback_2players'
             if userSay == '還好' or userSay == '普通':
-                response = '這樣啊！那是為甚麼呢？'
+                response = '這樣啊！那是為什麼呢？'
                 suggest_like = False
             elif userSay == '喜歡':
                 # 接續詢問使用者喜歡故事的原因
@@ -3960,6 +3977,7 @@ def feedback_2players(req):
         user_id = req['session']['params']['User_id']
     else:
         user_id = req['user']['User_id']
+    userClass = req['session']['params']['User_class']
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     time = req['user']['lastSeenTime']
@@ -4007,15 +4025,7 @@ def feedback_2players(req):
     # response_list = [response, response_tmp, response_tmp2]
     response_list = [response,  response_tmp2]
     response_len = [len(response) / 2,  1]
-    # if 'ask_suggestion' in req['session']['params'].keys():
-    #     ask_suggestion = req['session']['params']['ask_suggestion']
-    # else:
-    #     ask_suggestion = False
-    # if 'ask_reason' in req['session']['params'].keys():
-    #     ask_reason = req['session']['params']['player_check']
-    # else:
-    #     ask_reason = False
-    
+
     if dialog_count < dialog_count_limit:
         dialog_count += 1
         response_dict = {
@@ -4073,10 +4083,10 @@ def feedback_2players(req):
                 }
             }
         }
-        
 
+    partner = userClass + partner
     response += response_tmp2
-    connectDB.updateUser(myUserList, user_id, bookName, state)
+    connectDB.updateUser(myUserList, user_id, bookName, state, partner)
     # connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
@@ -4097,6 +4107,7 @@ def summarize_2players(req):
         user_id = req['session']['params']['User_id']
     else:
         user_id = req['user']['User_id']
+    userClass = req['session']['params']['User_class']
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
     time = req['user']['lastSeenTime']
@@ -4192,8 +4203,8 @@ def summarize_2players(req):
             }
         }
         response += response_tmp
-
-    connectDB.updateUser(myUserList, user_id, bookName, state)
+    partner = userClass + partner
+    connectDB.updateUser(myUserList, user_id, bookName, state, partner)
     # connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
@@ -4355,7 +4366,7 @@ def suggestion(req):
 
     if player == 2:
         response = response.replace("你", "你們")
-        response_suggestion_tmp = response.replace("你", "你們")
+        response_suggestion_tmp = response_suggestion_tmp.replace("你", "你們")
 
     # 20210318 修改JSON格式
     response_dict = {
@@ -4508,13 +4519,15 @@ def exit_system(req):
         if player != 2:
             user_id = req['session']['params']['User_id']
             connectDB.updateUser(myUserList, user_id, req['session']['params']['User_book'],
-                                 req['session']['params']['User_state'])
+                                 req['session']['params']['User_state'], "None")
         else:
             user_id = req['user']['User_id']
             partner = req['user']['partner']
+            userClass = req['session']['params']['User_class']
+            partner = userClass + partner
             connectDB.updateUser(myUserList, user_id, req['session']['params']['User_book'],
-                                 req['session']['params']['User_state'])
+                                 req['session']['params']['User_state'], partner)
             connectDB.updateUser(myUserList, partner, req['session']['params']['User_book'],
-                                 req['session']['params']['User_state'])
+                                 req['session']['params']['User_state'], user_id)
 
 

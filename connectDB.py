@@ -1,8 +1,8 @@
 import copy
 
 
-def updateUser(myUserList, userId, bookName, state):
-    bookTalkSummary = {'Finish': state}
+def updateUser(myUserList, userId, bookName, state, partner):
+    bookTalkSummary = {'Finish': state, 'Partner': partner}
 
     if not list(myUserList.find()):
         # 資料庫無資料 > 直接新增一筆
