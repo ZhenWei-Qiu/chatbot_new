@@ -220,9 +220,9 @@ async function add_chatbotTalk(){
 
          // console.log(i)
          // console.log(5*(i)+"秒過去")
-
          show_chatbotTyping()
          setTimeout(function() {
+
           clear_chatbotTyping()
           if(chatbotWords_last == chatbotWords[i]){
             chatbotWords[i] = "";
@@ -268,17 +268,14 @@ async function add_chatbotTalk(){
             if(chatbotWords.length > 1 &&  i != (chatbotWords.length-1)){
               // show_chatbotTyping()
             }
-            // console.log("time" +chatbotWords[i])
-            
+        
             // 非同步延遲(sec)
             // await delay(5);
-            // console.log("stop")
-
-            // 清除機器人輸入中
-          
+        
           }
         }, 2000)
-      }, 5000 * (i))
+
+      }, 5000 * i)
   
      }
       
@@ -296,11 +293,11 @@ async function add_chatbotTalk(){
     setTimeout(function() {
 
          show_chatbotTyping()
+
          setTimeout(function() {
+
           clear_chatbotTyping()
         
-
-         
             if(rec_imageUrl != ""){
               // 將機器人文字顯示於對話
               Chatbotsay.innerHTML = '<div class="user remote"><div class="text2"><img src ='+ rec_imageUrl +' width="100" height="120"></div></div>';
@@ -313,8 +310,8 @@ async function add_chatbotTalk(){
             }
 
           
-          
         }, 2000)
+
       }, 5000 * chatbotWords.length)
     
     
@@ -365,12 +362,10 @@ function speech_Talk(identity, SpeechStr){
 
   //判斷機器人或其他人聲音
   if(identity == "chatbot"){
-    // toSpeak.rate = 1; 
     toSpeak.pitch = 1.2;
     toSpeak.voice = voices[-2];
   }
   else{
-    // toSpeak.rate = 1; 
     toSpeak.pitch = 0.5;
     toSpeak.voice = voices[-4];
   }
@@ -659,18 +654,27 @@ function analyze_responseData(name){
       clear_taskHint();
     }
    }
-   // JSON 存在 User_book 用作書本名稱存取
+  // JSON 存在 User_book 用作書本名稱存取
   if(res_data.hasOwnProperty("session")){
     if(res_data["session"]["params"].hasOwnProperty("User_book")){
       show_bookImg(res_data["session"]["params"]["User_book"]);
     }
    }
-   // JSON 存在 session 用作書本名稱存取
+  // JSON 存在 studentName 用作全班名字存取
   if(res_data.hasOwnProperty("session")){
     if(res_data["session"]["params"].hasOwnProperty("studentName")){
       studentName_dic = res_data["session"]["params"]["studentName"];
     }
    }
+  // JSON 存在 Partner_check 用作確認指定待確認使用者
+  if(res_data.hasOwnProperty("session")){
+    if(res_data["session"]["params"].hasOwnProperty("Partner_check")){
+      // 確認喜好不為該使用者
+      if(userID != res_data["session"]["params"]["Partner_check"]){
+        clear_suggestList();
+      }
+    }
+   } 
 
   /* Step2：顯示機器人回應 */
   add_chatbotTalk();
