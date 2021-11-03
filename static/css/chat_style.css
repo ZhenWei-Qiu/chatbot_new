@@ -445,7 +445,7 @@ ul li {
     margin-left: 20px;
     margin-right: 80px;
     color: #eee;
-    background-color: #07948b;
+    background-color: #8f383c;
     font-family: Helvetica;
     font-size: 20px;
     max-width: 150px;
@@ -454,7 +454,7 @@ ul li {
 }
 
 .other .text2::before {
-    border-right: 10px solid #07948b;
+    border-right: 10px solid #8f383c;
     left: -10px;
 }
 
