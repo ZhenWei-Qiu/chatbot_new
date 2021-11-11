@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="讀取Excel取代座號為學生姓名">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="partner對話框顏色更改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connectDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/connectDB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storyDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/storyDB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/student.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/student.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/websocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/websocket.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +40,6 @@
     <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/chatbot_func_2.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file:////140.115.53.195/Lab_data_from2013/2020(108)/王楠鈞/code/30 seconds slice code/mp4cut.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/storyDB.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1uklNO0SwTd8Hi69wYNhtLDLpdP" />
@@ -260,7 +261,28 @@
       <option name="project" value="LOCAL" />
       <updated>1635837761749</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Partner存於UserTablet資料庫、修改expand partner JSON">
+      <created>1635926224056</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1635926224056</updated>
+    </task>
+    <task id="LOCAL-00017" summary="針對使用者顯示喜好按鈕">
+      <created>1635926273009</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1635926273009</updated>
+    </task>
+    <task id="LOCAL-00018" summary="partner對話框顏色更改">
+      <created>1635926295703</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1635926295703</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -290,7 +312,10 @@
     <MESSAGE value="雙人聊天心得策略修改" />
     <MESSAGE value="更改聊天對話畫面" />
     <MESSAGE value="讀取Excel取代座號為學生姓名" />
-    <option name="LAST_COMMIT_MESSAGE" value="讀取Excel取代座號為學生姓名" />
+    <MESSAGE value="Partner存於UserTablet資料庫、修改expand partner JSON" />
+    <MESSAGE value="針對使用者顯示喜好按鈕" />
+    <MESSAGE value="partner對話框顏色更改" />
+    <option name="LAST_COMMIT_MESSAGE" value="partner對話框顏色更改" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -302,12 +327,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test.py</url>
-          <line>650</line>
+          <line>653</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/chatbot_func_2.py</url>
-          <line>486</line>
+          <line>487</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

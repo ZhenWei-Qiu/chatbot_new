@@ -42,11 +42,12 @@ var fishGif_ImageUrl = "/static/image/fish.gif";
 var starPng_ImageUrl = "/static/image/star.png";
 var manPng_ImageUrl = "/static/image/man.png";
 var voice = []
-
+var idle;
+var idle_flag;
 
 // 監聽connect
 // var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('http://dc35-140-115-53-209.ngrok.io')
+var socket = io.connect('http://9046-140-115-53-209.ngrok.io')
 // user connect
 socket.on('connect', function () { 
 
@@ -76,6 +77,8 @@ socket.on('user_count_'+ roomID, function (data) {
       room_users_data = data.users
       console.log("room_users_data", room_users_data)
 });
+
+
 
 // socket監聽response事件，接收data
 socket.on('chat_recv_'+ roomID, function (data) {
@@ -518,11 +521,92 @@ function clear_taskHint() {
 //顯示書本封面
 function show_bookImg(bookName){
 
-  var url = 'http://story.csie.ncu.edu.tw/storytelling/images/chatbot_books/' + bookName.replace(' ', '%20') + '.jpg'
+  var url = 'http://story.csie.ncu.edu.tw/storytelling/images/chatbot_books/' + bookName.replace(' ', '%20').replace("'", "’") + '.jpg'
   var bookImg = document.getElementById("book");
   bookImg.src = url;
   bookImg.style.visibility = "visible";
 }
+
+//偵測閒置
+var maxTime = 15; // seconds 閒置時間
+var time = maxTime;
+$(document).mousemove(function(e){
+  time = maxTime; // reset
+  socket.emit('activity', {
+      roomID : roomID,
+      username : userID,
+  });
+
+});
+
+$(document).mousedown(function(e){
+  time = maxTime; // reset
+  socket.emit('activity', {
+      roomID : roomID,
+      username : userID,
+  });
+});
+
+$(document).keydown(function(e){
+  time = maxTime; // reset
+  socket.emit('activity', {
+      roomID : roomID,
+      username : userID,
+  });
+});
+
+
+var intervalId = setInterval(function() {
+    time--;
+    if (time <= 0) {
+        ShowInvalidLoginMessage();
+        time = maxTime;
+        // clearInterval(intervalId);
+    }
+}, 1000)
+
+function ShowInvalidLoginMessage() {
+  console.log("您已經長時間沒操作了，即將退出系統");
+  socket.emit('idle', {
+    roomID : roomID,
+    username : userID,
+  });
+}
+
+// idle people
+socket.on('user_idle_'+ roomID, function (data) { 
+      // console.log("idle people", data.idle)
+      idle = data.idle
+      if(idle.hasOwnProperty(userID) && idle.hasOwnProperty(getPartner())){
+        if(idle[userID] == 1 && idle[getPartner()] == 0){
+          idle_flag = userID
+        }
+        if(idle[userID] == 0 && idle[getPartner()] == 1){
+          idle_flag = getPartner()
+        }
+      }
+      
+
+      // 判斷雙人同時閒置
+      if(idle.hasOwnProperty(userID) && idle.hasOwnProperty(getPartner())){
+        if(idle[userID] == 1 && idle[getPartner()] == 1){
+          console.log("兩人都在休息!!!!!")
+          
+          
+          if(session["params"].hasOwnProperty("User_book")){
+            if(idle_flag != userID){
+              handler["name"] = "Idle";
+              scene["name"] = "Idle";
+              send_userJson()
+            }
+            
+          }
+        }
+      }
+      
+});
+
+
 // var handler = { "name" : "check_input"}; 
 // var intent = { "params" : {}, "query" : "" }; 
 // var scene = { "name" : "check_input" };  
