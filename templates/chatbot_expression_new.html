@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 清除快取 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <title>聊天機器人</title>    
+		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/expression_style_new.css')}}?v=1.6.0"/></link>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/speech_input.css') }}"/></link>
+    <link href="{{ url_for('static', filename='image/icon.png') }}" rel="shortcut icon">
+    
+</head>
+<body>
+    <!-- 對話顯示 -->
+    <div class="talk_content" id="talk_content_id">	 
+        <div class="info_content" id="info_content_id">  
+          <div class="botsay" id="botsay">               
+            <div class="dialog-bottom" >     哈囉!      </div>
+          </div>
+          <div class="head"><img id="fish" src="{{url_for('static', filename='image/expression/00.png')}}" ></img></div>
+          
+          <div class = "usersay" id="usersay" >               
+            <div class="user local" > 
+             
+            </div>
+          </div>
+          
+          <!-- <div id="score" >x 8</div>
+          <img id="star" src="{{url_for('static', filename='image/star.png')}}"></img> -->
+        </div>
+        <div class="talk_input"  id="talk_input_id">  
+          <div class="talk_suggest" id="talk_suggest_id"></div>
+          <div class="talk_taskHint" id="talk_taskHint_id"></div>
+          <input type="text" class="talk_word speech_input " lang="zh-CN"  id="talkwords" onkeypress="user_inputPress()" autocomplete="off" >
+          <input type="button" value="傳送" class="talk_sendBtn" id="talksend" value = "" onclick="user_sendMsg(Object)">
+        </div>
+        <div class="talk_show" id="words" >
+            
+          <!-- chatbot對話 -->
+          <div class="user remote">
+            <!-- 機器人頭像 -->
+            <!-- <div class="avatar">
+              <div class="pic">
+                 <img src="{{url_for('static', filename='image/fish.jpg')}}" ></img>
+              </div>
+              <div class="name">鹹魚姊姊</div>
+            </div> 
+              <div class="text">哈囉！請先告訴我你的班級唷！</div>-->
+          </div>
+
+         
+
+          <!-- user對話 -->
+          <!-- <div class="user local">
+           
+            <div class="avatar">
+              <div class="pic">
+                <img src="https://picsum.photos/100/100?random=16" ></img>
+              </div>
+              <div class="name">座號13</div>
+            </div>
+
+
+            <div class="text">你好</div>
+          </div> -->
+  
+       
+       <!--</ul> 對話輸入 -->     
+        </div>
+        
+
+    </div>
+
+  </body>
+</html>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/expression_scripts_new.js') }}?v=1.2.0" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/speech_input.js')}}" type="text/javascript"></script>
