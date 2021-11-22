@@ -102,13 +102,12 @@ def on_join(json):
         username = json['username']
 
     if roomID in users_data:
-        print(users_data)
         users_data[roomID]["count"] += 1
         users_data[roomID]["users"][username] = users_data[roomID]["count"]
-        print(users_data)
+
     else:
         users_data[roomID] = {"count": 1, "users": {username: 1}}
-        # print(users_data)
+    # print(users_data)
 
 
     print("online user：", users_data[roomID]["count"])
@@ -139,7 +138,7 @@ def on_leave(json):
 @socketio.on('idle')
 def idle(json):
     global users_data
-    print('idle', str(json))
+
     roomID = None
     if json.get('roomID', None):
         roomID = json['roomID']
@@ -149,7 +148,7 @@ def idle(json):
         users_data[roomID]["idle"][username] = 1
     else:
         users_data[roomID]["idle"] = {username: 1}
-    print(users_data)
+
 
 
     print("idle user：", users_data[roomID]["idle"])
@@ -158,12 +157,11 @@ def idle(json):
 @socketio.on('activity')
 def activity(json):
     global users_data
-    print('activity', str(json))
+
     roomID = None
     if json.get('roomID', None):
         roomID = json['roomID']
         username = json['username']
-
 
     if roomID in users_data and "idle" in users_data[roomID]:
         users_data[roomID]["idle"][username] = 0
@@ -171,7 +169,7 @@ def activity(json):
         users_data[roomID]["idle"] = {username: 0}
 
 
-    print("idle user：", users_data[roomID]["idle"])
+
     socketio.emit('user_idle_{roomID}'.format(roomID=roomID),
                   {"idle": users_data[roomID]["idle"]})
 

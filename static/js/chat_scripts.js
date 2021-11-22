@@ -89,7 +89,7 @@ socket.on('chat_recv_'+ roomID, function (data) {
   
     add_othersTalk(data.username, data.message)
   }
-
+    session["id"] = data.sessionId
     console.log(data)
     res_data = data.response
     analyze_responseData(data.username);
@@ -528,10 +528,10 @@ function show_bookImg(bookName){
 }
 
 //偵測閒置
-var maxTime = 15; // seconds 閒置時間
-var time = maxTime;
+var maxTime = 15*1; // seconds 閒置時間
+var idle_time = maxTime;
 $(document).mousemove(function(e){
-  time = maxTime; // reset
+  idle_time = maxTime; // reset
   socket.emit('activity', {
       roomID : roomID,
       username : userID,
@@ -540,7 +540,7 @@ $(document).mousemove(function(e){
 });
 
 $(document).mousedown(function(e){
-  time = maxTime; // reset
+  idle_time = maxTime; // reset
   socket.emit('activity', {
       roomID : roomID,
       username : userID,
@@ -548,7 +548,7 @@ $(document).mousedown(function(e){
 });
 
 $(document).keydown(function(e){
-  time = maxTime; // reset
+  idle_time = maxTime; // reset
   socket.emit('activity', {
       roomID : roomID,
       username : userID,
@@ -557,15 +557,15 @@ $(document).keydown(function(e){
 
 
 var intervalId = setInterval(function() {
-    time--;
-    if (time <= 0) {
-        ShowInvalidLoginMessage();
-        time = maxTime;
+    idle_time--;
+    if (idle_time <= 0) {
+        idle_time = maxTime;
+        user_idle(); 
         // clearInterval(intervalId);
     }
 }, 1000)
 
-function ShowInvalidLoginMessage() {
+function user_idle() {
   console.log("您已經長時間沒操作了，即將退出系統");
   socket.emit('idle', {
     roomID : roomID,
@@ -577,6 +577,7 @@ function ShowInvalidLoginMessage() {
 socket.on('user_idle_'+ roomID, function (data) { 
       // console.log("idle people", data.idle)
       idle = data.idle
+      // 儲存idle_flag為第一個idle的人
       if(idle.hasOwnProperty(userID) && idle.hasOwnProperty(getPartner())){
         if(idle[userID] == 1 && idle[getPartner()] == 0){
           idle_flag = userID
@@ -591,12 +592,16 @@ socket.on('user_idle_'+ roomID, function (data) {
       if(idle.hasOwnProperty(userID) && idle.hasOwnProperty(getPartner())){
         if(idle[userID] == 1 && idle[getPartner()] == 1){
           console.log("兩人都在休息!!!!!")
-          
-          
+   
           if(session["params"].hasOwnProperty("User_book")){
             if(idle_flag != userID){
-              handler["name"] = "Idle";
-              scene["name"] = "Idle";
+              if(res_data["session"]["params"]["User_idle"] < 3){
+                handler["name"] = "All_idle";
+                scene["name"] = "All_idle";
+              }
+              else{
+                session["params"]["dialog_count"] = session["params"]["dialog_count_limit"]
+              }
               send_userJson()
             }
             
@@ -647,12 +652,13 @@ function send_userJson() {
           "session": session, 
           "user": user 
   } 
-  // console.log(postData)
+  console.log(postData)
   // 發送Data到socket
   socket.emit('chat_send', {
       roomID : roomID,
       username : userID,
       message : TalkWords.value,
+      sessionId: session["id"],
       postData : postData
   });
       
@@ -660,9 +666,9 @@ function send_userJson() {
 }
 
 function analyze_responseData(name){
-  
-  /* Step1： Respone JSON 處理 */
 
+  /* Step1： Respone JSON 處理 */
+ 
   // JSON 存在 prompt
   if(res_data.hasOwnProperty("prompt")){
     chatbotWords = [];
@@ -754,7 +760,7 @@ function analyze_responseData(name){
   if(res_data.hasOwnProperty("session")){
     if(res_data["session"]["params"].hasOwnProperty("Partner_check")){
       // 確認喜好不為該使用者
-      if(userID != res_data["session"]["params"]["Partner_check"]){
+      if(userID != res_data["session"]["params"]["Partner_expand"]){
         clear_suggestList();
       }
     }
@@ -795,34 +801,34 @@ function analyze_responseData(name){
     },1500);
   }
 
-
+  // delete 20211116 重複發送json
   // 判斷不等待使用者輸入直接觸發request傳送(對話達到指定次數)
-  if(res_data.hasOwnProperty("session")){
-    if(res_data["session"]["params"].hasOwnProperty("dialog_count")){
-      // console.log("dialog_count")
-      // console.log(res_data["session"]["params"]["dialog_count"])
-      // console.log(res_data["session"]["params"]["dialog_count_limit"]-1)
-      if(res_data["session"]["params"]["dialog_count"] > res_data["session"]["params"]["dialog_count_limit"] - 1){
+  // if(res_data.hasOwnProperty("session")){
+  //   if(res_data["session"]["params"].hasOwnProperty("dialog_count")){
+  //     // console.log("dialog_count")
+  //     // console.log(res_data["session"]["params"]["dialog_count"])
+  //     // console.log(res_data["session"]["params"]["dialog_count_limit"]-1)
+  //     if(res_data["session"]["params"]["dialog_count"] > res_data["session"]["params"]["dialog_count_limit"] - 1){
 
-        if(exist_chatbotTyping()){
-          clear_chatbotTyping()
-        }
-        // show_chatbotTyping()
+  //       if(exist_chatbotTyping()){
+  //         clear_chatbotTyping()
+  //       }
+  //       // show_chatbotTyping()
 
-        //判斷為訊息發送者才可發送req
-        setTimeout(function(){  
-            if(name == userID){
-              send_userJson()
-            }
-            else{
-              chatbotWords = [];
-              chatbotWords_speech = []; 
-            }
-            clear_chatbotTyping()
-        },1500);
-      }
-    }
-  }
+  //       //判斷為訊息發送者才可發送req
+  //       setTimeout(function(){  
+  //           if(name == userID){
+  //             send_userJson()
+  //           }
+  //           else{
+  //             chatbotWords = [];
+  //             chatbotWords_speech = []; 
+  //           }
+  //           clear_chatbotTyping()
+  //       },1500);
+  //     }
+  //   }
+  // }
   
 
   // 判斷不等待使用者輸入直接觸發request傳送(書名階段比對失敗)
