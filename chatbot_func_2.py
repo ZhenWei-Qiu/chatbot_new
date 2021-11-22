@@ -785,8 +785,8 @@ def match_book(req):
                             Prompt_list = ['Record']
                         else:
                             # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
-                            Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            # Prompt_list = ['Prompt_character']
+                            # Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            Prompt_list = ['Prompt_character']
                 else:
                     if player == 1:
                         Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
@@ -794,8 +794,8 @@ def match_book(req):
                         if character == 'no_chatbot':
                             Prompt_list = ['Record']
                         else:
-                            Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            # Prompt_list = ['Prompt_character']
+                            # Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            Prompt_list = ['Prompt_character']
                 if player == 1:
                     random.shuffle(Prompt_list)
 
@@ -4141,6 +4141,14 @@ def expand_2players(req):
 
     else:
         if not Partner_check:
+
+            # 記錄對話
+            dialog_index = myDialogList.find().count()
+            dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
+            userSay = req['intent']['query']
+            connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id,
+                                req['scene']['name'])
+
             find_common = {'type': 'common_like'}
             find_result = myCommonList.find_one(find_common)
             # 判斷座號有無學生姓名
@@ -4169,6 +4177,10 @@ def expand_2players(req):
                     }
                 }
             }
+            # 記錄對話過程
+            dialog_index = myDialogList.find().count()
+            dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
+            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
         else:
             response = ''
             suggest_like = False
@@ -4234,7 +4246,7 @@ def expand_2players(req):
                                    question_count=question_count,
                                    User_say_len=User_say_len,
                                    dialog_count=0,
-                                   dialog_count_limit=1)
+                                   dialog_count_limit=2)
                 },
                 "scene": {
                     "next": {
@@ -4303,12 +4315,22 @@ def feedback_2players(req):
         partner_name = studentName_dic[int(partner)]
     else:
         partner_name = partner + "號"
-    response_tmp2 = '那輪到' + partner_name + '分享一下你對這本書的想法吧！'
-    # response_list = [response, response_tmp, response_tmp2]
-    response_list = [response,  response_tmp2]
+    response_tmp = '那輪到' + partner_name + '分享一下你對這本書的想法吧！'
+    response_list = [response,  response_tmp]
     response_len = [len(response) / 2,  1]
 
     if dialog_count < dialog_count_limit:
+        if dialog_count == 1:
+            res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
+            user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
+            # 判斷座號有無學生姓名
+            if int(user_id_tmp) in studentName_dic:
+                name = studentName_dic[int(user_id_tmp)]
+            else:
+                name = user_id_tmp + "號"
+            response = res_moderator.replace("XX", name).replace("OO", partner_name)
+            response_list = [response]
+
         dialog_count += 1
         response_dict = {
             "prompt": {
@@ -4335,38 +4357,36 @@ def feedback_2players(req):
         }
 
     else:
-        response = '你們都分享的很棒呢！'
-        response_tmp2 = "最後關於這本書，還有什麼想分享的呢？"
-        response_list = [response, response_tmp2]
+        response = '哇！你們都說的真好！'
+        response_tmp = '我可以推薦你們一些書，你們想看看嗎？'
+        response_list = [response, response_tmp]
         response_dict = {
             "prompt": {
                 "firstSimple": {
                     "speech": response_list,
                     "text": response_list,
-                    "delay": [len(response) / 2, 2]
+                    "delay": [len(response) / 2]
                 },
-
+                "suggestions": [{'title': '好'}, {'title': '不用了'}]
             },
             "session": {
                 "params": {
                     "User_state": state,
                     "noIdea_count": noIdea_count,
                     "question_count": question_count,
-                    "User_say_len": User_say_len,
-                    "dialog_count": 0,
-                    "dialog_count_limit": 3
+                    "User_say_len": User_say_len
 
                 }
             },
             "scene": {
                 "next": {
-                    "name": "summarize_2players"
+                    "name": "Check_suggestion"
                 }
             }
         }
 
     partner = userClass + partner
-    response += response_tmp2
+    response += response_tmp
     connectDB.updateUser(myUserList, user_id, bookName, state, partner)
     # connectDB.addFeedback(myFeedback, user_id, suggest_like, userSay)
     # 記錄對話過程
