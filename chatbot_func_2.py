@@ -203,7 +203,7 @@ def check_input(req):
             }
         }
 
-    elif '覺得' in userSay and player == 2 and dialog_count < dialog_count_limit and User_feeling == False:
+    elif '覺得' in userSay and player == 2 and dialog_count < dialog_count_limit and User_feeling == False and dialog_count != 3:
         question_count = req['session']['params']['question_count']
         dialog_count += 1
         response_dict = {
@@ -229,7 +229,7 @@ def check_input(req):
             }
         }
 
-    elif ('太' in userSay or '非常' in userSay or '很' in userSay or '真' in userSay) and player == 2 and dialog_count < dialog_count_limit:
+    elif ('太' in userSay or '非常' in userSay or '很' in userSay or '真' in userSay) and player == 2 and dialog_count < dialog_count_limit and dialog_count != 3:
         question_count = req['session']['params']['question_count']
         dialog_count += 1
         response_dict = {
@@ -393,8 +393,12 @@ def user_login():
                 "delay": [2],
                 "expression": "happy"
             },
-            'suggestions': [{'title': '丁班'},
-                            {'title': '戊班'}]
+            'suggestions': [{'title': '401'},
+                            {'title': '402'},
+                            {'title': '403'},
+                            {'title': '404'}]
+            # 'suggestions': [{'title': '丁班'},
+            #                 {'title': '戊班'}]
         },
         "scene": {
             "next": {
@@ -421,7 +425,7 @@ def user_login():
 def input_userId(req):
     print("START_id")
     userInput = req['intent']['query']
-    if userInput != '丁班' and userInput != '戊班' and userInput != 'Banban' and userInput != 'DingBan':
+    if userInput != '丁班' and userInput != '戊班' and userInput != 'Banban' and userInput != 'DingBan' and userInput != '401' and userInput != '402' and userInput != '403' and userInput != '404':
         response = '要先點選班級對應的選項告訴我唷，'
         # 20210318 修改JSON格式
         response_dict = {
@@ -432,8 +436,12 @@ def input_userId(req):
                     "delay": [2],
                     "expression": "happy"
                 },
-                'suggestions': [{'title': '丁班'},
-                                {'title': '戊班'}]
+                "suggestions": [{"title": "401"},
+                                {"title": "402"},
+                                {"title": "403"},
+                                {"title": "404"}]
+                # 'suggestions': [{'title': '丁班'},
+                #                 {'title': '戊班'}]
             },
             "scene": {
                 "next": {
@@ -611,7 +619,7 @@ def match_book(req):
                 # 避免輸入字串太短
                 break
             else:
-                print(s2 + '，相似度：' + str(cosine.similarity_profiles(p1, p2)))
+                # print(s2 + '，相似度：' + str(cosine.similarity_profiles(p1, p2)))
                 value = cosine.similarity_profiles(p1, p2)
                 if value >= 0.45:
                     if index == 0:
@@ -785,8 +793,8 @@ def match_book(req):
                             Prompt_list = ['Record']
                         else:
                             # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
-                            # Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            Prompt_list = ['Prompt_character']
+                            Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            # Prompt_list = ['Prompt_character']
                 else:
                     if player == 1:
                         Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
@@ -794,8 +802,8 @@ def match_book(req):
                         if character == 'no_chatbot':
                             Prompt_list = ['Record']
                         else:
-                            # Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            Prompt_list = ['Prompt_character']
+                            Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            # Prompt_list = ['Prompt_character']
                 if player == 1:
                     random.shuffle(Prompt_list)
 
@@ -1949,7 +1957,7 @@ def Prompt_character_experience(req):
                 break
 
 
-    response = response.replace("XX", response_tmp[0])
+    # response = response.replace("XX", response_tmp[0])
 
     # 記錄對話
     myDialogList = nowBook['S_R_Dialog']
@@ -2075,8 +2083,10 @@ def Prompt_response(req, predictor, senta):
     global Prompt_list, Prompt_task_list
     user_nonsense = 0
     task = ""
-    userSay = req['session']['params']['User_say']
     player = req['user']['player']
+    userSay = req['session']['params']['User_say']
+
+
     if player != 2:
         user_id = req['session']['params']['User_id']
     else:
@@ -2839,7 +2849,7 @@ def Prompt_response(req, predictor, senta):
                 },
                 "scene": {
                     "next": {
-                        "name": "Moderator_connect"
+                        "name": "Moderator_interaction"
                     }
                 }
             }
@@ -3004,7 +3014,9 @@ def Prompt_response(req, predictor, senta):
             response = ""
             # 20211006 雙人階段稱讚回復
             if player == 2:
-                response = random.choice(['你們都講得很好呢！', '你們說的很好唷！', '你們講得很不錯！', '沒錯！沒錯！你們說的真好'])
+                find_common = {'type': 'common_prasie'}
+                find_common_result = myCommonList.find_one(find_common)
+                response = choice(find_common_result['content']).replace('你', '你們')
             response_dict = {
                 "prompt": {
                     "firstSimple": {
@@ -3173,20 +3185,23 @@ def Feeling(req):
 
     feeling = random.choice(['positive', 'negative', 'neutral'])
 
-    response = ""
+
     if feeling == 'positive':
-        response += '我覺得很棒耶，'
+        find_common = {'type': 'common_feeling_positive'}
     elif feeling == 'negative':
-        response += '我覺得沒有，'
+        find_common = {'type': 'common_feeling_negative'}
     else:
-        response += '我覺得還好，'
+        find_common = {'type': 'common_feeling_neutral'}
+
+    find_common_result = myCommonList.find_one(find_common)
+    response = choice(find_common_result['content'])
 
 
     if int(partner) in studentName_dic:
         partner_name = studentName_dic[int(partner)]
     else:
         partner_name = partner + "號"
-    response += '那XX你覺得呢？'
+    response += '，那XX你覺得呢？'
     response = response.replace("XX", partner_name)
 
 
@@ -3248,8 +3263,9 @@ def Assent(req):
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id']
 
-    res_assent = random.choice(["沒錯，我也是這樣想！", "對阿對阿，就是那樣！", '哈哈哈我也這麼覺得耶！'])
-    response = res_assent
+    find_common = {'type': 'common_assent'}
+    find_common_result = myCommonList.find_one(find_common)
+    response = choice(find_common_result['content'])
 
     dialog_count += 1
 
@@ -3545,9 +3561,9 @@ def All_idle(req):
     #     else:
     #         # 隨機選取
     #         response = random.choice(find_result)['Content']
-    find_common_idle = {'type': 'common_idle'}
-    common_result_idle = myCommonList.find_one(find_common_idle)
-    response = choice(common_result_idle['content'])
+    find_common_All_idle = {'type': 'common_All_idle'}
+    common_result_All_idle = myCommonList.find_one(find_common_All_idle)
+    response = choice(common_result_All_idle['content'])
 
 
     User_idle += 1
@@ -3622,9 +3638,10 @@ def Moderator_single_idle(req):
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id']
 
-
-    res_moderator = random.choice(["XX講得很好喔！OO有什麼想法嗎？", "OO也說說看你覺得如何？", 'OO換你說說看吧！', "OO你在想什麼呢？"])
-    user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
+    find_common = {'type': 'common_Moderator_single_idle'}
+    find_common_result = myCommonList.find_one(find_common)
+    res_moderator  = choice(find_common_result['content'])
+    user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
     # 判斷座號有無學生姓名
     if int(user_id_tmp) in studentName_dic:
         name = studentName_dic[int(user_id_tmp)]
@@ -3681,8 +3698,8 @@ def Moderator_single_idle(req):
     return response_dict
 
 # 機器人協調換人說
-def Moderator_connect(req):
-    print('協調串連')
+def Moderator_interaction(req):
+    print('促進互動')
     userSay = req['session']['params']['User_say']
     bookName = req['session']['params']['User_book']
     session_id = req['session']['id']
@@ -3714,16 +3731,17 @@ def Moderator_connect(req):
 
     res_moderator = ""
     if nowScene == "Prompt_character":
-        res_moderator = random.choice(["OO你有看到和XX相同的地方嗎？", "XX說到的地方，OO你覺得如何？"])
+        find_common = {'type': 'common_Moderator_interaction_ content'}
     elif nowScene == "Prompt_action_reason" or nowScene == "Prompt_character_sentiment":
-        res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
+        find_common = {'type': 'common_Moderator_interaction_dialog'}
     elif nowScene == "Prompt_action_experience" or nowScene == "Prompt_character_experience":
-        res_moderator = random.choice(["OO也有和XX遇過相同事情嗎？", "OO你和XX有類似經驗嗎？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
+        find_common = {'type': 'common_Moderator_interaction_experience'}
+    find_common_result = myCommonList.find_one(find_common)
+    res_moderator = choice(find_common_result['content'])
 
 
 
-
-    user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
+    user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
 
     # 判斷座號有無學生姓名
     if int(user_id_tmp) in studentName_dic:
@@ -4315,14 +4333,22 @@ def feedback_2players(req):
         partner_name = studentName_dic[int(partner)]
     else:
         partner_name = partner + "號"
-    response_tmp = '那輪到' + partner_name + '分享一下你對這本書的想法吧！'
+    find_common = {'type': 'common_trun'}
+    find_common_result = myCommonList.find_one(find_common)
+    response_tmp2 = choice(find_common_result['content'])
+    find_common_expand = {'type': 'common_expand_content'}
+    find_common_expand_result = myCommonList.find_one(find_common_expand)
+    response_tmp3 = choice(find_common_expand_result['content'])
+    response_tmp = response_tmp2 + partner_name + response_tmp3
     response_list = [response,  response_tmp]
     response_len = [len(response) / 2,  1]
 
     if dialog_count < dialog_count_limit:
         if dialog_count == 1:
-            res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
-            user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
+            find_common_Moderator = {'type': 'common_Moderator_interaction_dialog'}
+            find_common_Moderator_result = myCommonList.find_one(find_common_Moderator)
+            res_moderator = choice(find_common_Moderator_result['content'])
+            user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
             # 判斷座號有無學生姓名
             if int(user_id_tmp) in studentName_dic:
                 name = studentName_dic[int(user_id_tmp)]
@@ -4433,11 +4459,16 @@ def summarize_2players(req):
         partner_name = studentName_dic[int(partner)]
     else:
         partner_name = partner + "號"
-    response = '輪到' + partner_name + '最後講講看你對這本書的想法吧！'
+    find_common = {'type': 'common_trun'}
+    find_common_result = myCommonList.find_one(find_common)
+    response_tmp = choice(find_common_result['content'])
+    response = response_tmp + partner_name + '最後講講看你對這本書的想法吧！'
     if dialog_count < dialog_count_limit:
         if dialog_count == 1:
-            res_moderator = random.choice(["OO你覺得XX說得如何？", "OO你覺得XX說得怎麼樣？說說你的想法吧！", 'OO說說你對XX講的想法吧！'])
-            user_id_tmp = user_id.replace("戊班", "").replace("丁班", "")
+            find_common_Moderator = {'type': 'common_Moderator_interaction_dialog'}
+            find_common_Moderator_result = myCommonList.find_one(find_common_Moderator)
+            res_moderator = choice(find_common_Moderator_result['content'])
+            user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
             # 判斷座號有無學生姓名
             if int(user_id_tmp) in studentName_dic:
                 name = studentName_dic[int(user_id_tmp)]

@@ -3,11 +3,12 @@ from flask_socketio import SocketIO, rooms
 from flask_cors import *
 from allennlp.predictors.predictor import Predictor
 from nltk.corpus import wordnet as wn
+from engineio.payload import Payload
 import paddlehub as hub
 import nltk
 import chatbot_func
 import chatbot_func_2
-
+Payload.max_decode_packets = 50
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -151,7 +152,7 @@ def idle(json):
 
 
 
-    print("idle user：", users_data[roomID]["idle"])
+    # print("idle user：", users_data[roomID]["idle"])
     socketio.emit('user_idle_{roomID}'.format(roomID=roomID), {"idle": users_data[roomID]["idle"]})
 
 @socketio.on('activity')

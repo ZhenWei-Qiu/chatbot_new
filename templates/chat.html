@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
@@ -37,7 +38,9 @@
             <div class="flex-container">
                 <!-- 其他人頭像 -->
                 <div class="other_frame">
-                    <div class="other_head"><img src="{{url_for('static', filename='image/man.png')}}"></img></div>
+                    <div class="other_head"  id="other_head_id">
+                        <!-- <img src="{{url_for('static', filename='image/man.png')}}"></img> -->
+                    </div>
                     <div class="othersay" id="othersay">
                         <div class="user other">
                             <!-- <div class="text2" id="othersay">等我一下...</div> -->
@@ -46,7 +49,9 @@
                 </div>
                 <!-- user頭像 -->
                 <div class="user_frame">
-                    <div class="user_head"><img src="{{url_for('static', filename='image/me.png')}}"></img></div>
+                    <div class="user_head" id="user_head_id">
+                        <!-- <img src="{{url_for('static', filename='image/me.png')}}"></img> -->
+                    </div>
                     <div class="usersay" id="usersay">
                         <div class="user local">
                             <!-- <div class="text2" id="usersay">你好</div> -->
@@ -56,7 +61,7 @@
             </div>
             <!-- 書本 -->
             <div>
-                <img id="book" ></img>
+                <img id="book"></img>
             </div>
             <!-- 對話輸入 -->
             <div class="talk_input" id="talk_input_id">
@@ -65,9 +70,10 @@
                 <input type="text" class="talk_word speech_input " lang="zh-CN" id="talkwords" onkeypress="user_inputPress()" autocomplete="off">
                 <input type="button" value="傳送" class="talk_sendBtn" id="talksend" value="" onclick="user_sendMsg(Object)">
             </div>
+            <input type="button" value="顯示紀錄" id="chatLog" value="" style="float:right;" onclick="toggle_visibility()">
         </div>
     </div>
-    <div class="talk_content" id="talk_content_id">
+    <div class="talk_content" id="talk_content_id" style="display: none;">
         <!-- user頭像 -->
         <!-- <div class="user local">
           
