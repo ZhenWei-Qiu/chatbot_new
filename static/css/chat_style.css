@@ -51,7 +51,7 @@
 
     .dialogue_screen_mob {
         width: 725px;
-        height: 700px;
+        height: 725px;
         margin: 30px auto 0;
         background: #f9f9f9;
         background-image: url("../image/background.png");
@@ -238,7 +238,7 @@ ul li {
 
 .dialogue_screen {
     width: 725px;
-    height: 725px;
+    height: 730px;
     /*    border: 1px solid #666;*/
     margin: 30px auto 0;
     background: #f9f9f9;
@@ -310,8 +310,8 @@ ul li {
 }
 
 .other_head img {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
 }
 
 .othersay {
@@ -334,8 +334,8 @@ ul li {
 }
 
 .user_head img {
-    width: 120px;
-    height: 135px;
+    width: 130px;
+    height: 130px;
 }
 
 .usersay {
@@ -580,3 +580,4 @@ button {
 }
 
 </style>
+
