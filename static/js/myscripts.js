@@ -386,7 +386,8 @@ function analyze_responseData(){
 
 	// JSON 存在 prompt
 	if(res_data.hasOwnProperty("prompt")){
-
+		chatbotWords = [];
+    	chatbotWords_speech = []; 
 		//機器人回應文字
 		for(var item_text in res_data["prompt"]["firstSimple"]["text"]){ 		
  		 	chatbotWords[item_text] = res_data["prompt"]["firstSimple"]["text"][item_text]
@@ -416,6 +417,7 @@ function analyze_responseData(){
 	}
 	else{
 		chatbotWords = [];
+    	chatbotWords_speech = []; 
 	}
 
 	// JSON 存在 scene 用作場景切換功能
@@ -431,12 +433,17 @@ function analyze_responseData(){
 
  	// JSON 存在 suggestions 用作建議輸入文字
 	if(res_data["prompt"].hasOwnProperty("suggestions")){
+		suggest_arr = [];
+    	clear_suggestList();
 		for(var item_suggest in res_data["prompt"]["suggestions"]){ 		
  		 	suggest_arr[item_suggest] = res_data["prompt"]["suggestions"][item_suggest]["title"]
  		 	// console.log(res_data["prompt"]["suggestions"])
  		}
  		suggest_exist = 1;
- 		show_suggestList();
+ 		// 建議案紐等待最後一串文字顯示
+	    setTimeout(function(){  
+	        show_suggestList();
+	    },7000 * (chatbotWords.length - 1));
  	}
  	else{
  		suggest_arr = [];

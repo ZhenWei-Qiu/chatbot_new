@@ -54,7 +54,7 @@ var no_next_idle_flag = 1
 
 // 監聽connect
 // var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('http://9046-140-115-53-209.ngrok.io')
+var socket = io.connect('http://a5f0-140-115-53-209.ngrok.io')
 // user connect
 socket.on('connect', function () { 
 
@@ -808,7 +808,11 @@ function analyze_responseData(name){
       // console.log(res_data["prompt"]["suggestions"])
     }
     suggest_exist = 1;
-    show_suggestList();
+    // 建議案紐等待最後一串文字顯示
+    setTimeout(function(){  
+        show_suggestList();
+    },7000 * (chatbotWords.length - 1));
+    
   }
   else{
     suggest_arr = [];
@@ -880,7 +884,7 @@ function analyze_responseData(name){
           chatbotWords_speech = []; 
         }
         clear_chatbotTyping()
-    },3000);
+    },2000);
   }
 
   // 判斷expand場景關掉計時
