@@ -205,7 +205,7 @@ def check_input(req):
 
     elif '覺得' in userSay and player == 2 and dialog_count < dialog_count_limit and User_feeling == False and dialog_count != 3:
         question_count = req['session']['params']['question_count']
-        dialog_count += 1
+        # dialog_count += 1
         response_dict = {
             "prompt": {
                 "firstSimple": {
@@ -231,7 +231,7 @@ def check_input(req):
 
     elif ('太' in userSay or '非常' in userSay or '很' in userSay or '真' in userSay) and player == 2 and dialog_count < dialog_count_limit and dialog_count != 3:
         question_count = req['session']['params']['question_count']
-        dialog_count += 1
+        # dialog_count += 1
         response_dict = {
             "prompt": {
                 "firstSimple": {
@@ -794,7 +794,7 @@ def match_book(req):
                         else:
                             # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
                             Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            # Prompt_list = ['Prompt_character']
+                            # Prompt_list = ['Prompt_vocabulary']
                 else:
                     if player == 1:
                         Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
@@ -803,7 +803,7 @@ def match_book(req):
                             Prompt_list = ['Record']
                         else:
                             Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            # Prompt_list = ['Prompt_character']
+                            # Prompt_list = ['Prompt_vocabulary']
                 if player == 1:
                     random.shuffle(Prompt_list)
 
@@ -904,7 +904,7 @@ def match_book(req):
     print(response)
     return response_dict
 
-
+# 角色引導
 def Prompt_character(req):
     print('角色引導')
     find_common = {'type': 'common_Prompt_character'}
@@ -1003,7 +1003,7 @@ def Prompt_character(req):
     print(response)
     return response_dict
 
-
+# 動作引導
 def Prompt_action(req):
     print('動作引導')
     find_common = {'type': 'common_Prompt_action'}
@@ -1099,7 +1099,7 @@ def Prompt_action(req):
     print(response)
     return response_dict
 
-
+# 對話引導
 def Prompt_dialog(req):
     print('對話引導')
     session_id = req['session']['id']
@@ -1181,7 +1181,7 @@ def Prompt_dialog(req):
     }
     print(response)
     return response_dict
-
+# 接龍引導沒比對到會觸發糾正
 def Prompt_event(req):
     print('接龍引導')
     find_common = {'type': 'common_Prompt_action'}
@@ -1422,6 +1422,7 @@ def Prompt_event(req):
 #     # response_dict['prompt'].update({'sentence_id': sentence_id,'dialog_count': dialog_count})
 #     return response_dict
 
+# 雙人聊天開頭
 def Prompt_beginning(req):
     print('雙人聊天開頭')
     # find_common = {'type': 'common_Prompt_character'}
@@ -1514,7 +1515,7 @@ def Prompt_beginning(req):
     }
     print(response)
     return response_dict
-
+# 角色情感引導
 def Prompt_character_sentiment(req):
     print('角色情感引導')
     # find_common = {'type': 'common_Prompt_character'}
@@ -1645,7 +1646,7 @@ def Prompt_character_sentiment(req):
     print(response)
     return response_dict
 
-
+# 事件情感引導'
 def Prompt_action_sentiment(req):
     print('事件情感引導')
     # find_common = {'type': 'common_Prompt_action'}
@@ -1741,7 +1742,7 @@ def Prompt_action_sentiment(req):
     }
     print(response)
     return response_dict
-
+# 詞彙引導
 def Prompt_vocabulary(req):
     print('詞彙引導')
     # find_common = {'type': 'common_Prompt_action'}
@@ -1821,13 +1822,9 @@ def Prompt_vocabulary(req):
     print(response)
     return response_dict
 
-
+# 事件原因引導
 def Prompt_action_reason(req):
     print('事件原因引導')
-    # find_common = {'type': 'common_Prompt_action'}
-    # find_common_result = myCommonList.find_one(find_common)
-    # response = choice(find_common_result['content'])
-
     session_id = req['session']['id']
     time = req['user']['lastSeenTime']
     bookName = req['session']['params']['User_book']
@@ -1915,7 +1912,7 @@ def Prompt_action_reason(req):
     print(response)
     return response_dict
 
-
+# 角色經驗引導
 def Prompt_character_experience(req):
     print('角色經驗引導')
 
@@ -2002,7 +1999,7 @@ def Prompt_character_experience(req):
     print(response)
     return response_dict
 
-
+# 事件經驗引導
 def Prompt_action_experience(req):
     print('事件經驗引導')
 
@@ -2296,15 +2293,26 @@ def Prompt_response(req, predictor, senta):
                                 word_morphy.append(i)
                         for index in word_morphy:                            
                             try:
-                                trans_word_pre = translator.translate(index, src='en', dest="zh-TW").text
-                                trans_word = translator.translate(trans_word_pre, dest="en").extra_data[
-                                    'parsed']
-                                if len(trans_word) > 3:
-                                    for i in trans_word[3][5][0]:
+                                # 20211220 翻譯衍生其他相似
+                                trans_word_pre = translator.translate(index, src='en', dest="zh-TW").extra_data['parsed']
+                                # trans_word_pre = translator.translate(index, src='en', dest="zh-TW").text
+                                # trans_word = translator.translate(trans_word_pre, dest="en").extra_data['parsed']
+                                # if len(trans_word) > 3:
+                                #     for i in trans_word[3][5][0]:
+                                #         if i[0] == 'verb':
+                                #             for trans_word_index in i[1]:
+                                #                 word_case.append(trans_word_index[0])
+                                #             break
+
+                                if len(trans_word_pre) > 3:
+                                    for i in trans_word_pre[3][5][0]:
                                         if i[0] == 'verb':
-                                            for trans_word_index in i[1]:
-                                                word_case.append(trans_word_index[0])
+                                            for index_verb in i[1]:
+                                                for j in index_verb[2]:
+                                                    word_case.append(j)
                                             break
+
+                                break
                             except Exception as translator_error:
                                 print(translator_error)
                                 continue
@@ -2462,6 +2470,27 @@ def Prompt_response(req, predictor, senta):
             response = choice(find_common_result['content'])
             response_speech = response
             noMatch = True
+
+    # 20211220 比對主要動詞與對話同義接續引導
+    checkVerb = False
+    myMaterialList = nowBook['MaterialTable']
+    find_material_result = myMaterialList.find_one({})
+    Main_Verb = find_material_result['Main_Verb'][0]
+    # 主要動詞其他解釋
+    word_case = []
+    trans_word_pre = translator.translate(Main_Verb, src='en', dest="zh-TW").extra_data['parsed']
+    if len(trans_word_pre) > 3:
+        for i in trans_word_pre[3][5][0]:
+            if i[0] == 'verb':
+                for index_verb in i[1]:
+                    for j in index_verb[2]:
+                        word_case.append(j)
+                break
+
+    # 使用者對話與主要動詞同義
+    for index in word_case:
+        if index == post_similarity:
+            checkVerb = True
 
     task = ""
 
@@ -2752,8 +2781,41 @@ def Prompt_response(req, predictor, senta):
             }
 
     elif dialog_count < dialog_count_limit and player == 2:
-
-        if user_dialog_count[user_id] == 3:
+        # 20211220 在Prompt_vocabulary場景比對到同義單字接續引導
+        if checkVerb is True and nowScene == 'Prompt_vocabulary':
+            response = "你們說對囉！找找看書本哪裡有提到吧！"
+            response_speech = response
+            response_dict = {
+                "prompt": {
+                    "firstSimple": {
+                        "speech": [response_speech],
+                        "text": [response],
+                        "delay": [2],
+                        "expression": "happy"
+                    }
+                },
+                "session": {
+                    "params": {
+                        "User_say": userSay,
+                        "dialog_count": dialog_count,
+                        "sentence_id": sentence_id,
+                        "noIdea_count": noIdea_count,
+                        "question_count": question_count,
+                        "User_say_len": User_say_len,
+                        "user_dialog_count": user_dialog_count,
+                        "dialog_count_limit": dialog_count_limit,
+                        "User_feeling": User_feeling,
+                        "User_idle": User_idle
+                    }
+                },
+                "scene": {
+                    "next": {
+                        "name": "check_input"
+                    }
+                }
+            }
+        # 使用者單方連需對話三次
+        elif user_dialog_count[user_id] == 3:
             user_dialog_count[user_id] = 0
             if noMatch:
                 response = ""
@@ -2787,8 +2849,8 @@ def Prompt_response(req, predictor, senta):
                     }
                 }
             }
+        # 使用者亂說話
         elif user_nonsense == 1:
-
             response = "你說得跟內容無關喔！告訴我發生什麼了吧！"
             response_speech = response
             response_dict = {
@@ -2820,7 +2882,8 @@ def Prompt_response(req, predictor, senta):
                     }
                 }
             }
-        elif dialog_count == 3 and nowScene != "Prompt_vocabulary":
+        # 對話第三次觸發促進互動場景
+        elif dialog_count == 3:
             if noMatch:
                 response = ""
                 response_speech = ""
@@ -3267,13 +3330,9 @@ def Assent(req):
     find_common_result = myCommonList.find_one(find_common)
     response = choice(find_common_result['content'])
 
-    dialog_count += 1
-
     # 記錄對話過程
     dialog_id += 1
     connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
-
-
 
 
     response_dict = {
@@ -3497,7 +3556,7 @@ def Real(req):
 
     return response_dict
 
-# 機器人說小朋友說過的話
+# 雙人閒置機器人促進對話
 def All_idle(req):
     print('雙人閒置')
     userSay = req['session']['params']['User_say']
@@ -3606,7 +3665,7 @@ def All_idle(req):
 
     return response_dict
 
-# 機器人協調換人說
+# 單人閒置機器人協調換人說
 def Moderator_single_idle(req):
     print('單人閒置')
     userSay = req['session']['params']['User_say']
@@ -3697,7 +3756,7 @@ def Moderator_single_idle(req):
 
     return response_dict
 
-# 機器人協調換人說
+# 機器人協調促進互動
 def Moderator_interaction(req):
     print('促進互動')
     userSay = req['session']['params']['User_say']
@@ -3732,7 +3791,7 @@ def Moderator_interaction(req):
     res_moderator = ""
     if nowScene == "Prompt_character":
         find_common = {'type': 'common_Moderator_interaction_ content'}
-    elif nowScene == "Prompt_action_reason" or nowScene == "Prompt_character_sentiment":
+    elif nowScene == "Prompt_vocabulary" or nowScene == "Prompt_action_reason" or nowScene == "Prompt_character_sentiment":
         find_common = {'type': 'common_Moderator_interaction_dialog'}
     elif nowScene == "Prompt_action_experience" or nowScene == "Prompt_character_experience":
         find_common = {'type': 'common_Moderator_interaction_experience'}
@@ -4068,7 +4127,7 @@ def feedback(req):
     return response_dict
 
 
-# 學生心得回饋
+# 學生雙人心得回饋
 def expand_2players(req):
     print("Expand_2players")
 
@@ -4209,7 +4268,9 @@ def expand_2players(req):
                                 req['scene']['name'])
             scene = 'feedback_2players'
             if userSay == '還好' or userSay == '普通':
-                response = '這樣啊！那是為什麼呢？'
+                find_common = {'type': 'common_like_expand'}
+                find_result = myCommonList.find_one(find_common)
+                response = '這樣啊！' + choice(find_result['content']).replace('你', '你們')
                 suggest_like = False
             elif userSay == '喜歡':
                 # 接續詢問使用者喜歡故事的原因
@@ -4277,7 +4338,7 @@ def expand_2players(req):
     print(response)
     return response_dict
 
-# 從資料庫中取資料做為機器人給予學生之回饋
+# 雙人聊天從資料庫中取資料做為機器人給予學生之回饋
 def feedback_2players(req):
     print('Feedback_2players')
     state = True
@@ -4739,7 +4800,7 @@ def suggestion(req):
     print(response)
     return response_dict
 
-
+# 學生喜好紀錄
 def Interest(req):
     response = ""
     response_tmp = ""
@@ -4844,7 +4905,7 @@ def Interest(req):
 
     return response_dict
 
-
+# 結束
 def exit_system(req):
     print("Exit")
     if 'User_id' in req['session']['params'].keys() and 'User_book' in req['session']['params'].keys():
@@ -4862,7 +4923,7 @@ def exit_system(req):
                                  req['session']['params']['User_state'], partner)
             connectDB.updateUser(myUserList, partner, req['session']['params']['User_book'],
                                  req['session']['params']['User_state'], user_id)
-
+# 雙人無機器人紀錄雙方對話
 def Record(req):
     print("Record")
     userSay = req['intent']['query']
