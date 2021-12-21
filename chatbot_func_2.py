@@ -793,8 +793,8 @@ def match_book(req):
                             Prompt_list = ['Record']
                         else:
                             # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
-                            Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            # Prompt_list = ['Prompt_vocabulary']
+                            # Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            Prompt_list = ['Prompt_vocabulary']
                 else:
                     if player == 1:
                         Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
@@ -802,8 +802,8 @@ def match_book(req):
                         if character == 'no_chatbot':
                             Prompt_list = ['Record']
                         else:
-                            Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            # Prompt_list = ['Prompt_vocabulary']
+                            # Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            Prompt_list = ['Prompt_vocabulary']
                 if player == 1:
                     random.shuffle(Prompt_list)
 
@@ -2472,7 +2472,7 @@ def Prompt_response(req, predictor, senta):
             noMatch = True
 
     # 20211220 比對主要動詞與對話同義接續引導
-    checkVerb = False
+    checkVO_Verb = False
     myMaterialList = nowBook['MaterialTable']
     find_material_result = myMaterialList.find_one({})
     Main_Verb = find_material_result['Main_Verb'][0]
@@ -2489,8 +2489,8 @@ def Prompt_response(req, predictor, senta):
 
     # 使用者對話與主要動詞同義
     for index in word_case:
-        if index == post_similarity:
-            checkVerb = True
+        if index == post_similarity.lower():
+            checkVO_Verb = True
 
     task = ""
 
@@ -2782,7 +2782,7 @@ def Prompt_response(req, predictor, senta):
 
     elif dialog_count < dialog_count_limit and player == 2:
         # 20211220 在Prompt_vocabulary場景比對到同義單字接續引導
-        if checkVerb is True and nowScene == 'Prompt_vocabulary':
+        if checkVO_Verb is True and nowScene == 'Prompt_vocabulary':
             response = "你們說對囉！找找看書本哪裡有提到吧！"
             response_speech = response
             response_dict = {
