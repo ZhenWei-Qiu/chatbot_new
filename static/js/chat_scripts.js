@@ -54,7 +54,7 @@ var no_next_idle_flag = 1
 
 // 監聽connect
 // var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('http://a5f0-140-115-53-209.ngrok.io')
+var socket = io.connect('https://a5f0-140-115-53-209.ngrok.io', {secure: true})
 // user connect
 socket.on('connect', function () { 
 
@@ -96,11 +96,11 @@ socket.on('chat_recv_'+ roomID, function (data) {
   
     add_othersTalk(data.username, data.message)
   }
-    session["id"] = data.sessionId
-    console.log(data)
-    res_data = data.response
-    analyze_responseData(data.username);
-    console.log(res_data)
+  session["id"] = data.sessionId
+  console.log(data)
+  res_data = data.response
+  analyze_responseData(data.username);
+  console.log(res_data)
 
 });
 
