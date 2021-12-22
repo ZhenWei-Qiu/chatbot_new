@@ -40,13 +40,15 @@ var typingGif_ImageUrl = "/static/image/typing.gif";
 var fishPng_ImageUrl = "/static/image/fishgirl.png";
 var fishGif_ImageUrl = "/static/image/fish.gif";
 var starPng_ImageUrl = "/static/image/star.png";
-var manPng_ImageUrl = "/static/image/man.png";
+// var manPng_ImageUrl = "/static/image/man.png";
+var player1Png_ImageUrl = "/static/image/player1.png";
+var player2Png_ImageUrl = "/static/image/player2.png";
 var voice = []
 
 
 // 監聽connect
 // var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('http://dc35-140-115-53-209.ngrok.io')
+var socket = io.connect('https://a5f0-140-115-53-209.ngrok.io', {secure: true})
 // user connect
 socket.on('connect', function () { 
 
@@ -86,11 +88,11 @@ socket.on('chat_recv_'+ roomID, function (data) {
   
     add_othersTalk(data.username, data.message)
   }
-
-    console.log(data)
-    res_data = data.response
-    analyze_responseData(data.username);
-    console.log(res_data)
+  session["id"] = data.sessionId
+  console.log(data)
+  res_data = data.response
+  analyze_responseData(data.username);
+  console.log(res_data)
 
 });
 
@@ -170,6 +172,7 @@ function add_userTalk(talk_str){
 function add_othersTalk(othersName, talk_str){
 
   var othersStr = "";
+  var otherHeadImg;
 
   if(studentName_dic.hasOwnProperty(parseInt(othersName))){
     othersName = studentName_dic[parseInt(othersName)]
@@ -181,7 +184,14 @@ function add_othersTalk(othersName, talk_str){
     Othersay.innerHTML = '<div class="user other"><div class="text2">' + talk_str +'</div></div>';;
 
     //將其他人文字顯示於對話紀錄
-    othersStr = '<div class="user other"><div class="avatar"><div class="pic"><img src='+ manPng_ImageUrl +'></img></div><div class="name">' + othersName + '</div></div><div class="text">' + talk_str + '</div></div>';
+
+    if(user_identifier == 1){
+      otherHeadImg = player2Png_ImageUrl
+    }
+    else{
+      otherHeadImg = player1Png_ImageUrl
+    }
+    othersStr = '<div class="user other"><div class="avatar"><div class="pic"><img src='+ otherHeadImg +'></img></div><div class="name">' + othersName + '</div></div><div class="text">' + talk_str + '</div></div>';
     Words.innerHTML = Words.innerHTML + othersStr;
     Words.scrollTop = Words.scrollHeight;
     speech_Talk("other", talk_str)
@@ -529,6 +539,22 @@ function show_bookImg(bookName){
   bookImg.src = url;
   bookImg.style.visibility = "visible";
 }
+
+//顯示頭像
+function show_headImg(){
+
+  var userHead = document.getElementById("user_head_id");
+  var otherHead = document.getElementById("other_head_id");
+  console.log(user_identifier)
+  if(user_identifier == 1){
+      userHead.innerHTML = '<img src='+ player1Png_ImageUrl +'></img>'
+      otherHead.innerHTML = '<img src='+ player2Png_ImageUrl +'></img>'
+  }
+  else{
+      userHead.innerHTML = '<img src='+ player2Png_ImageUrl +'></img>'
+      otherHead.innerHTML = '<img src='+ player1Png_ImageUrl +'></img>'
+  }
+}
 // var handler = { "name" : "check_input"}; 
 // var intent = { "params" : {}, "query" : "" }; 
 // var scene = { "name" : "check_input" };  
@@ -575,6 +601,7 @@ function send_userJson() {
       roomID : roomID,
       username : userID,
       message : TalkWords.value,
+      sessionId: session["id"],
       postData : postData
   });
       
@@ -821,6 +848,11 @@ function init(){
   // 機器人音頻隨機生成
   random_pitch = (Math.random()*(1.3 - 0.8) + 0.8).toFixed(2) // 產生隨機小數
  
+ // 顯示使用者頭像
+  setTimeout(function(){
+     show_headImg()
+  },1000);
+
   setTimeout(function(){
     
      if(user_identifier == 2){
