@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
 
-     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-     
+<head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-   
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="http://code.changer.hk/jquery/plugins/jquery.cookie.js"></script>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}?v=1.5.0"/></link>
-
-    
-    
-    
-   
+    <!-- <script src="http://code.changer.hk/jquery/plugins/jquery.cookie.js"></script> -->
+    <script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}?v=1.5.0" />
+    </link>
     <script src="{{ url_for('static', filename='js/login_scripts.js') }}?v=1.2.0" type="text/javascript"></script>
+</head>
 
-  </head>
-  <body>
-
+<body>
     <form class="box" id="box" action="">
-      <h1>Login</h1>
-      <input type="text" id="classID"  placeholder="ClassID" onkeypress="user_inputPress()" autocomplete="off">
-      <input type="text" id="userID"  placeholder="UserID" onkeypress="user_inputPress()" autocomplete="off">
-      <input type="text" id="roomID" placeholder="Room Number"  onkeypress="user_inputPress()" autocomplete="off">
-      <input type="submit"  value="Login"  onclick="user_sendLogin()" >
+        <h1>Login</h1>
+        <input type="text" id="classID" placeholder="ClassID" onkeypress="user_inputPress()" autocomplete="off">
+        <input type="text" id="userID" placeholder="UserID" onkeypress="user_inputPress()" autocomplete="off">
+        <input type="text" id="roomID" placeholder="Room Number" onkeypress="user_inputPress()" autocomplete="off">
+        <input type="submit" value="Login" onclick="user_sendLogin()">
     </form>
-    
-    
-  </body>
+</body>
+
 </html>

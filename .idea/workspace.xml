@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="改為https連線">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_Prompt_action.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_Prompt_action.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_Prompt_character.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_Prompt_character.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_Prompt_dialog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_Prompt_dialog.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_Prompt_response.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_Prompt_response.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_action_repeat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_action_repeat.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_character_repeat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_character_repeat.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_dialog_repeat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_dialog_repeat.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_feedback.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_feedback.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_feedback_student.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_feedback_student.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_like_F.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_like_F.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_like_F_expand.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_like_F_expand.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_like_T.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_like_T.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_like_expand.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_like_expand.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_like_response.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_like_response.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_match_F.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_match_F.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_return.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_return.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_start.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_start.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common_list/common_suggestion_response.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common_list/common_suggestion_response.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connectDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/connectDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/createLibrary.py" beforeDir="false" afterPath="$PROJECT_DIR$/createLibrary.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/chat_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/chat_style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/image/man.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/image/me.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/login_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login_scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storyDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/storyDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/student.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/student.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/websocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/websocket.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,11 +39,14 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/chatbot_func.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/connectDB.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/js/expression_scripts_new.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/createLibrary.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/chatbot_func_2.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/websocket.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../對話資料/getChat2xlsx_old.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../對話資料/getChat2xlsx.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/storyDB.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1uklNO0SwTd8Hi69wYNhtLDLpdP" />
@@ -72,10 +57,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chatbot_new_1014" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chatbot_new_表情" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.getChat2xlsx">
     <configuration name="createLibrary" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="chatbot_new" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -89,6 +74,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/createLibrary.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="getChat2xlsx" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="chatbot_new" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../對話資料" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../對話資料/getChat2xlsx.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -160,34 +166,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="websocket" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="chatbot_new" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\wei\AppData\Local\Programs\Python\Python38\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/websocket.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.getChat2xlsx" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.createLibrary" />
-        <item itemvalue="Python.storyDB" />
         <item itemvalue="Python.test" />
-        <item itemvalue="Python.websocket" />
+        <item itemvalue="Python.storyDB" />
       </list>
     </recent_temporary>
   </component>
@@ -368,7 +353,84 @@
       <option name="project" value="LOCAL" />
       <updated>1637566274477</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="更改互動優先級">
+      <created>1639473993499</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1639473993499</updated>
+    </task>
+    <task id="LOCAL-00026" summary="對話完後才開始閒置計時及修正重複傳bug">
+      <created>1639474036657</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1639474036657</updated>
+    </task>
+    <task id="LOCAL-00027" summary="通用句更新">
+      <created>1639474055184</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1639474055184</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Prompt_vocabulary比對到同義字接續引導 Prompt_response動詞翻譯衍生更改 心得還好回復修改">
+      <created>1640072938957</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1640072938957</updated>
+    </task>
+    <task id="LOCAL-00029" summary="新通用句">
+      <created>1640073080078</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1640073080078</updated>
+    </task>
+    <task id="LOCAL-00030" summary="雙人頭像">
+      <created>1640073159047</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1640073159047</updated>
+    </task>
+    <task id="LOCAL-00031" summary="建議按鈕延遲顯示">
+      <created>1640075065987</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1640075065987</updated>
+    </task>
+    <task id="LOCAL-00032" summary="主要動詞與對話同義中使用者字串小寫比對">
+      <created>1640075178438</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1640075178438</updated>
+    </task>
+    <task id="LOCAL-00033" summary="改為https連線">
+      <created>1640153618484</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1640153618484</updated>
+    </task>
+    <task id="LOCAL-00034" summary="改為https連線 頭像指定身分">
+      <created>1640153676776</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1640153676776</updated>
+    </task>
+    <task id="LOCAL-00035" summary="改為https連線">
+      <created>1640157636557</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1640157636557</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -384,14 +446,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial commit" />
-    <MESSAGE value="登入畫面改版" />
-    <MESSAGE value="加入離開人數json調整" />
-    <MESSAGE value="遊戲畫面出牌行為建置" />
-    <MESSAGE value="雙人聊天機器人" />
-    <MESSAGE value="json添加表情傳值" />
-    <MESSAGE value="表情聊天機器人" />
-    <MESSAGE value="雙人聊天對話存入DB" />
     <MESSAGE value="cosine抓取學生相似句子回應" />
     <MESSAGE value="改變雙人引導對話策略與促進對話連結" />
     <MESSAGE value="建議列表修改" />
@@ -407,7 +461,17 @@
     <MESSAGE value="雙人無機器人" />
     <MESSAGE value="閒置三次換scene、feeling修改" />
     <MESSAGE value="expand對話添加到資歷庫" />
-    <option name="LAST_COMMIT_MESSAGE" value="expand對話添加到資歷庫" />
+    <MESSAGE value="更改互動優先級" />
+    <MESSAGE value="對話完後才開始閒置計時及修正重複傳bug" />
+    <MESSAGE value="通用句更新" />
+    <MESSAGE value="Prompt_vocabulary比對到同義字接續引導 Prompt_response動詞翻譯衍生更改 心得還好回復修改" />
+    <MESSAGE value="新通用句" />
+    <MESSAGE value="雙人頭像" />
+    <MESSAGE value="建議按鈕延遲顯示" />
+    <MESSAGE value="主要動詞與對話同義中使用者字串小寫比對" />
+    <MESSAGE value="改為https連線 頭像指定身分" />
+    <MESSAGE value="改為https連線" />
+    <option name="LAST_COMMIT_MESSAGE" value="改為https連線" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -421,11 +485,6 @@
           <url>file://$PROJECT_DIR$/test.py</url>
           <line>664</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/chatbot_func_2.py</url>
-          <line>517</line>
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -13,7 +13,6 @@
     <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/chat_style.css') }}?v=1.5.0" />
@@ -21,7 +20,6 @@
     <!-- <script src="http://code.changer.hk/jquery/plugins/jquery.cookie.js"></script> -->
     <script src="{{ url_for('static', filename='js/chat_scripts.js') }}?v=1.2.0" type="text/javascript"></script>
     <script src="{{ url_for('static', filename='js/speech_input.js') }}" type="text/javascript"></script>
-
     <title>聊天室</title>
 </head>
 
@@ -31,7 +29,19 @@
         <div class="info_content" id="info_content_id">
             <!-- 機器人頭像 -->
             <div class="chatbot_frame">
-                <div class="chatbot_head"><img src="{{url_for('static', filename='image/fishgirl.png')}}"></img></div>
+                <div class="pie-chart">
+                    <div class="smile"> </div>
+                    <span class="current-number">
+                        0
+                    </span>
+                    <span class="second-number">
+                        %
+                    </span>
+                    <span class="circle"></span>
+                </div>
+                <div class="chatbot_head">
+                    <img id="fish" src="{{url_for('static', filename='image/expression/00.png')}}">
+                </div>
                 <div class="chatbotsay" id="chatbotsay">
                     <div class="user remote">
                         <div class="text2">你好，先等等另一個小夥伴吧！</div>
@@ -41,7 +51,7 @@
             <div class="flex-container">
                 <!-- 其他人頭像 -->
                 <div class="other_frame">
-                    <div class="other_head"  id="other_head_id">
+                    <div class="other_head" id="other_head_id">
                         <!-- <img src="{{url_for('static', filename='image/man.png')}}"></img> -->
                     </div>
                     <div class="othersay" id="othersay">
@@ -63,9 +73,17 @@
                 </div>
             </div>
             <!-- 書本 -->
-            <div>
-                <img id="book"></img>
-            </div>
+            <div><img id="book"></div>
+            <!-- <div class="pie-chart-a">
+                <div class="power"> </div>
+                <span class="current-number-a">
+                    0
+                </span>
+                <span class="second-number-a">
+                    %
+                </span>
+                <span class="circle-a"></span>
+            </div> -->
             <!-- 對話輸入 -->
             <div class="talk_input" id="talk_input_id">
                 <div class="talk_suggest" id="talk_suggest_id"></div>

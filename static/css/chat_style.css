@@ -548,7 +548,120 @@ ul li {
 #star,
 #score display: inline-block;
 }
+/* 圓形心情分數*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.smile{
+  
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  left:-40px;
+  background-size: cover;
+  background-image: url("/static/image/smile.png");
+}
+.pie-chart {
+  background: white;  
+  width: 120px;
+  height: 50px;
+  box-shadow: 0.5px 0.5px 10px black;
+  margin: 0 auto;
+  margin-top: 60px;
+  margin-left: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 110px;
+  border-top-right-radius: 110px;
+  border-bottom-left-radius: 110px;
+  border-bottom-right-radius: 110px;
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+}
 
+.current-number {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.second-number {
+  margin-top: 10px;
+  opacity: 0.7;
+  font-weight: 700;
+}
+
+span.circle {
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  margin: -5px;
+  border-radius: inherit;
+}
+/* p形心情分數*/
+/* a形心情分數*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.power{
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  left:-40px;
+  background-size: cover;
+  background-image: url("/static/image/surprised.png");
+}
+.pie-chart-a {
+  background: white;
+  
+  width: 120px;
+  height: 50px;
+  box-shadow: 0.5px 0.5px 10px black;
+  margin: 0 auto;
+  margin-top: 60px;
+  margin-left: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 110px;
+  border-top-right-radius: 110px;
+  border-bottom-left-radius: 110px;
+  border-bottom-right-radius: 110px;
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+}
+
+.current-number-a {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.second-number-a {
+  margin-top: 10px;
+  opacity: 0.7;
+  font-weight: 700;
+}
+
+span.circle-a {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  margin: -5px;
+  border-radius: inherit;
+}
+
+/* 圓形心情分數*/
 * {
     margin: 0;
     padding: 0;
@@ -569,6 +682,7 @@ body {
     /* https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1353&q=80*/
     background-size: cover;
 }
+
 
 /*去除iOS系统默認appearance的樣式*/
 input[type=button],

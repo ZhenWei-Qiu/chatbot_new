@@ -52,8 +52,8 @@ function user_inputPress() {
 //使用者登入
 function user_sendLogin(){
 
-  var link = 'http://' + document.domain + ':' + location.port + '/chats/' + RoomID.value;
-  // var link = 'http://badf-140-115-53-209.ngrok.io '+ '/chats/' + RoomID.value;
+  // var link = 'http://' + document.domain + ':' + location.port + '/chats/' + RoomID.value;
+  var link = 'https://dc0a-140-115-53-209.ngrok.io'+ '/chats/' + RoomID.value;
   // var link = 'http://' + document.domain + ':' + location.port + '/login/' + RoomID.value;
   
   // 設定前往的房間

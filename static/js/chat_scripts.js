@@ -37,10 +37,21 @@ var random_pitch;
 var Suggestions;
 var TaskHints;
 var typingGif_ImageUrl = "/static/image/typing.gif";
-var fishPng_ImageUrl = "/static/image/fishgirl.png";
+var fishPng_ImageUrl = "/static/image/expression/22.png";
 var fishGif_ImageUrl = "/static/image/fish.gif";
 var starPng_ImageUrl = "/static/image/star.png";
-// var manPng_ImageUrl = "/static/image/man.png";
+
+// 心情變數 PA
+var CE_P = 0;
+var CE_A = 0;
+var CE_P_old = 0;
+var CE_A_old = 0;
+var Wave = 0;
+var heart = 0;
+var clap = 0;
+var playmusic = 0;
+var firstexpand = true;
+var Fish_feeling = 0;
 
 
 var player1Png_ImageUrl = "/static/image/player1.png";
@@ -54,7 +65,7 @@ var no_next_idle_flag = 1
 
 // 監聽connect
 // var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('https://a5f0-140-115-53-209.ngrok.io', {secure: true})
+var socket = io.connect('https://dc0a-140-115-53-209.ngrok.io', {secure: true})
 // user connect
 socket.on('connect', function () { 
 
@@ -95,12 +106,14 @@ socket.on('chat_recv_'+ roomID, function (data) {
   if(data.username != userID){
   
     add_othersTalk(data.username, data.message)
+
   }
   session["id"] = data.sessionId
   console.log(data)
   res_data = data.response
   analyze_responseData(data.username);
   console.log(res_data)
+
 
 });
 
@@ -126,6 +139,9 @@ function user_sendMsg(Object) {
   // 啟動語音功能
   speech_Talk("chatbot", " ");
   speech_Talk("other", " ");
+
+  // 發出音效 
+  show_sound()
 
   // 判斷使用者發送方式
   if(Object.value == undefined){
@@ -161,6 +177,35 @@ function user_sendMsg(Object) {
   TalkWords.value = "";
 }
 
+// 發出音效
+function show_sound(){
+
+  if (playmusic === 1){
+    console.log("放音樂1")
+    const audio = document.createElement("audio");
+      audio.src = "/static/image/one18.mp3"
+      audio.volume=0.7
+      setTimeout(() => { audio.play();playmusic = 9;}, 1000);     
+      setTimeout(() => { audio.pause(); audio.currentTime = 0; }, 5000);
+    }
+  else if(playmusic === 2){
+    console.log("放音樂2")
+    const audio = document.createElement("audio");
+      audio.src = "/static/image/one35.mp3";
+      audio.volume=0.7
+      setTimeout(() => { audio.play();playmusic = 9;}, 3000);     
+      setTimeout(() => { audio.pause(); audio.currentTime = 0; }, 5000);
+  }
+  else if(playmusic === 3){
+    console.log("放音樂3")
+    const audio = document.createElement("audio");
+    audio.src = "/static/image/one31.mp3";
+    audio.volume=0.7
+    setTimeout(() => { audio.play();playmusic = 9;}, 1000);     
+    setTimeout(() => { audio.pause(); audio.currentTime = 0; }, 5000);
+  }
+}
+
 // 加入使用者對話訊息
 function add_userTalk(talk_str){
 
@@ -172,6 +217,10 @@ function add_userTalk(talk_str){
     // alert("請輸入文字訊息");
     return;
   }
+
+  //發言字數偵測  
+  detect_wordLength(talk_str)
+
   
   Usersay.innerHTML = '<div class="user local"><div class="text2">' + talk_str +'</div></div>' ; 
   usertalkStr = '<div class="user local"><div class="text">' + talk_str +'</div></div>' ; 
@@ -182,6 +231,18 @@ function add_userTalk(talk_str){
 
 }
 
+//發言字數偵測 
+function detect_wordLength(talk_str){
+
+    CE_P_old = CE_P
+    CE_A_old = CE_A
+    // 字數大於5 
+    if (talk_str.length > 5){
+      CE_P = CE_P + 2
+      CE_A = CE_A + 1
+    }
+
+}
 function add_othersTalk(othersName, talk_str){
 
   var othersStr = "";
@@ -192,6 +253,8 @@ function add_othersTalk(othersName, talk_str){
   }
 
   if(talk_str != ""){
+
+    detect_wordLength(talk_str)
 
     //將其他人文字顯示於對話
     Othersay.innerHTML = '<div class="user other"><div class="text2">' + talk_str +'</div></div>';;
@@ -323,7 +386,9 @@ async function add_chatbotTalk(){
   
       }
       
-    } 
+    }
+    // 情緒數值顯示
+    piechart() 
   }
   // if(chatbotWords_last == chatbotWords[i]){
   //           chatbotWords = [];
@@ -376,6 +441,83 @@ function delay(n){
     });
 }
 
+// 改變機器人表情
+function change_chatbotMood(){
+  var chatbot_mood = document.getElementById("fish").getAttribute("src");
+  
+  if ((parseInt(CE_P/4)<=5) & (parseInt(CE_A/3)<=3)) {
+    document.getElementById("fish").src = "/static/image/expression/"+ parseInt(CE_P/4)+ parseInt(CE_A/3) +".png"           
+    
+    if (Wave==1){
+      Wave=0
+      console.log("揮手")       
+      document.getElementById("fish").src = "/static/image/揮手.gif"                    
+      setTimeout(function(){
+        document.getElementById("fish").src = "/static/image/expression/"+ parseInt(CE_P/4)+ parseInt(CE_A/3) +".png"       
+      },5000)       
+
+    }
+    else if (clap==1){  
+      clap=0        
+      console.log("拍手")           
+      document.getElementById("fish").src = "/static/image/拍手.gif"            
+      setTimeout(function(){
+        document.getElementById("fish").src = "/static/image/expression/"+ parseInt(CE_P/4)+ parseInt(CE_A/3) +".png"       
+      },6000)    
+    } 
+    else if (heart==1){  
+      heart=0       
+      console.log("愛心")           
+      document.getElementById("fish").src = "/static/image/愛心.gif"            
+      setTimeout(function(){
+        document.getElementById("fish").src = "/static/image/expression/"+ parseInt(CE_P/4)+ parseInt(CE_A/3) +".png"       
+      },7000)  
+
+    }
+  }
+  else {
+    // 超過圖片顯示愛心
+    CE_P_old = CE_P
+    CE_A_old = CE_A
+    document.getElementById("fish").src = "/static/image/愛心.gif" 
+  }    
+             
+    
+    //setTimeout(function(){
+    //      document.getElementById("fish").src = fishNormal_ImageUrl;
+    //    },7000);
+}
+
+// 圓形心情分數
+function piechart(){
+
+  const target = CE_P;
+  const containerNumber = document.querySelector(".current-number");
+  const circle = document.querySelector("span.circle");
+  const pie = document.querySelector(".pie-chart");
+  const colors = ["#F44336", "purple", "blue", "#00FFFF"];
+  let i = CE_P_old;
+  // 調整著色權重
+  const gradient = (i, colors) =>
+    `linear-gradient(to right, #F44336 ${i*3}%,white 1% )`;
+  const length = Math.floor(100 / colors.length);
+
+
+
+  let interval = setInterval(() => {
+    const circleColors = colors.slice(0, Math.ceil(i / length));
+
+      i++;
+      // 調整情緒權重
+      containerNumber.innerHTML = Math.round(i*2.7);
+      pie.style.background =  gradient(i, circleColors);
+      
+      if (target <= i) {
+
+        clearInterval(interval);
+      }
+    }, 20);
+}
 
 var synth = window.speechSynthesis;
 
@@ -684,7 +826,7 @@ socket.on('user_idle_'+ roomID, function (data) {
               }                                 
               setTimeout(function(){  
                   send_idle_flag = 1
-              },1000);
+              },1500);
             }
             
           }
@@ -762,6 +904,20 @@ function analyze_responseData(name){
       chatbotWords_delay[item_text] = res_data["prompt"]["firstSimple"]["delay"][item_text]
       // console.log(chatbotWords[item_text])
 
+    }
+    // 20211228 表情變化
+    if (scene["name"] == "feedback_2players" ){
+      playmusic = 3;
+      heart = 1;
+    }
+    //機器人情緒 P/A
+    CE_P_old = CE_P
+    CE_A_old = CE_A
+    if(res_data["prompt"]["firstSimple"].hasOwnProperty("expressionP")){      
+      CE_P = CE_P + res_data["prompt"]["firstSimple"]["expressionP"]
+      CE_A = CE_A + res_data["prompt"]["firstSimple"]["expressionA"]
+      console.log('P:%d',CE_P,'A:',CE_A)
+      change_chatbotMood()
     }
 
     //存在推薦圖片  
@@ -892,6 +1048,27 @@ function analyze_responseData(name){
     not_stop_idle_flag = 0;
   }
   
+  // 20211228 添加表情功能
+  // 揮手音效
+  if (scene["name"] == "Get_bookName" ){        
+    playmusic = 1;
+  }
+  // 揮手時機
+  if (scene["name"] == "match_book" ){    
+    Wave = 1;
+  }
+  
+
+ if (scene["name"] == "Prompt_character" || scene["name"] == "Prompt_vocabulary" ||scene["name"] == "Prompt_action_reason" || scene["name"] == "Prompt_action_experience" || scene["name"] == "Prompt_character_experience"  || scene["name"] == "Prompt_beginning"  || scene["name"] == "Prompt_character_sentiment"  || scene["name"] == "Prompt_task"  || scene["name"] == "Prompt_event"  || scene["name"] == "Prompt_action" || scene["name"] == "Prompt_dialog" ){
+    playmusic = 2;
+    clap = 1;
+  }
+  
+  
+  // if ((scene["name"] == "expand" )&(firstexpand==true)){
+  //   send_userJson();
+  //   firstexpand=false;
+  // }
 
 
   // delete 20211116 重複發送json

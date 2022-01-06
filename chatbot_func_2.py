@@ -565,7 +565,8 @@ def Get_bookName(req):
                 "speech": response_speech_list,
                 "text": response_list,
                 "delay": response_len,
-                "expression": "happy"
+                "expressionP": 1,
+                "expressionA": 0
             }
         },
         "scene": {
@@ -646,9 +647,7 @@ def match_book(req):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [2],
-                        "expression": "frightened"
-
+                        "delay": [2]
                     }
                 },
                 "session": {
@@ -685,9 +684,7 @@ def match_book(req):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [2],
-                        "expressionP": 2,
-                        "expressionA": 1
+                        "delay": [2]
                     },
                     "suggestions": button_item
                 },
@@ -734,7 +731,7 @@ def match_book(req):
             if character == "no_chatbot":
                 response = ""
             # 記錄對話過程
-            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
             if book_finish:
                 first_match = True
@@ -746,9 +743,7 @@ def match_book(req):
                         "firstSimple": {
                             "speech": [response],
                             "text": [response],
-                            "delay": [2],
-                            "expressionP": 1,
-                            "expressionA": 1
+                            "delay": [2]
                         }
                     },
                     "session": {
@@ -793,8 +788,8 @@ def match_book(req):
                             Prompt_list = ['Record']
                         else:
                             # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
-                            # Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            Prompt_list = ['Prompt_vocabulary']
+                            Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            # Prompt_list = ['Prompt_character', 'Prompt_vocabulary']
                 else:
                     if player == 1:
                         Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
@@ -802,8 +797,8 @@ def match_book(req):
                         if character == 'no_chatbot':
                             Prompt_list = ['Record']
                         else:
-                            # Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
-                            Prompt_list = ['Prompt_vocabulary']
+                            Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            # Prompt_list = ['Prompt_character', 'Prompt_vocabulary']
                 if player == 1:
                     random.shuffle(Prompt_list)
 
@@ -813,9 +808,7 @@ def match_book(req):
                             "firstSimple": {
                                 "speech": [response],
                                 "text": [response],
-                                "delay": [2],
-                                "expressionP": 1,
-                                "expressionA": 1
+                                "delay": [2]
                             }
                         },
                         "session": {
@@ -856,7 +849,7 @@ def match_book(req):
                                 "question_count": 0,
                                 "User_say_len": [],
                                 "user_dialog_count": {},
-                                "dialog_count_limit": 5,
+                                "dialog_count_limit": 4,
                                 "User_feeling": False,
                                 "User_idle": 0
                             }
@@ -883,9 +876,7 @@ def match_book(req):
                     "firstSimple": {
                         "speech": [response],
                         "text": [response],
-                        "delay": [2],
-                        "expressionP": -1,
-                        "expressionA": -1
+                        "delay": [2]
                     }
                 },
                 "session": {
@@ -961,8 +952,6 @@ def Prompt_character(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
-
     dialog_count += 1
 
 
@@ -998,6 +987,10 @@ def Prompt_character(req):
             }
         }
     }
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     if player == 2:
         response_dict["session"]["params"].update({"user_dialog_count": user_dialog_count})
     print(response)
@@ -1059,7 +1052,6 @@ def Prompt_action(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     sentence_id.append(result_sentence_id)
     dialog_count += 1
@@ -1096,6 +1088,8 @@ def Prompt_action(req):
             }
         }
     }
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], response_dict['prompt']['firstSimple']['expressionP'], response_dict['prompt']['firstSimple']['expressionA'])
+
     print(response)
     return response_dict
 
@@ -1141,7 +1135,6 @@ def Prompt_dialog(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     sentence_id.append(dialog_sentenceID)
     sentence_id.append(dialog_sentenceID + 1)
@@ -1179,6 +1172,7 @@ def Prompt_dialog(req):
             }
         }
     }
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], response_dict['prompt']['firstSimple']['expressionP'], response_dict['prompt']['firstSimple']['expressionA'])
     print(response)
     return response_dict
 # 接龍引導沒比對到會觸發糾正
@@ -1276,7 +1270,6 @@ def Prompt_event(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     # 20210318 修改JSON格式
     response_dict = {
@@ -1312,6 +1305,8 @@ def Prompt_event(req):
     }
     print(response)
     # response_dict['prompt'].update({'sentence_id': sentence_id,'dialog_count': dialog_count})
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], response_dict['prompt']['firstSimple']['expressionP'], response_dict['prompt']['firstSimple']['expressionA'])
+
     return response_dict
 
 
@@ -1477,7 +1472,6 @@ def Prompt_beginning(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     dialog_count += 1
 
@@ -1489,7 +1483,8 @@ def Prompt_beginning(req):
                 "speech": [response],
                 "text": [response],
                 "delay": [2],
-                "expression": "happy"
+                "expressionP": 3,
+                "expressionA": 2
             }
         },
         "session": {
@@ -1513,6 +1508,10 @@ def Prompt_beginning(req):
             }
         }
     }
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     print(response)
     return response_dict
 # 角色情感引導
@@ -1606,7 +1605,6 @@ def Prompt_character_sentiment(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     sentence_id.append(result_sentence_id)
     dialog_count += 1
@@ -1619,7 +1617,8 @@ def Prompt_character_sentiment(req):
                 "speech": response_list,
                 "text": response_list,
                 "delay": response_len,
-                "expression": "happy"
+                "expressionP": 3,
+                "expressionA": 2
             }
         },
         "session": {
@@ -1644,6 +1643,10 @@ def Prompt_character_sentiment(req):
         }
     }
     print(response)
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     return response_dict
 
 # 事件情感引導'
@@ -1704,7 +1707,6 @@ def Prompt_action_sentiment(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     sentence_id.append(result_sentence_id)
     dialog_count += 1
@@ -1716,7 +1718,8 @@ def Prompt_action_sentiment(req):
                 "speech": response_list,
                 "text": response_list,
                 "delay": response_len,
-                "expression": "happy"
+                "expressionP": 3,
+                "expressionA": 2
             }
         },
         "session": {
@@ -1741,6 +1744,10 @@ def Prompt_action_sentiment(req):
         }
     }
     print(response)
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     return response_dict
 # 詞彙引導
 def Prompt_vocabulary(req):
@@ -1783,7 +1790,6 @@ def Prompt_vocabulary(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
 
     dialog_count += 1
@@ -1795,7 +1801,8 @@ def Prompt_vocabulary(req):
                 "speech": [response],
                 "text": [response],
                 "delay": 2,
-                "expression": "happy"
+                "expressionP": 3,
+                "expressionA": 2
             }
         },
         "session": {
@@ -1820,6 +1827,10 @@ def Prompt_vocabulary(req):
         }
     }
     print(response)
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     return response_dict
 
 # 事件原因引導
@@ -1873,7 +1884,6 @@ def Prompt_action_reason(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     sentence_id.append(result_sentence_id)
     dialog_count += 1
@@ -1885,7 +1895,8 @@ def Prompt_action_reason(req):
                 "speech":  response_list,
                 "text":  response_list,
                 "delay": response_len,
-                "expression": "happy"
+                "expressionP": 3,
+                "expressionA": 2
             }
         },
         "session": {
@@ -1910,6 +1921,10 @@ def Prompt_action_reason(req):
         }
     }
     print(response)
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     return response_dict
 
 # 角色經驗引導
@@ -1960,7 +1975,7 @@ def Prompt_character_experience(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+
 
     dialog_count += 1
 
@@ -1972,7 +1987,8 @@ def Prompt_character_experience(req):
                 "speech": [response],
                 "text": [response],
                 "delay": [2],
-                "expression": "happy"
+                "expressionP": 3,
+                "expressionA": 2
             }
         },
         "session": {
@@ -1996,6 +2012,10 @@ def Prompt_character_experience(req):
             }
         }
     }
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     print(response)
     return response_dict
 
@@ -2037,7 +2057,6 @@ def Prompt_action_experience(req):
     myDialogList = nowBook['S_R_Dialog']
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
 
     dialog_count += 1
 
@@ -2048,7 +2067,8 @@ def Prompt_action_experience(req):
                 "speech": [response],
                 "text": [response],
                 "delay": [2],
-                "expression": "happy"
+                "expressionP": 3,
+                "expressionA": 2
             }
         },
         "session": {
@@ -2073,6 +2093,10 @@ def Prompt_action_experience(req):
         }
     }
     print(response)
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     return response_dict
 
 def Prompt_response(req, predictor, senta):
@@ -2107,7 +2131,7 @@ def Prompt_response(req, predictor, senta):
 
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, nowScene)
+    # connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, nowScene)
     # connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, nowScene, task)
 
 
@@ -2122,6 +2146,13 @@ def Prompt_response(req, predictor, senta):
     User_idle = req['session']['params']['User_idle']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
+
+    if User_say_len[-1] >= 5:
+        # 字數大於五
+        connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, nowScene, 3, 1)
+    # else:
+    #     # 字數小於五
+    #     connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, nowScene, -3, -1)
 
     # 比對故事
     matchStory_all = False
@@ -2479,13 +2510,18 @@ def Prompt_response(req, predictor, senta):
     # 主要動詞其他解釋
     word_case = []
     trans_word_pre = translator.translate(Main_Verb, src='en', dest="zh-TW").extra_data['parsed']
+    print(trans_word_pre)
     if len(trans_word_pre) > 3:
-        for i in trans_word_pre[3][5][0]:
-            if i[0] == 'verb':
-                for index_verb in i[1]:
-                    for j in index_verb[2]:
-                        word_case.append(j)
-                break
+        try:
+            for i in trans_word_pre[3][5][0]:
+                if i[0] == 'verb':
+                    for index_verb in i[1]:
+                        for j in index_verb[2]:
+                            word_case.append(j)
+                    break
+        except Exception as e:
+            print(e)
+
 
     # 使用者對話與主要動詞同義
     for index in word_case:
@@ -3135,7 +3171,13 @@ def Prompt_response(req, predictor, senta):
     if response != "":
         dialog_index = myDialogList.find().count()
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, nowScene)
+        # 有無比到存資料庫
+        if noMatch == True:
+            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, nowScene, 0, 0)
+        else:
+            # 有比到
+            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, nowScene, 4, 2)
+
         # connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, nowScene, task)
 
     print(response)
@@ -3179,7 +3221,7 @@ def Question(req):
 
     # 記錄對話過程
     dialog_id += 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
     replace_list = ["我想問", "是", "什麼", "甚麼", "意思", "?"]
     for que_word in replace_list:
@@ -3219,8 +3261,7 @@ def Question(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
-
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], response_dict['prompt']['firstSimple']['expressionP'], response_dict['prompt']['firstSimple']['expressionA'])
     return response_dict
 
 # 表示感受
@@ -3270,7 +3311,7 @@ def Feeling(req):
 
     # 記錄對話過程
     dialog_id += 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
 
 
@@ -3299,7 +3340,7 @@ def Feeling(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -3332,7 +3373,7 @@ def Assent(req):
 
     # 記錄對話過程
     dialog_id += 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
 
     response_dict = {
@@ -3359,7 +3400,7 @@ def Assent(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -3409,7 +3450,7 @@ def Nonsense(req):
 
     # 記錄對話過程
     dialog_id += 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
 
 
@@ -3446,7 +3487,7 @@ def Nonsense(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -3515,7 +3556,7 @@ def Real(req):
 
     # 記錄對話過程
     dialog_id += 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
 
 
@@ -3552,7 +3593,7 @@ def Real(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -3661,7 +3702,7 @@ def All_idle(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -3752,7 +3793,7 @@ def Moderator_single_idle(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -3853,7 +3894,7 @@ def Moderator_interaction(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -3940,6 +3981,10 @@ def expand(req):
                 }
             }
         }
+        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                            response_dict['prompt']['firstSimple']['expressionP'],
+                            response_dict['prompt']['firstSimple']['expressionA'])
+
         # if userClass == '戊班':
         #     response_dict['prompt']['firstSimple']['speech'] = response.replace('⭐', '')
         #     print("response_dict['prompt']['firstSimple']['speech']",response_dict['prompt']['firstSimple']['speech'])
@@ -3953,12 +3998,13 @@ def expand(req):
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
         userSay = req['intent']['query']
         connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id,
-                            req['scene']['name'])
+                            req['scene']['name'], None, None)
         scene = 'feedback'
         if userSay == '還好' or userSay == '普通':
             response = '這樣啊！那是為甚麼呢？'
             suggest_like = False
-            expression = "frightened"
+            expressionP = 1
+            expressionA = 0
         elif userSay == '喜歡':
             # 接續詢問使用者喜歡故事的原因
             find_common = {'type': 'common_like_response'}
@@ -3974,8 +4020,8 @@ def expand(req):
             find_result = myCommonList.find_one(find_common)
             response = choice(find_result['content'])
             suggest_like = False
-            expressionP = -5
-            expressionA = -1
+            expressionP = 0
+            expressionA = 0
         else:
             scene = 'expand'
             expressionP = 3
@@ -3983,7 +4029,7 @@ def expand(req):
         expand_user = False
         dialog_index = myDialogList.find().count()
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+        # connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
         # response_dict = {"prompt": {
         #     "firstSimple": {
         #         "speech": response,
@@ -4027,6 +4073,10 @@ def expand(req):
 
 
     print(response)
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
+
     return response_dict
 
 
@@ -4179,7 +4229,7 @@ def expand_2players(req):
         # 記錄對話過程
         dialog_index = myDialogList.find().count()
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+
         # response_dict = {"prompt": {
         #     "firstSimple": {
         #         "speech": response,
@@ -4200,7 +4250,9 @@ def expand_2players(req):
                 "firstSimple": {
                     "speech": [response_speech],
                     "text": [response],
-                    "delay": [2]
+                    "delay": [2],
+                    "expressionP": 3,
+                    "expressionA": 1
                 },
                 "suggestions": [{"title": "喜歡"},
                                 {"title": "還好"},
@@ -4212,6 +4264,11 @@ def expand_2players(req):
                 }
             }
         }
+        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                            response_dict['prompt']['firstSimple']['expressionP'],
+                            response_dict['prompt']['firstSimple']['expressionA'])
+
+
         # if userClass == '戊班':
         #     response_dict['prompt']['firstSimple']['speech'] = response.replace('⭐', '')
         #     print("response_dict['prompt']['firstSimple']['speech']",response_dict['prompt']['firstSimple']['speech'])
@@ -4224,7 +4281,7 @@ def expand_2players(req):
             dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
             userSay = req['intent']['query']
             connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id,
-                                req['scene']['name'])
+                                req['scene']['name'], None, None)
 
             find_common = {'type': 'common_like'}
             find_result = myCommonList.find_one(find_common)
@@ -4257,7 +4314,7 @@ def expand_2players(req):
             # 記錄對話過程
             dialog_index = myDialogList.find().count()
             dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
         else:
             response = ''
             suggest_like = False
@@ -4265,13 +4322,15 @@ def expand_2players(req):
             dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
             userSay = req['intent']['query']
             connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id,
-                                req['scene']['name'])
+                                req['scene']['name'], None, None)
             scene = 'feedback_2players'
             if userSay == '還好' or userSay == '普通':
                 find_common = {'type': 'common_like_expand'}
                 find_result = myCommonList.find_one(find_common)
                 response = '這樣啊！' + choice(find_result['content']).replace('你', '你們')
                 suggest_like = False
+                expressionP = 1
+                expressionA = 0
             elif userSay == '喜歡':
                 # 接續詢問使用者喜歡故事的原因
                 find_common = {'type': 'common_like_response'}
@@ -4287,13 +4346,17 @@ def expand_2players(req):
                 find_result = myCommonList.find_one(find_common)
                 response = choice(find_result['content']).replace('你', '你們')
                 suggest_like = False
+                expressionP = 0
+                expressionA = 0
             else:
                 scene = 'expand_2players'
+                expressionP = 3
+                expressionA = 1
 
             expand_user = False
             dialog_index = myDialogList.find().count()
             dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+            connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], expressionP, expressionA)
             # response_dict = {"prompt": {
             #     "firstSimple": {
             #         "speech": response,
@@ -4367,7 +4430,7 @@ def feedback_2players(req):
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
     # 記錄對話過程
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
     find_common = {'type': 'common_feedback'}
     find_result = myCommonList.find_one(find_common)
     find_feedback_student = {'type': 'common_feedback_student'}
@@ -4405,6 +4468,8 @@ def feedback_2players(req):
     response_len = [len(response) / 2,  1]
 
     if dialog_count < dialog_count_limit:
+        expressionP = None
+        expressionA = None
         if dialog_count == 1:
             find_common_Moderator = {'type': 'common_Moderator_interaction_dialog'}
             find_common_Moderator_result = myCommonList.find_one(find_common_Moderator)
@@ -4444,6 +4509,8 @@ def feedback_2players(req):
         }
 
     else:
+        expressionP = 3
+        expressionA = 1
         response = '哇！你們都說的真好！'
         response_tmp = '我可以推薦你們一些書，你們想看看嗎？'
         response_list = [response, response_tmp]
@@ -4452,7 +4519,9 @@ def feedback_2players(req):
                 "firstSimple": {
                     "speech": response_list,
                     "text": response_list,
-                    "delay": [len(response) / 2]
+                    "delay": [len(response) / 2],
+                    "expressionP": expressionP,
+                    "expressionA": expressionA
                 },
                 "suggestions": [{'title': '好'}, {'title': '不用了'}]
             },
@@ -4479,7 +4548,9 @@ def feedback_2players(req):
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        expressionP,
+                        expressionA)
     print(response)
     return response_dict
 
@@ -4513,7 +4584,7 @@ def summarize_2players(req):
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
     # 記錄對話過程
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
     # 判斷座號有無學生姓名
     if int(partner) in studentName_dic:
@@ -4603,7 +4674,7 @@ def summarize_2players(req):
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
     print(response)
     return response_dict
 
@@ -4630,17 +4701,22 @@ def Check_suggestion(req):
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
-
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
+    expressionP = 0
+    expressionA = 0
     if userSay == '不用了':
         scene = 'exit_system'
         if player != 2:
             response = '好唷！謝謝你的分享！期待你下次的故事！Bye Bye！'
         else:
             response = '好唷！謝謝你們的分享！期待下次的故事！Bye Bye！'
+        expressionP = 0
+        expressionA = 0
     else:
         scene = 'suggestion'
         response = '好唷！沒問題！'
+        expressionP = 1
+        expressionA = 0
 
     # response_dict = {"prompt": {
     #     "firstSimple": {
@@ -4661,7 +4737,8 @@ def Check_suggestion(req):
                 "speech": [response],
                 "text": [response],
                 "delay": [0],
-                "expression": "happy"
+                "expressionP": expressionP,
+                "expressionA": expressionA
             }
         },
         "session": {
@@ -4681,7 +4758,9 @@ def Check_suggestion(req):
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
+                        response_dict['prompt']['firstSimple']['expressionP'],
+                        response_dict['prompt']['firstSimple']['expressionA'])
     print(response)
     return response_dict
 
@@ -4796,7 +4875,7 @@ def suggestion(req):
     response += response_suggestion_tmp
 
     # 記錄對話
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
     print(response)
     return response_dict
 
@@ -4828,7 +4907,7 @@ def Interest(req):
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    # connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
     if userSay == '有興趣':
         for index in range(len(sort_suggest_book)):
             book_result = myBookList.find_one({'bookName': sort_suggest_book[index][0]})
@@ -4837,8 +4916,12 @@ def Interest(req):
                 book_result_updated.update({'Interest': 0})
             book_result_updated['Interest'] += 1
             myBookList.update_one(book_result, {'$set': book_result_updated})
+            connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id,
+                                req['scene']['name'], 3, 1)
     elif userSay == '沒興趣':
         print()
+        connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id,
+                            req['scene']['name'], -1, 0)
 
     expression = ""
     # 20210512 魚老師給評語
@@ -4901,7 +4984,7 @@ def Interest(req):
     # 記錄對話
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
 
     return response_dict
 
@@ -4942,7 +5025,7 @@ def Record(req):
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
 
 
