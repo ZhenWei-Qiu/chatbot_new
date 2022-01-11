@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="改為https連線">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="魚姊姊有表情動作分數">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connectDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/connectDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/createLibrary.py" beforeDir="false" afterPath="$PROJECT_DIR$/createLibrary.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/chat_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/chat_style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/login_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login_scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/myscripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/myscripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storyDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/storyDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/student.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/student.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/websocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/websocket.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -170,8 +166,8 @@
       <list>
         <item itemvalue="Python.getChat2xlsx" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.createLibrary" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.createLibrary" />
         <item itemvalue="Python.storyDB" />
       </list>
     </recent_temporary>
@@ -430,7 +426,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640157636557</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="魚姊姊有表情動作分數">
+      <created>1641435264585</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1641435264585</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -446,7 +449,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cosine抓取學生相似句子回應" />
     <MESSAGE value="改變雙人引導對話策略與促進對話連結" />
     <MESSAGE value="建議列表修改" />
     <MESSAGE value="雙人聊天心得策略修改" />
@@ -471,7 +473,8 @@
     <MESSAGE value="主要動詞與對話同義中使用者字串小寫比對" />
     <MESSAGE value="改為https連線 頭像指定身分" />
     <MESSAGE value="改為https連線" />
-    <option name="LAST_COMMIT_MESSAGE" value="改為https連線" />
+    <MESSAGE value="魚姊姊有表情動作分數" />
+    <option name="LAST_COMMIT_MESSAGE" value="魚姊姊有表情動作分數" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -483,7 +486,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test.py</url>
-          <line>664</line>
+          <line>665</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

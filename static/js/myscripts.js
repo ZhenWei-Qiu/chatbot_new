@@ -345,7 +345,7 @@ var chatbotWords_last = "";
 var sync_waitInput_flag = 0;
 var rec_imageUrl = "";
 var post_count = 0;
-var suggest_arr = ["丁班", "戊班"];
+var suggest_arr = ["401", "402", "403", "404"];
 var score = 0;
 var suggest_exist = 0;
 

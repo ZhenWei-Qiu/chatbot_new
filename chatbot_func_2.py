@@ -782,17 +782,19 @@ def match_book(req):
 
                 if 'Sentence_id' in material_result:
                     if player == 1:
-                        Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_dialog', 'Prompt_event']
+                        # Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_dialog', 'Prompt_event']
+                        Prompt_list = ['Prompt_character', 'Prompt_action']
                     else:
                         if character == 'no_chatbot':
                             Prompt_list = ['Record']
                         else:
-                            # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
-                            Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
+                            # Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
                             # Prompt_list = ['Prompt_character', 'Prompt_vocabulary']
                 else:
                     if player == 1:
-                        Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
+                        # Prompt_list = ['Prompt_character', 'Prompt_action', 'Prompt_event']
+                        Prompt_list = ['Prompt_character', 'Prompt_action']
                     else:
                         if character == 'no_chatbot':
                             Prompt_list = ['Record']
@@ -3063,6 +3065,23 @@ def Prompt_response(req, predictor, senta):
             print('update_user: ', user_result_updated)
             myUserList.update_one(user_result, {'$set': user_result_updated})
 
+        # 檢查對話是否含有所有場景
+        if not Prompt_list:
+
+            if player == 1:
+                Prompt_list_check = ['Prompt_character', 'Prompt_action']
+            else:
+                Prompt_list_check = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience',
+                                   'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+
+            # 從資料庫比對沒有的場景添加進入
+            for phase in Prompt_list_check:
+                phase_check = list(myDialogList.find({"Session_id": session_id, "Phase": phase}))
+                # 無該場景
+                if not len(phase_check):
+                    # print(phase_check)
+                    Prompt_list.append(phase)
+
         if not Prompt_list:
             # 空場景
             if player == 1:
@@ -3946,7 +3965,7 @@ def expand(req):
         # 記錄對話過程
         dialog_index = myDialogList.find().count()
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'] , None, None)
         # response_dict = {"prompt": {
         #     "firstSimple": {
         #         "speech": response,
@@ -4102,7 +4121,7 @@ def feedback(req):
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
     # 記錄對話過程
-    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
     find_common = {'type': 'common_feedback'}
     find_result = myCommonList.find_one(find_common)
     find_feedback_student = {'type': 'common_feedback_student'}
@@ -4172,7 +4191,7 @@ def feedback(req):
     # 記錄對話過程
     dialog_index = myDialogList.find().count()
     dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'])
+    connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'], None, None)
     print(response)
     return response_dict
 
