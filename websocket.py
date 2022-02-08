@@ -79,4 +79,4 @@ def on_leave(json):
 
 
 if __name__ == '__main__':
-    socketio.run(app, port=8080, debug=True)
+    socketio.run(app, port=7000, debug=True)

@@ -369,8 +369,8 @@ def check_input(req):
 def connect():
     global myClient, myBotData, myBookList, myCommonList, myUserList
     try:
-        # myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-        myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+        myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
+        # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
         myBotData = myClient.Chatbot
         myBookList = myBotData.bookList
         myCommonList = myBotData.commonList
@@ -788,8 +788,8 @@ def match_book(req):
                         if character == 'no_chatbot':
                             Prompt_list = ['Record']
                         else:
-                            Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
-                            # Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
+                            # Prompt_list = ['Prompt_beginning', 'Prompt_character_sentiment',  'Prompt_action_sentiment']
+                            Prompt_list = [ 'Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
                             # Prompt_list = ['Prompt_character', 'Prompt_vocabulary']
                 else:
                     if player == 1:

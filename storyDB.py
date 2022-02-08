@@ -5,7 +5,7 @@ import copy
 from nltk.stem import WordNetLemmatizer
 from googletrans import Translator
 import createLibrary
-story_name = "A-Monster-is-Coming"
+story_name = "Fairy friendss"
 content_list = []
 words = []
 entityInfo = {}
@@ -61,8 +61,8 @@ def coReference():
 
 
 def story_analysis():
-    #myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-    myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
+    # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
     myBook = myClient[story_name.replace(' ', '_').replace("'", "").replace("!", "").replace(",", "")]
     myVerbList = myBook.VerbTable
     myKeyList = myBook.KeywordTable
@@ -223,8 +223,8 @@ def story_analysis():
 
 # 建立主要人物、動詞、對話資料庫
 def getMaterial():
-    #myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-    myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
+    # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
     myBook = myClient[story_name.replace(' ', '_').replace("'", "").replace("!", "").replace(",", "")]
     myMaterialList = myBook.MaterialTable
     myKeyList = myBook.KeywordTable
