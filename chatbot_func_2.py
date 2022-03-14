@@ -13,8 +13,8 @@ myBotData: object
 myBookList: object
 myCommonList: object
 myUserList: object
-Prompt_list: object
-studentName_dic: object
+# Prompt_list: object
+# studentName: object
 # Prompt_task_list = ['Time', 'Location', 'Affection', 'Life']
 Prompt_task_list = ['Time']
 
@@ -36,6 +36,10 @@ def check_input(req):
         User_feeling = req['session']['params']['User_feeling']
     if 'User_idle' in req['session']['params'].keys():
         User_idle = req['session']['params']['User_idle']
+    if 'Prompt_list' in req['session']['params'].keys():
+        Prompt_list = req['session']['params']['Prompt_list']
+    if 'studentName' in req['session']['params'].keys():
+        studentName = req['session']['params']['studentName']
 
         # print('dialog_count_limit',dialog_count_limit)
     if '就這樣' in userSay or userSay in ending:
@@ -301,7 +305,9 @@ def check_input(req):
                             "User_say_len": User_say_len,
                             "dialog_count_limit": dialog_count_limit,
                             "User_feeling": User_feeling,
-                            "User_idle": User_idle
+                            "User_idle": User_idle,
+                            "Prompt_list": Prompt_list,
+                            "studentName": studentName
 
                         }
                     }
@@ -331,7 +337,9 @@ def check_input(req):
                             "user_dialog_count": user_dialog_count,
                             "dialog_count_limit": dialog_count_limit,
                             "User_feeling": User_feeling,
-                            "User_idle": User_idle
+                            "User_idle": User_idle,
+                            "Prompt_list": Prompt_list,
+                            "studentName": studentName
                         }
                     }
                 }
@@ -483,7 +491,7 @@ def input_userId(req):
 # 詢問書名
 def Get_bookName(req):
     print("START_ask")
-    global studentName_dic
+    studentName = {}
 
     response_speech = ""
     response_list = []
@@ -506,7 +514,7 @@ def Get_bookName(req):
 
         # 獲取全班姓名
         df = pd.read_excel('student.xlsx', sheet_name=userClass)
-        studentName_dic = df.set_index('座號')['姓名'].to_dict()
+        studentName = df.set_index('座號')['姓名'].to_dict()
 
         player = req['user']['player']
         if player != 2:
@@ -579,7 +587,7 @@ def Get_bookName(req):
                 "User_id": user_id,
                 "NextScene": "match_book",
                 "next_level": False,
-                "studentName": studentName_dic
+                "studentName": studentName
             }
         }
     }
@@ -592,11 +600,14 @@ def Get_bookName(req):
 # 根據相似度比對結果顯示書名選項給使用者直接點選
 def match_book(req):
     print('比對書名')
-    global Prompt_list
+    # global Prompt_list
     userSay = req['session']['params']['User_say']
+
+    studentName = req['session']['params']['studentName']
     session_id = req['session']['id']
     character = req['user']['character']
     player = req['user']['player']
+
     connect()
     if 'User_first_match' in req['session']['params'].keys():
         first_match = req['session']['params']['User_first_match']
@@ -801,6 +812,8 @@ def match_book(req):
                         else:
                             Prompt_list = ['Prompt_character', 'Prompt_character_sentiment', 'Prompt_character_experience', 'Prompt_vocabulary', 'Prompt_action_reason', 'Prompt_action_experience']
                             # Prompt_list = ['Prompt_character', 'Prompt_vocabulary']
+                Prompt_scene = Prompt_list[0]
+                Prompt_list.pop(0)
                 if player == 1:
                     random.shuffle(Prompt_list)
 
@@ -823,12 +836,14 @@ def match_book(req):
                                 "User_say_len": [],
                                 "dialog_count_limit": 3,
                                 "User_feeling": False,
-                                "User_idle": 0
+                                "User_idle": 0,
+                                "Prompt_list": Prompt_list,
+                                "studentName": studentName
                             }
                         },
                         "scene": {
                             "next": {
-                                'name': Prompt_list[0]
+                                'name': Prompt_scene
                             }
                         }
                     }
@@ -853,17 +868,20 @@ def match_book(req):
                                 "user_dialog_count": {},
                                 "dialog_count_limit": 4,
                                 "User_feeling": False,
-                                "User_idle": 0
+                                "User_idle": 0,
+                                "Prompt_list": Prompt_list,
+                                "studentName": studentName
+
                             }
                         },
                         "scene": {
                             "next": {
-                                'name': Prompt_list[0]
+                                'name': Prompt_scene
                             }
                         }
                     }
 
-                Prompt_list.pop(0)
+
 
 
         else:
@@ -916,6 +934,8 @@ def Prompt_character(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
 
     player = req['user']['player']
     if player == 2:
@@ -980,7 +1000,9 @@ def Prompt_character(req):
                 "User_say_len": User_say_len,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1017,6 +1039,8 @@ def Prompt_action(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
 
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
@@ -1081,7 +1105,9 @@ def Prompt_action(req):
                 "User_say_len": User_say_len,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1107,8 +1133,10 @@ def Prompt_dialog(req):
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
     dialog_count_limit = req['session']['params']['dialog_count_limit']
-    User_feeling = req['session']['params']['User_feeling'],
+    User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
 
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
@@ -1165,7 +1193,9 @@ def Prompt_dialog(req):
                 "User_say_len": User_say_len,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1197,6 +1227,8 @@ def Prompt_event(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
 
 
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
@@ -1296,7 +1328,9 @@ def Prompt_event(req):
                 "User_say_len": User_say_len,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1333,6 +1367,8 @@ def Prompt_event(req):
 #     User_say_len = req['session']['params']['User_say_len']
 #     User_feeling = req['session']['params']['User_feeling']
 #     User_idle = req['session']['params']['User_idle']
+#     Prompt_list = req['session']['params']['Prompt_list']
+#     studentName = req['session']['params']['studentName']
 #     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
 #     nowBook = myClient[dbBookName]
 #     myDialogList = nowBook['S_R_Dialog']
@@ -1398,7 +1434,8 @@ def Prompt_event(req):
 #                 "User_say_len": User_say_len,
 #                 "dialog_count_limit": dialog_count_limit,
 #                 "User_feeling": User_feeling,
-#                 "User_idle": User_idle
+#                 "User_idle": User_idle,
+#                 "Prompt_list": Prompt_list
 #             }
 #         },
 #         "scene": {
@@ -1439,6 +1476,8 @@ def Prompt_beginning(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
 
     player = req['user']['player']
     if player == 2:
@@ -1501,7 +1540,9 @@ def Prompt_beginning(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1536,6 +1577,8 @@ def Prompt_character_sentiment(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
 
     player = req['user']['player']
     if player == 2:
@@ -1635,7 +1678,9 @@ def Prompt_character_sentiment(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1671,6 +1716,9 @@ def Prompt_action_sentiment(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
+
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -1736,7 +1784,9 @@ def Prompt_action_sentiment(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1769,6 +1819,8 @@ def Prompt_vocabulary(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -1819,7 +1871,10 @@ def Prompt_vocabulary(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
+
             }
         },
         "scene": {
@@ -1849,6 +1904,8 @@ def Prompt_action_reason(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -1913,7 +1970,9 @@ def Prompt_action_reason(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -1948,7 +2007,8 @@ def Prompt_character_experience(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
-
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -2005,7 +2065,9 @@ def Prompt_character_experience(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -2040,7 +2102,8 @@ def Prompt_action_experience(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
-
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     player = req['user']['player']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
@@ -2085,7 +2148,9 @@ def Prompt_action_experience(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -2103,12 +2168,13 @@ def Prompt_action_experience(req):
 
 def Prompt_response(req, predictor, senta):
     print('系統回覆')
-    global Prompt_list, Prompt_task_list
+    # global Prompt_list
+    global Prompt_task_list
     user_nonsense = 0
     task = ""
     player = req['user']['player']
     userSay = req['session']['params']['User_say']
-
+    print("player:", player)
 
     if player != 2:
         user_id = req['session']['params']['User_id']
@@ -2146,6 +2212,8 @@ def Prompt_response(req, predictor, senta):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     if player == 2:
         user_dialog_count = req['session']['params']['user_dialog_count']
 
@@ -2598,7 +2666,9 @@ def Prompt_response(req, predictor, senta):
                         "User_say_len": User_say_len,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2633,7 +2703,9 @@ def Prompt_response(req, predictor, senta):
                         "User_say_len": User_say_len,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2735,7 +2807,9 @@ def Prompt_response(req, predictor, senta):
                         "User_say_len": User_say_len,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2776,7 +2850,9 @@ def Prompt_response(req, predictor, senta):
                         "User_say_len": User_say_len,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2808,7 +2884,9 @@ def Prompt_response(req, predictor, senta):
                         "User_say_len": User_say_len,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2843,7 +2921,9 @@ def Prompt_response(req, predictor, senta):
                         "user_dialog_count": user_dialog_count,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2878,7 +2958,9 @@ def Prompt_response(req, predictor, senta):
                         "user_dialog_count": user_dialog_count,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2911,7 +2993,9 @@ def Prompt_response(req, predictor, senta):
                         "user_dialog_count": user_dialog_count,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -2945,7 +3029,9 @@ def Prompt_response(req, predictor, senta):
                         "user_dialog_count": user_dialog_count,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -3044,7 +3130,9 @@ def Prompt_response(req, predictor, senta):
                         "user_dialog_count": user_dialog_count,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
@@ -3067,7 +3155,7 @@ def Prompt_response(req, predictor, senta):
 
         # 檢查對話是否含有所有場景
         if not Prompt_list:
-
+            print("player:" ,player)
             if player == 1:
                 Prompt_list_check = ['Prompt_character', 'Prompt_action']
             else:
@@ -3097,6 +3185,8 @@ def Prompt_response(req, predictor, senta):
 
         # 獎勵機制 戊班在場景中有講過話給星星，除了Prompt_event場景
         if '戊班' in user_id and req['session']['params']['next_level'] and nowScene != 'Prompt_event':
+            Prompt_scene = Prompt_list[0]
+            Prompt_list.pop(0)
             response = ""
             response_dict = {
                 "prompt": {
@@ -3118,17 +3208,22 @@ def Prompt_response(req, predictor, senta):
                         "next_level": False,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
                     "next": {
-                        "name": Prompt_list[0]
+                        "name": Prompt_scene
                     }
                 }
             }
 
         else:
+            Prompt_scene = Prompt_list[0]
+            Prompt_list.pop(0)
+
             response = ""
             # 20211006 雙人階段稱讚回復
             if player == 2:
@@ -3153,17 +3248,19 @@ def Prompt_response(req, predictor, senta):
                         "User_say_len": User_say_len,
                         "dialog_count_limit": dialog_count_limit,
                         "User_feeling": User_feeling,
-                        "User_idle": User_idle
+                        "User_idle": User_idle,
+                        "Prompt_list": Prompt_list,
+                        "studentName": studentName
                     }
                 },
                 "scene": {
                     "next": {
-                        "name": Prompt_list[0]
+                        "name": Prompt_scene
                     }
                 }
             }
 
-        Prompt_list.pop(0)
+
 
 
         if player == 2:
@@ -3292,6 +3389,7 @@ def Feeling(req):
     dialog_count = req['session']['params']['dialog_count']
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
+    studentName = req['session']['params']['studentName']
     time = req['user']['lastSeenTime']
     partner = req['user']['partner']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
@@ -3318,10 +3416,10 @@ def Feeling(req):
 
     find_common_result = myCommonList.find_one(find_common)
     response = choice(find_common_result['content'])
-
-
-    if int(partner) in studentName_dic:
-        partner_name = studentName_dic[int(partner)]
+    partner = int(partner)
+    partner = str(partner)
+    if partner in studentName:
+        partner_name = studentName[partner]
     else:
         partner_name = partner + "號"
     response += '，那XX你覺得呢？'
@@ -3345,7 +3443,7 @@ def Feeling(req):
         },
         "session": {
             "params": {
-                "NextScene": "Prompt_response"
+                "NextScene": "Prompt_response",
             }
         },
         "scene": {
@@ -3626,6 +3724,8 @@ def All_idle(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     sentence_id = req['session']['params']['sentence_id']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
@@ -3707,7 +3807,9 @@ def All_idle(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -3735,11 +3837,12 @@ def Moderator_single_idle(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     sentence_id = req['session']['params']['sentence_id']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
-
     time = req['user']['lastSeenTime']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
@@ -3762,12 +3865,16 @@ def Moderator_single_idle(req):
     res_moderator  = choice(find_common_result['content'])
     user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
     # 判斷座號有無學生姓名
-    if int(user_id_tmp) in studentName_dic:
-        name = studentName_dic[int(user_id_tmp)]
+    user_id_tmp = int(user_id_tmp)
+    user_id_tmp = str(user_id_tmp)
+    partner = int(partner)
+    partner = str(partner)
+    if user_id_tmp in studentName:
+        name = studentName[user_id_tmp]
     else:
         name = user_id_tmp + "號"
-    if int(partner) in studentName_dic:
-        partner_name = studentName_dic[int(partner)]
+    if partner in studentName:
+        partner_name = studentName[partner]
     else:
         partner_name = partner + "號"
     response = res_moderator.replace("XX", name).replace("OO", partner_name)
@@ -3798,7 +3905,9 @@ def Moderator_single_idle(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -3826,6 +3935,8 @@ def Moderator_interaction(req):
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
     User_idle = req['session']['params']['User_idle']
+    Prompt_list = req['session']['params']['Prompt_list']
+    studentName = req['session']['params']['studentName']
     sentence_id = req['session']['params']['sentence_id']
     noIdea_count = req['session']['params']['noIdea_count']
     question_count = req['session']['params']['question_count']
@@ -3861,14 +3972,18 @@ def Moderator_interaction(req):
 
 
     user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
-
     # 判斷座號有無學生姓名
-    if int(user_id_tmp) in studentName_dic:
-        name = studentName_dic[int(user_id_tmp)]
+    user_id_tmp = int(user_id_tmp)
+    user_id_tmp = str(user_id_tmp)
+    partner = int(partner)
+    partner = str(partner)
+
+    if user_id_tmp in studentName:
+        name = studentName[user_id_tmp]
     else:
         name = user_id_tmp + "號"
-    if int(partner) in studentName_dic:
-        partner_name = studentName_dic[int(partner)]
+    if partner in studentName:
+        partner_name = studentName[partner]
     else:
         partner_name = partner + "號"
     response = res_moderator.replace("XX", name).replace("OO", partner_name)
@@ -3899,7 +4014,9 @@ def Moderator_interaction(req):
                 "user_dialog_count": user_dialog_count,
                 "dialog_count_limit": dialog_count_limit,
                 "User_feeling": User_feeling,
-                "User_idle": User_idle
+                "User_idle": User_idle,
+                "Prompt_list": Prompt_list,
+                "studentName": studentName
             }
         },
         "scene": {
@@ -4208,7 +4325,7 @@ def expand_2players(req):
     question_count = req['session']['params']['question_count']
     User_say_len = req['session']['params']['User_say_len']
     partner = req['user']['partner']
-
+    studentName = req['session']['params']['studentName']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myDialogList = nowBook['S_R_Dialog']
@@ -4280,6 +4397,8 @@ def expand_2players(req):
             "session": {
                 "params": {
                     "User_expand": expand_user,
+                    "studentName": studentName
+
                 }
             }
         }
@@ -4305,10 +4424,12 @@ def expand_2players(req):
             find_common = {'type': 'common_like'}
             find_result = myCommonList.find_one(find_common)
             # 判斷座號有無學生姓名
-            if int(partner) in studentName_dic:
-                partner_name = studentName_dic[int(partner)]
+            partner_int = int(partner)
+            partner_str = str(partner_int)
+            if partner_str in studentName:
+                partner_name = studentName[partner_str]
             else:
-                partner_name = partner + "號"
+                partner_name = partner_str + "號"
             response = choice(find_result['content']).replace('你', partner_name)
             response_speech = response
             response_dict = {
@@ -4326,7 +4447,9 @@ def expand_2players(req):
                     "params": {
                         "User_expand": expand_user,
                         "Partner_check": True,
-                        "Partner_expand": partner
+                        "Partner_expand": partner,
+                        "studentName": studentName
+
                     }
                 }
             }
@@ -4407,7 +4530,8 @@ def expand_2players(req):
                                    question_count=question_count,
                                    User_say_len=User_say_len,
                                    dialog_count=0,
-                                   dialog_count_limit=2)
+                                   dialog_count_limit=2,
+                                   studentName=studentName)
                 },
                 "scene": {
                     "next": {
@@ -4441,7 +4565,7 @@ def feedback_2players(req):
     dialog_count = req['session']['params']['dialog_count']
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
-
+    studentName = req['session']['params']['studentName']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
     myFeedback = nowBook['Feedback']
@@ -4472,8 +4596,10 @@ def feedback_2players(req):
             response = choice(find_result['content']) + " " + result_like[choose_number]['Content']
 
     # 判斷座號有無學生姓名
-    if int(partner) in studentName_dic:
-        partner_name = studentName_dic[int(partner)]
+    partner = int(partner)
+    partner = str(partner)
+    if partner in studentName:
+        partner_name = studentName[partner]
     else:
         partner_name = partner + "號"
     find_common = {'type': 'common_trun'}
@@ -4495,8 +4621,10 @@ def feedback_2players(req):
             res_moderator = choice(find_common_Moderator_result['content'])
             user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
             # 判斷座號有無學生姓名
-            if int(user_id_tmp) in studentName_dic:
-                name = studentName_dic[int(user_id_tmp)]
+            user_id_tmp = int(user_id_tmp)
+            user_id_tmp = str(user_id_tmp)
+            if user_id_tmp in studentName:
+                name = studentName[user_id_tmp]
             else:
                 name = user_id_tmp + "號"
             response = res_moderator.replace("XX", name).replace("OO", partner_name)
@@ -4595,7 +4723,7 @@ def summarize_2players(req):
     dialog_count = req['session']['params']['dialog_count']
     dialog_count_limit = req['session']['params']['dialog_count_limit']
     User_feeling = req['session']['params']['User_feeling']
-
+    studentName = req['session']['params']['studentName']
     dbBookName = bookName.replace("'", "").replace('!', '').replace(",", "").replace(' ', '_')
     nowBook = myClient[dbBookName]
 
@@ -4606,8 +4734,10 @@ def summarize_2players(req):
     connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
     # 判斷座號有無學生姓名
-    if int(partner) in studentName_dic:
-        partner_name = studentName_dic[int(partner)]
+    partner = int(partner)
+    partner = str(partner)
+    if partner in studentName:
+        partner_name = studentName[partner]
     else:
         partner_name = partner + "號"
     find_common = {'type': 'common_trun'}
@@ -4621,8 +4751,10 @@ def summarize_2players(req):
             res_moderator = choice(find_common_Moderator_result['content'])
             user_id_tmp = user_id.replace("戊班", "").replace("丁班", "").replace("401", "").replace("402", "").replace("403", "").replace("404", "")
             # 判斷座號有無學生姓名
-            if int(user_id_tmp) in studentName_dic:
-                name = studentName_dic[int(user_id_tmp)]
+            user_id_tmp = int(user_id_tmp)
+            user_id_tmp = str(user_id_tmp)
+            if user_id_tmp in studentName:
+                name = studentName[user_id_tmp]
             else:
                 name = user_id_tmp + "號"
             response = res_moderator.replace("XX", name).replace("OO", partner_name)

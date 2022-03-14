@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="expand結束前找遺漏場景、舊系統測試運作">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="生命教育繪本及佩佩豬繪本">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connectDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/connectDB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/createLibrary.py" beforeDir="false" afterPath="$PROJECT_DIR$/createLibrary.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/login_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storyDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/storyDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/student.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/student.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/websocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/websocket.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +54,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../chatbot_new_表情" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Python.getChat2xlsx">
+  <component name="RunManager" selected="Python.main">
     <configuration name="createLibrary" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="chatbot_new" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -441,7 +438,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641886302817</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="生命教育繪本及佩佩豬繪本">
+      <created>1644300406190</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1644300406190</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -457,7 +461,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="建議列表修改" />
     <MESSAGE value="雙人聊天心得策略修改" />
     <MESSAGE value="更改聊天對話畫面" />
     <MESSAGE value="讀取Excel取代座號為學生姓名" />
@@ -482,7 +485,8 @@
     <MESSAGE value="改為https連線" />
     <MESSAGE value="魚姊姊有表情動作分數" />
     <MESSAGE value="expand結束前找遺漏場景、舊系統測試運作" />
-    <option name="LAST_COMMIT_MESSAGE" value="expand結束前找遺漏場景、舊系統測試運作" />
+    <MESSAGE value="生命教育繪本及佩佩豬繪本" />
+    <option name="LAST_COMMIT_MESSAGE" value="生命教育繪本及佩佩豬繪本" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
