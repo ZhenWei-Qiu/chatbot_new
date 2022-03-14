@@ -32,10 +32,10 @@ def updateUser(myUserList, userId, bookName, state, partner):
                 myUserList.update_one(find_user, {"$set": user_book_result})
 
 
-def addDialog(dialogList, dialog_id, speaker_id, content, time, session_id, prompt_phase):
+def addDialog(dialogList, dialog_id, speaker_id, content, time, session_id, prompt_phase, p_value, a_value):
 
     mydict = {'Dialog_id': dialog_id, 'Speaker_id': speaker_id, 'Content': content, 'Phase': prompt_phase,
-              'Time': time, 'Session_id': session_id}
+              'Time': time, 'Session_id': session_id, 'P_value': p_value, 'A_value': a_value}
     dialogList.insert_one(mydict)
     print(mydict)
 
