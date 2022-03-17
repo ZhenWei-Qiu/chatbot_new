@@ -3416,12 +3416,12 @@ def Feeling(req):
 
     find_common_result = myCommonList.find_one(find_common)
     response = choice(find_common_result['content'])
-    partner = int(partner)
-    partner = str(partner)
-    if partner in studentName:
-        partner_name = studentName[partner]
+    partner_int = int(partner)
+    partner_str = str(partner_int)
+    if partner_str in studentName:
+        partner_name = studentName[partner_str]
     else:
-        partner_name = partner + "號"
+        partner_name = partner_str + "號"
     response += '，那XX你覺得呢？'
     response = response.replace("XX", partner_name)
 
@@ -3867,16 +3867,16 @@ def Moderator_single_idle(req):
     # 判斷座號有無學生姓名
     user_id_tmp = int(user_id_tmp)
     user_id_tmp = str(user_id_tmp)
-    partner = int(partner)
-    partner = str(partner)
+    partner_int = int(partner)
+    partner_str = str(partner_int)
     if user_id_tmp in studentName:
         name = studentName[user_id_tmp]
     else:
         name = user_id_tmp + "號"
-    if partner in studentName:
-        partner_name = studentName[partner]
+    if partner_str in studentName:
+        partner_name = studentName[partner_str]
     else:
-        partner_name = partner + "號"
+        partner_name = partner_str + "號"
     response = res_moderator.replace("XX", name).replace("OO", partner_name)
 
     # 記錄對話過程
@@ -3975,17 +3975,16 @@ def Moderator_interaction(req):
     # 判斷座號有無學生姓名
     user_id_tmp = int(user_id_tmp)
     user_id_tmp = str(user_id_tmp)
-    partner = int(partner)
-    partner = str(partner)
-
+    partner_int = int(partner)
+    partner_str = str(partner_int)
     if user_id_tmp in studentName:
         name = studentName[user_id_tmp]
     else:
         name = user_id_tmp + "號"
-    if partner in studentName:
-        partner_name = studentName[partner]
+    if partner_str in studentName:
+        partner_name = studentName[partner_str]
     else:
-        partner_name = partner + "號"
+        partner_name = partner_str + "號"
     response = res_moderator.replace("XX", name).replace("OO", partner_name)
 
     # 記錄對話過程
@@ -4596,12 +4595,12 @@ def feedback_2players(req):
             response = choice(find_result['content']) + " " + result_like[choose_number]['Content']
 
     # 判斷座號有無學生姓名
-    partner = int(partner)
-    partner = str(partner)
-    if partner in studentName:
-        partner_name = studentName[partner]
+    partner_int = int(partner)
+    partner_str = str(partner_int)
+    if partner_str in studentName:
+        partner_name = studentName[partner_str]
     else:
-        partner_name = partner + "號"
+        partner_name = partner_str + "號"
     find_common = {'type': 'common_trun'}
     find_common_result = myCommonList.find_one(find_common)
     response_tmp2 = choice(find_common_result['content'])
@@ -4734,12 +4733,12 @@ def summarize_2players(req):
     connectDB.addDialog(myDialogList, dialog_id, 'Student ' + user_id, userSay, time, session_id, req['scene']['name'], None, None)
 
     # 判斷座號有無學生姓名
-    partner = int(partner)
-    partner = str(partner)
-    if partner in studentName:
-        partner_name = studentName[partner]
+    partner_int = int(partner)
+    partner_str = str(partner_int)
+    if partner_str in studentName:
+        partner_name = studentName[partner_str]
     else:
-        partner_name = partner + "號"
+        partner_name = partner_str + "號"
     find_common = {'type': 'common_trun'}
     find_common_result = myCommonList.find_one(find_common)
     response_tmp = choice(find_common_result['content'])

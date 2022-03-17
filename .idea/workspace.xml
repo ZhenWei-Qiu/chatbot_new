@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="生命教育繪本及佩佩豬繪本">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="表情添加">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connectDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/connectDB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/login_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login_scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/student.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/student.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -445,7 +442,21 @@
       <option name="project" value="LOCAL" />
       <updated>1644300406190</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="修正 global Prompt_list studentname方法改寫JSON">
+      <created>1647244819205</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1647244819205</updated>
+    </task>
+    <task id="LOCAL-00040" summary="表情添加">
+      <created>1647244831846</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1647244831846</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -461,8 +472,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="雙人聊天心得策略修改" />
-    <MESSAGE value="更改聊天對話畫面" />
     <MESSAGE value="讀取Excel取代座號為學生姓名" />
     <MESSAGE value="Partner存於UserTablet資料庫、修改expand partner JSON" />
     <MESSAGE value="針對使用者顯示喜好按鈕" />
@@ -486,7 +495,9 @@
     <MESSAGE value="魚姊姊有表情動作分數" />
     <MESSAGE value="expand結束前找遺漏場景、舊系統測試運作" />
     <MESSAGE value="生命教育繪本及佩佩豬繪本" />
-    <option name="LAST_COMMIT_MESSAGE" value="生命教育繪本及佩佩豬繪本" />
+    <MESSAGE value="修正 global Prompt_list studentname方法改寫JSON" />
+    <MESSAGE value="表情添加" />
+    <option name="LAST_COMMIT_MESSAGE" value="表情添加" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
