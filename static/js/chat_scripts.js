@@ -65,7 +65,7 @@ var no_next_idle_flag = 1
 
 // 監聽connect
 // var socket = io.connect('http://' + document.domain + ':' + location.port);
-var socket = io.connect('https://47d4-140-115-53-209.ngrok.io', {secure: true})
+var socket = io.connect('https://2b1a-140-115-53-209.ngrok.io', {secure: true})
 // user connect
 socket.on('connect', function () { 
 

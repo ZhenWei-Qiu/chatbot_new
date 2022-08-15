@@ -377,8 +377,7 @@ def check_input(req):
 def connect():
     global myClient, myBotData, myBookList, myCommonList, myUserList
     try:
-        myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-        # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+        myClient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
         myBotData = myClient.Chatbot
         myBookList = myBotData.bookList
         myCommonList = myBotData.commonList
@@ -4081,7 +4080,6 @@ def expand(req):
         # 記錄對話過程
         dialog_index = myDialogList.find().count()
         dialog_id = myDialogList.find()[dialog_index - 1]['Dialog_id'] + 1
-        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'] , None, None)
         # response_dict = {"prompt": {
         #     "firstSimple": {
         #         "speech": response,
@@ -4116,9 +4114,7 @@ def expand(req):
                 }
             }
         }
-        connectDB.addDialog(myDialogList, dialog_id, 'chatbot', response, time, session_id, req['scene']['name'],
-                            response_dict['prompt']['firstSimple']['expressionP'],
-                            response_dict['prompt']['firstSimple']['expressionA'])
+
 
         # if userClass == '戊班':
         #     response_dict['prompt']['firstSimple']['speech'] = response.replace('⭐', '')
@@ -4964,7 +4960,7 @@ def suggestion(req):
     find_suggestion = myCommonList.find_one(find_common_suggestion)
     response_suggestion_tmp = choice(find_suggestion['content'])
     response = choice(find_result['content']).replace('XX', sort_suggest_book[0][0]) + '\n'
-    url = 'http://story.csie.ncu.edu.tw/storytelling/images/chatbot_books/' + sort_suggest_book[0][0].replace(' ',
+    url = "http://story.csie.ncu.edu.tw/storytelling/images/chatbot_books/" + sort_suggest_book[0][0].replace(' ',
                                                                                                               '%20').replace('\'','’') + '.jpg'
     print('URL:' + url)
     # response_dict = {"prompt": {

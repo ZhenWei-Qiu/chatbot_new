@@ -123,8 +123,7 @@ def check_input(req):
 def connect():
     global myClient, myBotData, myBookList, myCommonList, myUserList
     try:
-        #myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-        myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+        myClient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
         myBotData = myClient.Chatbot
         myBookList = myBotData.bookList
         myCommonList = myBotData.commonList

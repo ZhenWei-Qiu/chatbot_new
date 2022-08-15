@@ -14,8 +14,7 @@ def connect():
     global myClient, myBotData, myBookList, myCommonList
     try:
         # 連接mongo
-        # myclient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-        myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+        myclient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
         myBotData = myclient.Chatbot
         myBookList = myBotData.bookList
         myCommonList = myBotData.commonList
@@ -56,8 +55,7 @@ def addCommon():
 def updateUser(userId, bookName, match_sentence, record_list, match_entity, match_verb, state, noMatch_count, continue_stage):
     # 連接mongo
 
-    myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-    # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myClient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
     myBotData = myClient.Chatbot
     myUserList = myBotData.UserTable
     bookTalkSummary = {'Match_sentence': match_sentence, 'noMatch_count': noMatch_count, 'Sentence_id_list': record_list, 'Entity_list': match_entity,
@@ -92,8 +90,7 @@ def updateUser(userId, bookName, match_sentence, record_list, match_entity, matc
 
 
 def addDialog(bookName, dialog_id, speaker_id, content, time):
-    myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-    # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myClient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
     myBook = myClient[bookName.replace(' ', '_').replace("'", "")]
     allDialog = myBook.S_R_Dialog
 
@@ -104,8 +101,7 @@ def addDialog(bookName, dialog_id, speaker_id, content, time):
 
 
 def addQuestion(bookName, qa_id, dialog_id, response):
-    myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-    # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myClient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
     myBook = myClient[bookName.replace(' ', '_').replace("'", "")]
     QATable = myBook.QATable
 
@@ -115,8 +111,7 @@ def addQuestion(bookName, qa_id, dialog_id, response):
 
 
 def addElaboration(bookName, qa_id, elaboration, confidence, sentence_id):
-    myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-    # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myClient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
     myBook = myClient[bookName.replace(' ', '_').replace("'", "")]
     Elaboration_Table = myBook.Elaboration
 
@@ -129,8 +124,7 @@ def addElaboration(bookName, qa_id, elaboration, confidence, sentence_id):
 
 
 def addFeedback(userId, bookName, sentiment, feedback):
-    myClient = pymongo.MongoClient("mongodb://root:ltlab35316@140.115.53.196:27017/")
-    # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myClient = pymongo.MongoClient("mongodb://Account_name:Account_password@server/")
     myBook = myClient[bookName.replace(' ', '_').replace("'", "")]
     Feedback_Table = myBook.Feedback
     mydict = {'User_id': userId, 'Sentiment': sentiment, 'Content': feedback}

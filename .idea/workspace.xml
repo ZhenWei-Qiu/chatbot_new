@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="表情添加">
+    <list default="true" id="ae6a77c7-79f9-49cd-b5fa-ea4a93bb9151" name="Default Changelist" comment="修改 partner JSON學生座號問題">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatbot_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot_func_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_func_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/createLibrary.py" beforeDir="false" afterPath="$PROJECT_DIR$/createLibrary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/chat_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat_scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/login_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login_scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storyDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/storyDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/student.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/student.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +54,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chatbot_new_表情" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chatbot-master" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager" selected="Python.main">
@@ -160,10 +166,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.storyDB" />
         <item itemvalue="Python.getChat2xlsx" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.createLibrary" />
-        <item itemvalue="Python.storyDB" />
       </list>
     </recent_temporary>
   </component>
@@ -456,7 +462,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647244831846</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="修改 partner JSON學生座號問題">
+      <created>1647483661548</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1647483661548</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -472,7 +485,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="讀取Excel取代座號為學生姓名" />
     <MESSAGE value="Partner存於UserTablet資料庫、修改expand partner JSON" />
     <MESSAGE value="針對使用者顯示喜好按鈕" />
     <MESSAGE value="partner對話框顏色更改" />
@@ -497,7 +509,8 @@
     <MESSAGE value="生命教育繪本及佩佩豬繪本" />
     <MESSAGE value="修正 global Prompt_list studentname方法改寫JSON" />
     <MESSAGE value="表情添加" />
-    <option name="LAST_COMMIT_MESSAGE" value="表情添加" />
+    <MESSAGE value="修改 partner JSON學生座號問題" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改 partner JSON學生座號問題" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -509,7 +522,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test.py</url>
-          <line>665</line>
+          <line>664</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
